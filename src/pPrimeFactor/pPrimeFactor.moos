@@ -31,7 +31,7 @@ ProcessConfig = uXMS
   AppTick   = 4
   CommsTick = 4
 
-  VAR            = NUM_VALUE, PRIME_RESULT, TROUBLESHOOT
+  VAR            = NUM_VALUE, PRIME_RESULT
   COLOR_MAP      = NUM_VALUE, red
   COLOR_MAP      = PRIME_RESULT, green
   HISTORY_VAR    = PRIME_RESULT
