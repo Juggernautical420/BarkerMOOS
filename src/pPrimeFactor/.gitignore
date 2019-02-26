@@ -1,0 +1,10 @@
+*
+*/
+!.gitignore
+!PrimeEntry.cpp
+!PrimeEntry.h
+!PrimeFactor.h
+!PrimeFactor.cpp
+!main.cpp
+!pPrimeFactor.moos
+!CMakeLists.txt

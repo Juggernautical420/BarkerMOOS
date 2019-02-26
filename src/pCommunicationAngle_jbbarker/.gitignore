@@ -1,0 +1,8 @@
+*
+*/
+!.gitignore
+!CMakeLists.txt
+!CommunicationAngle_jbbarker.cpp
+!CommunicationAngle_jbbarker.h
+!main.cpp
+!pCommunicationAngle_jbbarker.moos
