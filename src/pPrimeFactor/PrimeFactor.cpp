@@ -95,8 +95,8 @@ bool PrimeFactor::Iterate()
   list<PrimeEntry>::iterator p;
    for(p=m_list_primes.begin(); p!=m_list_primes.end(); ) {//Works thru PrimeEntry List 
    PrimeEntry& current_calc = *p; //sets the working value to variable current_calc
-   current_calc.setDone(current_calc.factor(100)); 
-   //This performs the function factor 100 iterations 
+   current_calc.setDone(current_calc.factor(100000)); 
+   //This performs the function factor 100000 iterations 
    //If successful, changes boolean to true 
    if(current_calc.m_done == true){//If current calc is done
     current_calc.setCalculatedIndex(m_calcd_index); //set the calc index
