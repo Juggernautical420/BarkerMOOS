@@ -14,6 +14,7 @@ ProcessConfig = ANTLER
   Run = uXMS     @ NewConsole = true
   Run = pPrimeFactor @ NewConsole = false
   Run = uTimerScript @ NewConsole = false 
+  Run = pLogger      @ NewConsole = false
 }
 //------------------------------------------------
 // pPrimeFactor config block
@@ -23,6 +24,7 @@ ProcessConfig = pPrimeFactor
    AppTick   = 4
    CommsTick = 4
 }
+//------------------------------------------------
 // uXMS config block
 ProcessConfig = uXMS
 {
@@ -34,6 +36,8 @@ ProcessConfig = uXMS
   COLOR_MAP      = PRIME_RESULT, green
   HISTORY_VAR    = PRIME_RESULT
 }
+//--------------------------------------------------
+// uTimerScript config block
 ProcessConfig = uTimerScript
 {
   AppTick   = 4
@@ -55,3 +59,14 @@ ProcessConfig = uTimerScript
   reset_max  = 0
   reset_time = all-posted
 }
+//--------------------------------------------------
+// pLogger config block
+ ProcessConfig = pLogger
+ {
+   AsyncLog = true
+   WildCardLogging = true
+   WildCardOmitPattern = *_STATUS
+
+   LOG =  PRIME_RESULT @ 0
+   LOG =  NUM_VALUE @ 0
+ }
