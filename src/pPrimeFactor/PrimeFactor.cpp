@@ -32,7 +32,7 @@ PrimeEntry::PrimeEntry()
   m_received_index = 0;
   m_calculated_index =0;
   m_current = 0;
-  m_iterations = 0; // Used in prime factoring loop
+  m_stored = 3;
 
 }
 
@@ -95,8 +95,8 @@ bool PrimeFactor::Iterate()
   list<PrimeEntry>::iterator p;
    for(p=m_list_primes.begin(); p!=m_list_primes.end(); ) {//Works thru PrimeEntry List 
    PrimeEntry& current_calc = *p; //sets the working value to variable current_calc
-   current_calc.setDone(current_calc.factor(10)); 
-   //This performs the function factor 10 iterations to promptly move thru small inputs
+   current_calc.setDone(current_calc.factor(100)); 
+   //This performs the function factor 100 iterations 
    //If successful, changes boolean to true 
    if(current_calc.m_done == true){//If current calc is done
     current_calc.setCalculatedIndex(m_calcd_index); //set the calc index
@@ -146,7 +146,6 @@ void PrimeFactor::RegisterVariables()
 {
   //AppCastingMOOSApp::RegisterVariables(); 
   Register("NUM_VALUE", 0);
-  Register("PRIME_RESULT", 0);
 }
 
 //-------------------------------------------------------------
@@ -156,23 +155,29 @@ bool PrimeEntry::factor(unsigned long int max_steps)
 {
   //Factorization function/template found from online resource
   //https://www.geeksforgeeks.org/print-all-prime-factors-of-a-given-number/
+  int iter = 0;
   while(m_current % 2 == 0){
     m_factors.push_back(2); // Print the number of 2s that divide m_current
     m_current = m_current/2;
-    m_iterations = m_iterations + 1; //Counts the number of iterations required
-    if (m_iterations >= max_steps)
-      return(false); //Exits this function if max steps reached
+    iter = iter + 1; //Counts the number of iterations required
+   if (iter >= max_steps)
+    return(false);
+   //Exits this function if max steps reached
+
   }
   // m_current must be odd at this point
-  for(int i = 3; i <= sqrt(m_current); i = i+2){
+  for(int i= m_stored; i <= sqrt(m_current); i = i+2){
+    m_stored = m_stored+2;
     // While i divides m_current, print i and divide m_current
+    iter = iter +1;
     while (m_current%i == 0){
       m_factors.push_back(i);
       m_current = m_current/i;
-      m_iterations = m_iterations +1;
-      if (m_iterations >= max_steps)
-      return(false); //Exits this function if max steps reached
     }
+    if (iter >= max_steps)
+      return(false);
+     //Exits this function if max steps reached
+    
   } 
   // This condition is to handle the case when m_current  
   // is a prime number greater than 2 

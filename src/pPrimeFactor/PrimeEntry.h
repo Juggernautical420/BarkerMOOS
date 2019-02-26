@@ -42,8 +42,8 @@
    bool          m_done;
    unsigned int  m_received_index;
    unsigned int  m_calculated_index;
-   unsigned int  m_current;
-   unsigned int  m_iterations;
+   uint64_t      m_current;
+   unsigned int  m_stored;
    std::vector<uint64_t> m_factors;
  protected:
  };

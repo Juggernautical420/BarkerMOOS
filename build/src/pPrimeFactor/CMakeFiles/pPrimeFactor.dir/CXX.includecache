@@ -48,6 +48,20 @@ list
 PrimeEntry.h
 /Users/jasonbarker/moos-ivp-jbbarker/src/pPrimeFactor/PrimeEntry.h
 
+/Users/jasonbarker/moos-ivp-jbbarker/src/pPrimeFactor/PrimeFactor_Info.h
+
+/Users/jasonbarker/moos-ivp-jbbarker/src/pPrimeFactor/main.cpp
+string
+-
+MBUtils.h
+/Users/jasonbarker/moos-ivp-jbbarker/src/pPrimeFactor/MBUtils.h
+ColorParse.h
+/Users/jasonbarker/moos-ivp-jbbarker/src/pPrimeFactor/ColorParse.h
+PrimeFactor.h
+/Users/jasonbarker/moos-ivp-jbbarker/src/pPrimeFactor/PrimeFactor.h
+PrimeFactor_Info.h
+/Users/jasonbarker/moos-ivp-jbbarker/src/pPrimeFactor/PrimeFactor_Info.h
+
 /Users/jasonbarker/moos-ivp/MOOS/MOOSCore/Core/libMOOS/App/include/MOOS/libMOOS/App/ClientDefines.h
 
 /Users/jasonbarker/moos-ivp/MOOS/MOOSCore/Core/libMOOS/App/include/MOOS/libMOOS/App/MOOSApp.h
@@ -541,6 +555,12 @@ MOOS/libMOOS/App/MOOSApp.h
 /Users/jasonbarker/moos-ivp/MOOS/MOOSCore/Core/libMOOS/include/MOOS/libMOOS/MOOS/libMOOS/App/MOOSApp.h
 MOOS/libMOOS/App/MOOSInstrument.h
 /Users/jasonbarker/moos-ivp/MOOS/MOOSCore/Core/libMOOS/include/MOOS/libMOOS/MOOS/libMOOS/App/MOOSInstrument.h
+
+/Users/jasonbarker/moos-ivp/ivp/src/lib_mbutil/ColorParse.h
+vector
+-
+string
+-
 
 /Users/jasonbarker/moos-ivp/ivp/src/lib_mbutil/MBUtils.h
 vector

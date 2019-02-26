@@ -29,7 +29,7 @@ ProcessConfig = uXMS
   AppTick   = 4
   CommsTick = 4
 
-  VAR            = NUM_VALUE, PRIME_RESULT
+  VAR            = NUM_VALUE, PRIME_RESULT, TROUBLESHOOT
   COLOR_MAP      = NUM_VALUE, red
   COLOR_MAP      = PRIME_RESULT, green
   HISTORY_VAR    = PRIME_RESULT
@@ -40,13 +40,18 @@ ProcessConfig = uTimerScript
   CommsTick = 4
 
   paused = false
-  event = var=NUM_VALUE, val="$(15)", time=0.25
-  event = var=NUM_VALUE, val="$(9)", time=0.50
-  event = var=NUM_VALUE, val="$(7)", time=0.75
-  event = var=NUM_VALUE, val="$(5)", time=1.00
-  
+   event  = var=NUM_VALUE, val="112582705942171", time=0.25
+   event  = var=NUM_VALUE, val="115797848077099", time=0.50
+   event  = var=NUM_VALUE, val="117463495419967", time=0.75
 
+   event  = var=NUM_VALUE, val="125", time=1.00
+   event  = var=NUM_VALUE, val="225", time=1.25
+   event  = var=NUM_VALUE, val="325", time=1.50
   
-  reset_max  = nolimit
+   event  = var=NUM_VALUE, val="123939877913659", time=1.75
+   event  = var=NUM_VALUE, val="126794093929207", time=2.00
+   event  = var=NUM_VALUE, val="129263144299543", time=2.25
+  
+  reset_max  = 0
   reset_time = all-posted
 }
