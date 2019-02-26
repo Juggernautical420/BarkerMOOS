@@ -1,0 +1,41 @@
+// MOOS file
+
+ServerHost = oceanai.mit.edu
+ServerPort = 9011
+
+//------------------------------------------
+// Antler configuration  block
+ProcessConfig = ANTLER
+{
+  MSBetweenLaunches = 200
+
+  Run = MOOSDB	 @ NewConsole = false
+  Run = uXMS     @ NewConsole = true
+  //Run = pPrimeFactor @ NewConsole = false
+  //Run = uTimerScript @ NewConsole = false 
+  //Run = pLogger      @ NewConsole = false
+}
+
+//------------------------------------------------
+// pCommunicationAngle_jbbarker config block
+
+ProcessConfig = pCommunicationAngle_jbbarker
+{
+   AppTick   = 4
+   CommsTick = 4
+
+
+}
+
+//------------------------------------------------
+// uXMS config block
+ProcessConfig = uXMS
+{
+  AppTick   = 4
+  CommsTick = 4
+
+  VAR            = VEHICLE_NAME, COLLABORATOR_NAME, NAV_X, NAV_Y, NAV_DEPTH, NAV_HEADING, NAV_SPEED, NEPTUNE_NAV_X, NEPTUNE_NAV_Y, NEPTUNE_NAV_DEPTH, NEPTUNE_NAV_HEADING, NEPTUNE_NAV_SPEED
+  //COLOR_MAP      = NUM_VALUE, red
+  //COLOR_MAP      = PRIME_RESULT, green
+  //HISTORY_VAR    = PRIME_RESULT
+}

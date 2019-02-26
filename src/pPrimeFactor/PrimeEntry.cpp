@@ -5,22 +5,15 @@
    DATE: Feb 26, 2019    
    This program computes prime factors                                        
 ***********************************************************/
-#include <iterator>
-#include "MBUtils.h"
 #include "PrimeEntry.h"
 #include "PrimeFactor.h"
-#include <sstream>
-#include <math.h> 
-#include <stdio.h>
-
-using namespace std;
 
 
 PrimeEntry::PrimeEntry()
 {
   m_start_index = 0;
   m_orig = 0;
-  m_done == false;
+  m_done = false;
   m_received_index = 0;
   m_calculated_index =0;
   m_current = 0;

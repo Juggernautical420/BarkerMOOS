@@ -10,10 +10,15 @@
 
 #include "MOOS/libMOOS/MOOSLib.h" //Standard MOOS App Library
 //#include "MOOS/libMOOS/Thirdparty/AppCasting/AppCastingMOOSApp.h" // Allows AppCasting
+#include <iterator>
+#include "MBUtils.h"
 #include <string>
 #include <vector>
 #include <cstdint>
 #include <list>
+#include <sstream>
+#include <math.h> 
+#include <stdio.h>
 #include "PrimeEntry.h"
 
 using namespace std;
@@ -24,8 +29,7 @@ class PrimeFactor : public CMOOSApp
    PrimeFactor();
    ~PrimeFactor();
 
-   unsigned int  m_recd_index;
-   unsigned int  m_calcd_index;
+  
 
  protected: // Standard MOOSApp functions to overload  
    bool OnNewMail(MOOSMSG_LIST &NewMail);
@@ -36,6 +40,8 @@ class PrimeFactor : public CMOOSApp
  protected:
    void RegisterVariables();
    list<PrimeEntry> m_list_primes;
+   unsigned int  m_recd_index;
+   unsigned int  m_calcd_index;
  private: // Configuration variables
 
  private: // State variables

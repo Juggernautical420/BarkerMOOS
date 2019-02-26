@@ -4,16 +4,11 @@
     FILE: PrimeFactor.cpp                                        
     DATE: Feb 21, 2019                                                
 ************************************************************/
-
-#include <iterator>
-#include "MBUtils.h"
 #include "PrimeFactor.h"
 #include "PrimeEntry.h"
-#include <sstream>
-#include <math.h> 
-#include <stdio.h>
 
-using namespace std;
+
+
 
 //---------------------------------------------------------
 // Constructor
@@ -51,13 +46,13 @@ bool PrimeFactor::OnNewMail(MOOSMSG_LIST &NewMail)
       PrimeEntry new_entry; //Enter PrimeEntry list
       new_entry.setReceivedIndex(m_recd_index); //Retain the index recieved
       new_entry.setOriginalVal(m_orig); //Record the initial value
-      new_entry.m_start_index = MOOSTime(); // Record the MOOS time 
+      new_entry.setStartTime(MOOSTime()); // Record the MOOS time 
       new_entry.m_current = m_orig; // Variable for the value to be factored
       m_list_primes.push_back(new_entry); // Push these elements into list
       m_recd_index = m_recd_index +1; // Updates received index
     }
   }
-	
+  
    return(true);
 }
 
@@ -70,7 +65,7 @@ bool PrimeFactor::OnConnectToServer()
    // possibly look at the mission file?
    // m_MissionReader.GetConfigurationParam("Name", <string>);
    // m_Comms.Register("VARNAME", 0);
-	
+  
    RegisterVariables();
    return(true);
 }
@@ -88,7 +83,7 @@ bool PrimeFactor::Iterate()
    current_calc.setDone(current_calc.factor(100000)); 
    //This performs the function factor 100000 iterations 
    //If successful, changes boolean to true 
-   if(current_calc.m_done == true){//If current calc is done
+   if(current_calc.m_done){//If current calc is done
     current_calc.setCalculatedIndex(m_calcd_index); //set the calc index
     Notify("PRIME_RESULT", current_calc.getReport());//Publishes output
     m_calcd_index = m_calcd_index + 1; //update to next index
@@ -125,7 +120,7 @@ bool PrimeFactor::OnStartUp()
     }
   }
   
-  RegisterVariables();	
+  RegisterVariables();  
   return(true);
 }
 

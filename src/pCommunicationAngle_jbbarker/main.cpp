@@ -1,15 +1,15 @@
-/***********************************************************
-  NAME: Jason Barker                                              
-  ORGN: MIT                                             
-  FILE: main.cpp                                        
-  DATE:                                                 
-***********************************************************/
+/************************************************************/
+/*    NAME: Jason Barker                                              */
+/*    ORGN: MIT                                             */
+/*    FILE: main.cpp                                        */
+/*    DATE:                                                 */
+/************************************************************/
 
 #include <string>
 #include "MBUtils.h"
 #include "ColorParse.h"
-#include "PrimeFactor.h"
-#include "PrimeFactor_Info.h"
+#include "CommunicationAngle_jbbarker.h"
+#include "CommunicationAngle_jbbarker_Info.h"
 
 using namespace std;
 
@@ -40,12 +40,13 @@ int main(int argc, char *argv[])
     showHelpAndExit();
 
   cout << termColor("green");
-  cout << "pPrimeFactor launching as " << run_command << endl;
+  cout << "pCommunicationAngle_jbbarker launching as " << run_command << endl;
   cout << termColor() << endl;
 
-  PrimeFactor PrimeFactor;
+  CommunicationAngle_jbbarker CommunicationAngle_jbbarker;
 
-  PrimeFactor.Run(run_command.c_str(), mission_file.c_str());
+  CommunicationAngle_jbbarker.Run(run_command.c_str(), mission_file.c_str());
   
   return(0);
 }
+
