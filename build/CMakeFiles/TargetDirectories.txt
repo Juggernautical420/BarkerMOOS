@@ -17,3 +17,6 @@
 /Users/jasonbarker/moos-ivp-jbbarker/build/src/pOdometry/CMakeFiles/rebuild_cache.dir
 /Users/jasonbarker/moos-ivp-jbbarker/build/src/pOdometry/CMakeFiles/edit_cache.dir
 /Users/jasonbarker/moos-ivp-jbbarker/build/src/pOdometry/CMakeFiles/pOdometry.dir
+/Users/jasonbarker/moos-ivp-jbbarker/build/src/pCommunicationAngle_jbbarker/CMakeFiles/rebuild_cache.dir
+/Users/jasonbarker/moos-ivp-jbbarker/build/src/pCommunicationAngle_jbbarker/CMakeFiles/edit_cache.dir
+/Users/jasonbarker/moos-ivp-jbbarker/build/src/pCommunicationAngle_jbbarker/CMakeFiles/pCommunicationAngle_jbbarker.dir

@@ -175,6 +175,19 @@ pOdometry/fast:
 	$(MAKE) -f src/pOdometry/CMakeFiles/pOdometry.dir/build.make src/pOdometry/CMakeFiles/pOdometry.dir/build
 .PHONY : pOdometry/fast
 
+#=============================================================================
+# Target rules for targets named pCommunicationAngle_jbbarker
+
+# Build rule for target.
+pCommunicationAngle_jbbarker: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 pCommunicationAngle_jbbarker
+.PHONY : pCommunicationAngle_jbbarker
+
+# fast build rule for target.
+pCommunicationAngle_jbbarker/fast:
+	$(MAKE) -f src/pCommunicationAngle_jbbarker/CMakeFiles/pCommunicationAngle_jbbarker.dir/build.make src/pCommunicationAngle_jbbarker/CMakeFiles/pCommunicationAngle_jbbarker.dir/build
+.PHONY : pCommunicationAngle_jbbarker/fast
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -188,6 +201,7 @@ help:
 	@echo "... pExampleApp"
 	@echo "... pPrimeFactor"
 	@echo "... pOdometry"
+	@echo "... pCommunicationAngle_jbbarker"
 .PHONY : help
 
 

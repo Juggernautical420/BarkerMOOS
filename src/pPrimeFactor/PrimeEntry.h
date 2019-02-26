@@ -1,10 +1,10 @@
-/************************************************************/
-/*    NAME: Jason Barker                                              
-/*    ORGN: MIT                                             
-/*    FILE: PrimeEntry.h                                          
-/*    DATE: Feb 25, 2019    
-/*    Template provived in Lab 5                                          
-/************************************************************/
+/***********************************************************
+    NAME: Jason Barker                                             
+    ORGN: MIT                                             
+    FILE: PrimeEntry.h                                          
+    DATE: Feb 25, 2019    
+    Template provived in Lab 5                                          
+***********************************************************/
 
  #include "MOOS/libMOOS/MOOSLib.h" //Standard MOOS App Library
 //#include "MOOS/libMOOS/Thirdparty/AppCasting/AppCastingMOOSApp.h" // Allows AppCasting

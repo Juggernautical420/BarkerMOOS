@@ -20,6 +20,7 @@ ADD_SUBDIRECTORY(pExampleApp)
 ADD_SUBDIRECTORY(pPrimeFactor)
 #ADD_SUBDIRECTORY(pFoobar)
 ADD_SUBDIRECTORY(pOdometry)
+ADD_SUBDIRECTORY(pCommunicationAngle_jbbarker)
 
 ##############################################################################
 #                           END of CMakeLists.txt

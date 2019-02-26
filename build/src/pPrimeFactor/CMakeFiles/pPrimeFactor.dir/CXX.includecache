@@ -6,6 +6,22 @@
 
 #IncludeRegexTransform: 
 
+/Users/jasonbarker/moos-ivp-jbbarker/src/pPrimeFactor/PrimeEntry.cpp
+iterator
+-
+MBUtils.h
+/Users/jasonbarker/moos-ivp-jbbarker/src/pPrimeFactor/MBUtils.h
+PrimeEntry.h
+/Users/jasonbarker/moos-ivp-jbbarker/src/pPrimeFactor/PrimeEntry.h
+PrimeFactor.h
+/Users/jasonbarker/moos-ivp-jbbarker/src/pPrimeFactor/PrimeFactor.h
+sstream
+-
+math.h
+-
+stdio.h
+-
+
 /Users/jasonbarker/moos-ivp-jbbarker/src/pPrimeFactor/PrimeEntry.h
 MOOS/libMOOS/MOOSLib.h
 /Users/jasonbarker/moos-ivp-jbbarker/src/pPrimeFactor/MOOS/libMOOS/MOOSLib.h
@@ -47,6 +63,20 @@ list
 -
 PrimeEntry.h
 /Users/jasonbarker/moos-ivp-jbbarker/src/pPrimeFactor/PrimeEntry.h
+
+/Users/jasonbarker/moos-ivp-jbbarker/src/pPrimeFactor/PrimeFactor_Info.h
+
+/Users/jasonbarker/moos-ivp-jbbarker/src/pPrimeFactor/main.cpp
+string
+-
+MBUtils.h
+/Users/jasonbarker/moos-ivp-jbbarker/src/pPrimeFactor/MBUtils.h
+ColorParse.h
+/Users/jasonbarker/moos-ivp-jbbarker/src/pPrimeFactor/ColorParse.h
+PrimeFactor.h
+/Users/jasonbarker/moos-ivp-jbbarker/src/pPrimeFactor/PrimeFactor.h
+PrimeFactor_Info.h
+/Users/jasonbarker/moos-ivp-jbbarker/src/pPrimeFactor/PrimeFactor_Info.h
 
 /Users/jasonbarker/moos-ivp/MOOS/MOOSCore/Core/libMOOS/App/include/MOOS/libMOOS/App/ClientDefines.h
 
@@ -541,6 +571,12 @@ MOOS/libMOOS/App/MOOSApp.h
 /Users/jasonbarker/moos-ivp/MOOS/MOOSCore/Core/libMOOS/include/MOOS/libMOOS/MOOS/libMOOS/App/MOOSApp.h
 MOOS/libMOOS/App/MOOSInstrument.h
 /Users/jasonbarker/moos-ivp/MOOS/MOOSCore/Core/libMOOS/include/MOOS/libMOOS/MOOS/libMOOS/App/MOOSInstrument.h
+
+/Users/jasonbarker/moos-ivp/ivp/src/lib_mbutil/ColorParse.h
+vector
+-
+string
+-
 
 /Users/jasonbarker/moos-ivp/ivp/src/lib_mbutil/MBUtils.h
 vector

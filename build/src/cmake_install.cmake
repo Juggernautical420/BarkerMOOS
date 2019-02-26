@@ -39,6 +39,7 @@ if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   include("/Users/jasonbarker/moos-ivp-jbbarker/build/src/pExampleApp/cmake_install.cmake")
   include("/Users/jasonbarker/moos-ivp-jbbarker/build/src/pPrimeFactor/cmake_install.cmake")
   include("/Users/jasonbarker/moos-ivp-jbbarker/build/src/pOdometry/cmake_install.cmake")
+  include("/Users/jasonbarker/moos-ivp-jbbarker/build/src/pCommunicationAngle_jbbarker/cmake_install.cmake")
 
 endif()
 

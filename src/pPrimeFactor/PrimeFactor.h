@@ -1,9 +1,9 @@
-/************************************************************/
-/*    NAME: Jason Barker                                              
-/*    ORGN: MIT                                             
-/*    FILE: PrimeFactor.h                                          
-/*    DATE: Feb 21, 2019                                              
-/************************************************************/
+/***********************************************************
+   NAME: Jason Barker                                              
+   ORGN: MIT                                             
+    FILE: PrimeFactor.h                                          
+    DATE: Feb 21, 2019                                              
+************************************************************/
 
 #ifndef PrimeFactor_HEADER
 #define PrimeFactor_HEADER
