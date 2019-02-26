@@ -20,6 +20,8 @@ using namespace std;
 
 PrimeFactor::PrimeFactor()
 {
+  m_recd_index = 0;
+  m_calcd_index =0;
 }
 
 PrimeEntry::PrimeEntry()
@@ -52,19 +54,17 @@ bool PrimeFactor::OnNewMail(MOOSMSG_LIST &NewMail)
    
   for(p=NewMail.begin(); p!=NewMail.end(); p++) {
     CMOOSMsg &msg = *p;
-
     string key   = msg.GetKey();
     if (key == "NUM_VALUE"){//Looks through mail for variable NUM_VALUE
       string value = msg.GetString();// If NUM_VALUE is present it grabs the string 
       uint64_t m_orig =  strtoul(value.c_str(),NULL,0);//Turns the string into an integer
-      int m_received_index;
-      m_received_index = m_received_index + 1; // Updates received index
       PrimeEntry new_entry; //Enter PrimeEntry list
-      new_entry.setReceivedIndex(m_received_index); //Retain the index recieved
+      new_entry.setReceivedIndex(m_recd_index); //Retain the index recieved
       new_entry.setOriginalVal(m_orig); //Record the initial value
       new_entry.m_start_index = MOOSTime(); // Record the MOOS time 
       new_entry.m_current = m_orig; // Variable for the value to be factored
       m_list_primes.push_back(new_entry); // Push these elements into list
+      m_recd_index = m_recd_index +1; // Updates received index
     }
   }
 	
@@ -95,14 +95,13 @@ bool PrimeFactor::Iterate()
   list<PrimeEntry>::iterator p;
    for(p=m_list_primes.begin(); p!=m_list_primes.end(); ) {//Works thru PrimeEntry List 
    PrimeEntry& current_calc = *p; //sets the working value to variable current_calc
-   current_calc.setDone(current_calc.factor(1000)); 
-   //This performs the function factor the max number of iterations (1000 times)
+   current_calc.setDone(current_calc.factor(10)); 
+   //This performs the function factor 10 iterations to promptly move thru small inputs
    //If successful, changes boolean to true 
    if(current_calc.m_done == true){//If current calc is done
-    int m_calculated_index;
-    m_calculated_index = m_calculated_index + 1; //update to next index
-    current_calc.setCalculatedIndex(m_calculated_index);
+    current_calc.setCalculatedIndex(m_calcd_index); //set the calc index
     Notify("PRIME_RESULT", current_calc.getReport());//Publishes output
+    m_calcd_index = m_calcd_index + 1; //update to next index
     p = m_list_primes.erase(p);//if done, removes from working list
    }
    else

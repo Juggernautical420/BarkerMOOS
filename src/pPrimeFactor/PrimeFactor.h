@@ -24,6 +24,9 @@ class PrimeFactor : public CMOOSApp
    PrimeFactor();
    ~PrimeFactor();
 
+   unsigned int  m_recd_index;
+   unsigned int  m_calcd_index;
+
  protected: // Standard MOOSApp functions to overload  
    bool OnNewMail(MOOSMSG_LIST &NewMail);
    bool Iterate();

@@ -32,7 +32,6 @@ ProcessConfig = uXMS
   VAR            = NUM_VALUE, PRIME_RESULT
   COLOR_MAP      = NUM_VALUE, red
   COLOR_MAP      = PRIME_RESULT, green
-  HISTORY_VAR    = NUM_VALUE
   HISTORY_VAR    = PRIME_RESULT
 }
 ProcessConfig = uTimerScript
