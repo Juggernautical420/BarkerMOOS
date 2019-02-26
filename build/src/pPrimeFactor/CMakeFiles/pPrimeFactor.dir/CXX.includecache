@@ -6,6 +6,18 @@
 
 #IncludeRegexTransform: 
 
+/Users/jasonbarker/moos-ivp-jbbarker/src/pPrimeFactor/PrimeEntry.h
+MOOS/libMOOS/MOOSLib.h
+/Users/jasonbarker/moos-ivp-jbbarker/src/pPrimeFactor/MOOS/libMOOS/MOOSLib.h
+string
+-
+vector
+-
+cstdint
+-
+list
+-
+
 /Users/jasonbarker/moos-ivp-jbbarker/src/pPrimeFactor/PrimeFactor.cpp
 iterator
 -
@@ -13,36 +25,28 @@ MBUtils.h
 /Users/jasonbarker/moos-ivp-jbbarker/src/pPrimeFactor/MBUtils.h
 PrimeFactor.h
 /Users/jasonbarker/moos-ivp-jbbarker/src/pPrimeFactor/PrimeFactor.h
+PrimeEntry.h
+/Users/jasonbarker/moos-ivp-jbbarker/src/pPrimeFactor/PrimeEntry.h
+sstream
+-
+math.h
+-
+stdio.h
+-
 
 /Users/jasonbarker/moos-ivp-jbbarker/src/pPrimeFactor/PrimeFactor.h
 MOOS/libMOOS/MOOSLib.h
 /Users/jasonbarker/moos-ivp-jbbarker/src/pPrimeFactor/MOOS/libMOOS/MOOSLib.h
-
-/Users/jasonbarker/moos-ivp-jbbarker/src/pPrimeFactor/PrimeFactor_Info.cpp
-cstdlib
--
-iostream
--
-PrimeFactor_Info.h
-/Users/jasonbarker/moos-ivp-jbbarker/src/pPrimeFactor/PrimeFactor_Info.h
-ColorParse.h
-/Users/jasonbarker/moos-ivp-jbbarker/src/pPrimeFactor/ColorParse.h
-ReleaseInfo.h
-/Users/jasonbarker/moos-ivp-jbbarker/src/pPrimeFactor/ReleaseInfo.h
-
-/Users/jasonbarker/moos-ivp-jbbarker/src/pPrimeFactor/PrimeFactor_Info.h
-
-/Users/jasonbarker/moos-ivp-jbbarker/src/pPrimeFactor/main.cpp
 string
 -
-MBUtils.h
-/Users/jasonbarker/moos-ivp-jbbarker/src/pPrimeFactor/MBUtils.h
-ColorParse.h
-/Users/jasonbarker/moos-ivp-jbbarker/src/pPrimeFactor/ColorParse.h
-PrimeFactor.h
-/Users/jasonbarker/moos-ivp-jbbarker/src/pPrimeFactor/PrimeFactor.h
-PrimeFactor_Info.h
-/Users/jasonbarker/moos-ivp-jbbarker/src/pPrimeFactor/PrimeFactor_Info.h
+vector
+-
+cstdint
+-
+list
+-
+PrimeEntry.h
+/Users/jasonbarker/moos-ivp-jbbarker/src/pPrimeFactor/PrimeEntry.h
 
 /Users/jasonbarker/moos-ivp/MOOS/MOOSCore/Core/libMOOS/App/include/MOOS/libMOOS/App/ClientDefines.h
 
@@ -538,12 +542,6 @@ MOOS/libMOOS/App/MOOSApp.h
 MOOS/libMOOS/App/MOOSInstrument.h
 /Users/jasonbarker/moos-ivp/MOOS/MOOSCore/Core/libMOOS/include/MOOS/libMOOS/MOOS/libMOOS/App/MOOSInstrument.h
 
-/Users/jasonbarker/moos-ivp/ivp/src/lib_mbutil/ColorParse.h
-vector
--
-string
--
-
 /Users/jasonbarker/moos-ivp/ivp/src/lib_mbutil/MBUtils.h
 vector
 -
@@ -552,9 +550,5 @@ string
 set
 -
 time.h
--
-
-/Users/jasonbarker/moos-ivp/ivp/src/lib_mbutil/ReleaseInfo.h
-string
 -
 
