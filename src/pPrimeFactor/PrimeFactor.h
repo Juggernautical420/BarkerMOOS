@@ -1,14 +1,22 @@
 /************************************************************/
-/*    NAME: Jason Barker                                              */
-/*    ORGN: MIT                                             */
-/*    FILE: PrimeFactor.h                                          */
-/*    DATE:                                                 */
+/*    NAME: Jason Barker                                              
+/*    ORGN: MIT                                             
+/*    FILE: PrimeFactor.h                                          
+/*    DATE: Feb 21, 2019                                              
 /************************************************************/
 
 #ifndef PrimeFactor_HEADER
 #define PrimeFactor_HEADER
 
-#include "MOOS/libMOOS/MOOSLib.h"
+#include "MOOS/libMOOS/MOOSLib.h" //Standard MOOS App Library
+//#include "MOOS/libMOOS/Thirdparty/AppCasting/AppCastingMOOSApp.h" // Allows AppCasting
+#include <string>
+#include <vector>
+#include <cstdint>
+#include <list>
+#include "PrimeEntry.h"
+
+using namespace std;
 
 class PrimeFactor : public CMOOSApp
 {
@@ -24,10 +32,11 @@ class PrimeFactor : public CMOOSApp
 
  protected:
    void RegisterVariables();
-
+   list<PrimeEntry> m_list_primes;
  private: // Configuration variables
 
  private: // State variables
+ //bool buildReport();  // AppCasting Output buildReport()
 };
 
 #endif 

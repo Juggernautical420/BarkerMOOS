@@ -1,3 +1,20 @@
+// MOOS file
+
+ServerHost = localhost
+ServerPort = 9000
+Community = alpha 
+
+//------------------------------------------
+// Antler configuration  block
+ProcessConfig = ANTLER
+{
+  MSBetweenLaunches = 200
+
+  Run = MOOSDB	 @ NewConsole = false
+  Run = uXMS     @ NewConsole = true
+  Run = pPrimeFactor @ NewConsole = false
+  Run = uTimerScript @ NewConsole = false 
+}
 //------------------------------------------------
 // pPrimeFactor config block
 
@@ -6,4 +23,31 @@ ProcessConfig = pPrimeFactor
    AppTick   = 4
    CommsTick = 4
 }
+// uXMS config block
+ProcessConfig = uXMS
+{
+  AppTick   = 4
+  CommsTick = 4
 
+  VAR            = NUM_VALUE, PRIME_RESULT
+  COLOR_MAP      = NUM_VALUE, red
+  COLOR_MAP      = PRIME_RESULT, green
+  HISTORY_VAR    = NUM_VALUE
+  HISTORY_VAR    = PRIME_RESULT
+}
+ProcessConfig = uTimerScript
+{
+  AppTick   = 4
+  CommsTick = 4
+
+  paused = false
+  event = var=NUM_VALUE, val="$(15)", time=0.25
+  event = var=NUM_VALUE, val="$(9)", time=0.50
+  event = var=NUM_VALUE, val="$(7)", time=0.75
+  event = var=NUM_VALUE, val="$(5)", time=1.00
+  
+
+  
+  reset_max  = nolimit
+  reset_time = all-posted
+}
