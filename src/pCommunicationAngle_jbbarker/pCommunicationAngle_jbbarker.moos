@@ -11,7 +11,7 @@ ProcessConfig = ANTLER
 
   Run = MOOSDB	 @ NewConsole = false
   Run = uXMS     @ NewConsole = true
-  //Run = pPrimeFactor @ NewConsole = false
+  Run = pCommunicationAngle_jbbarker @ NewConsole = false
   //Run = uTimerScript @ NewConsole = false 
   //Run = pLogger      @ NewConsole = false
 }
@@ -34,8 +34,11 @@ ProcessConfig = uXMS
   AppTick   = 4
   CommsTick = 4
 
-  VAR            = VEHICLE_NAME, COLLABORATOR_NAME, NAV_X, NAV_Y, NAV_DEPTH, NAV_HEADING, NAV_SPEED, NEPTUNE_NAV_X, NEPTUNE_NAV_Y, NEPTUNE_NAV_DEPTH, NEPTUNE_NAV_HEADING, NEPTUNE_NAV_SPEED
-  //COLOR_MAP      = NUM_VALUE, red
-  //COLOR_MAP      = PRIME_RESULT, green
+  VAR            = VEHICLE_NAME, COLLABORATOR_NAME, NAV_X, NAV_Y, NAV_DEPTH, NAV_HEADING, NAV_SPEED, NEPTUNE_NAV_X, NEPTUNE_NAV_Y, NEPTUNE_NAV_DEPTH, NEPTUNE_NAV_HEADING, NEPTUNE_NAV_SPEED, ACOUSTIC_PATH_REF, CONNECTIVITY_PATH_REF
+  VAR              = DISTANCE, CENTER, RADIUS, ARCLENGTH
+  COLOR_MAP        = DISTANCE, red
+  COLOR_MAP        = CENTER, green
+  COLOR_MAP        = RADIUS, blue
+  COLOR_MAP        = ARCLENGTH, green
   //HISTORY_VAR    = PRIME_RESULT
 }
