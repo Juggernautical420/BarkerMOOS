@@ -9,7 +9,7 @@
 #include "MBUtils.h"
 #include "CommunicationAngle_jbbarker.h"
 #include "AngleCalcs.h"
-#include <cmath>
+
 
 using namespace std;
 
@@ -21,6 +21,7 @@ CommunicationAngle_jbbarker::CommunicationAngle_jbbarker()
   m_surface_sound_speed = 1480;
   m_sound_speed_gradient = 0.016;
   m_water_depth =0;
+  m_normalized_press = 1/(4 * M_PI);
 }
 
 //---------------------------------------------------------
@@ -121,36 +122,39 @@ bool CommunicationAngle_jbbarker::OnConnectToServer()
 
 bool CommunicationAngle_jbbarker::Iterate()
 {
-  m_co_z = CalcConstant(m_surface_sound_speed, m_sound_speed_gradient);
+  m_co_z = calcConstant(m_surface_sound_speed, m_sound_speed_gradient);
 
-  m_distance = CalcDistance(m_nav_x, m_nav_y, m_c_nav_x, m_c_nav_y);
+  m_distance = calc2Distance(m_nav_x, m_nav_y, m_c_nav_x, m_c_nav_y);
   Notify("DISTANCE", doubleToString(m_distance));
   //Troubleshooting Notification
 
-  m_sound_speed = CalcSoundSpeed(m_surface_sound_speed, m_nav_depth, m_sound_speed_gradient);
+  m_sound_speed = calcSoundSpeed(m_surface_sound_speed, m_nav_depth, m_sound_speed_gradient);
  
-  m_calc_center = CalcCircleCenter(m_co_z, m_nav_depth, m_c_nav_depth, m_distance);
+  m_calc_center = calcCircleCenter(m_co_z, m_nav_depth, m_c_nav_depth, m_distance);
   Notify("CENTER", doubleToString(m_calc_center));
   //Troubleshooting Notification
 
-  m_calc_radius = CalcRadius(m_nav_depth, m_co_z, m_calc_center);
+  m_calc_radius = calcRadius(m_nav_depth, m_co_z, m_calc_center);
   Notify("RADIUS", doubleToString(m_calc_radius));
   //Troubleshooting Notification
 
-  m_calc_arclength = CalcArcLength(m_calc_radius, m_distance);
+  m_calc_arclength = calcArcLength(m_calc_radius, m_distance);
   Notify("ARCLENGTH", doubleToString(m_calc_arclength));
   //Troubleshooting Notification
  
-  m_elev_angle = CalcElevAngle(m_sound_speed, m_calc_radius, m_sound_speed_gradient);
+  m_elev_angle = calcElevAngle(m_sound_speed, m_calc_radius, m_sound_speed_gradient);
   Notify("ELEV_ANGLE", doubleToString(m_elev_angle));
   //Display Elevation Angle Answer
 
-  m_calc_rs = CalcRs(m_calc_radius, m_calc_arclength, m_elev_angle);
+  m_calc_rs = calcRs(m_calc_radius, m_calc_arclength, m_elev_angle);
   Notify("R_S", doubleToString(m_calc_rs));
-
-  m_calc_zs = CalcZs(m_calc_radius, m_calc_arclength, m_elev_angle, m_co_z);
+  //Troubleshooting Notification
+  m_calc_zs = calcZs(m_calc_radius, m_calc_arclength, m_elev_angle, m_co_z);
   Notify("Z_S", doubleToString(m_calc_zs));
-  
+  //Troubleshooting Notification
+
+
+
   return(true);
 }
 

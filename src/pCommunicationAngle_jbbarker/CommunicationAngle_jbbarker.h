@@ -40,6 +40,7 @@ class CommunicationAngle_jbbarker : public CMOOSApp
    double m_surface_sound_speed;
    double m_sound_speed_gradient;
    double m_water_depth;
+   double m_normalized_press;
    
    double m_nav_x;
    double m_nav_y;
