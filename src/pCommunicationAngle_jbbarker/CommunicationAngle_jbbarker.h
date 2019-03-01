@@ -7,7 +7,7 @@
 
 #ifndef CommunicationAngle_jbbarker_HEADER
 #define CommunicationAngle_jbbarker_HEADER
-
+#define _USE_MATH_DEFINES
 #include "MOOS/libMOOS/MOOSLib.h"
 #include <sstream>
 #include <math.h> 
@@ -25,10 +25,6 @@ class CommunicationAngle_jbbarker : public CMOOSApp
  public:
    CommunicationAngle_jbbarker();
    ~CommunicationAngle_jbbarker();
-
-   //void setNAVX(double v){m_nav_x = v;};
-   //void setNAVY(double v){m_nav_y = v;};
-   //void setNAVZ(double v){m_nav_depth = v;};
 
 
 
@@ -67,11 +63,16 @@ class CommunicationAngle_jbbarker : public CMOOSApp
    std::string m_coll_nav_speed;
 
    
-   double m_elev_angle;
-   double m_calc_Radius;
+   double m_co_z;
+   double m_distance;
+   double m_sound_speed;
+   double m_calc_center;
+   double m_calc_radius;
    double m_calc_arclength;
-   double m_calc_r;
-   double m_calc_z;
+   double m_elev_angle;
+   double m_calc_rs;
+   double m_calc_zs;
+   
 
 
  private: // Configuration variables

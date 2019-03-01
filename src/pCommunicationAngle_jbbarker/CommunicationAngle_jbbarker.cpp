@@ -8,6 +8,7 @@
 #include <iterator>
 #include "MBUtils.h"
 #include "CommunicationAngle_jbbarker.h"
+#include "AngleCalcs.h"
 #include <cmath>
 
 using namespace std;
@@ -120,23 +121,35 @@ bool CommunicationAngle_jbbarker::OnConnectToServer()
 
 bool CommunicationAngle_jbbarker::Iterate()
 {
-  double co_z = m_surface_sound_speed/m_sound_speed_gradient;
-  double distance = sqrt(pow((m_c_nav_x - m_nav_x), 2) + pow((m_c_nav_y - m_nav_y), 2));
-  Notify("DISTANCE", doubleToString(distance));
+  m_co_z = CalcConstant(m_surface_sound_speed, m_sound_speed_gradient);
+
+  m_distance = CalcDistance(m_nav_x, m_nav_y, m_c_nav_x, m_c_nav_y);
+  Notify("DISTANCE", doubleToString(m_distance));
   //Troubleshooting Notification
 
-  double center = ((pow((co_z + m_c_nav_depth), 2)-pow((co_z + m_nav_depth), 2))/(2*distance))+(distance/2);
-  Notify("CENTER", doubleToString(center));
+  m_sound_speed = CalcSoundSpeed(m_surface_sound_speed, m_nav_depth, m_sound_speed_gradient);
+ 
+  m_calc_center = CalcCircleCenter(m_co_z, m_nav_depth, m_c_nav_depth, m_distance);
+  Notify("CENTER", doubleToString(m_calc_center));
   //Troubleshooting Notification
 
-  double radius = sqrt(pow(center, 2) + pow((co_z + m_nav_depth),2));
-  Notify("RADIUS", doubleToString(radius));
+  m_calc_radius = CalcRadius(m_nav_depth, m_co_z, m_calc_center);
+  Notify("RADIUS", doubleToString(m_calc_radius));
   //Troubleshooting Notification
 
-  double arclength = 2*radius*asin(distance/(2*radius));
-  Notify("ARCLENGTH", doubleToString(arclength));
+  m_calc_arclength = CalcArcLength(m_calc_radius, m_distance);
+  Notify("ARCLENGTH", doubleToString(m_calc_arclength));
   //Troubleshooting Notification
+ 
+  m_elev_angle = CalcElevAngle(m_sound_speed, m_calc_radius, m_sound_speed_gradient);
+  Notify("ELEV_ANGLE", doubleToString(m_elev_angle));
+  //Display Elevation Angle Answer
 
+  m_calc_rs = CalcRs(m_calc_radius, m_calc_arclength, m_elev_angle);
+  Notify("R_S", doubleToString(m_calc_rs));
+
+  m_calc_zs = CalcZs(m_calc_radius, m_calc_arclength, m_elev_angle, m_co_z);
+  Notify("Z_S", doubleToString(m_calc_zs));
   
   return(true);
 }

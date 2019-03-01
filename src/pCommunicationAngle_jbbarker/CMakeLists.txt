@@ -7,6 +7,7 @@ SET(SRC
   CommunicationAngle_jbbarker.cpp
   CommunicationAngle_jbbarker_Info.cpp
   main.cpp
+  AngleCalcs.cpp
 )
 
 ADD_EXECUTABLE(pCommunicationAngle_jbbarker ${SRC})
