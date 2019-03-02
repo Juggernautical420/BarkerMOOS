@@ -35,7 +35,7 @@ double calcSoundSpeed (double a, double b, double c){
 double calcCircleCenter (double a, double b, double c, double d){
 	//This is the calculation for the geometric center of the circle with radius R to ownship and target
 	//Variables are Constant (c_o/g), Ownship Depth, Target Depth, Straight_Line Distance
-	double cirle_center = ((pow((a + c), 2)-pow((a + b), 2))/(2*d))+(d/2);
+	double cirle_center = ((pow((a + c), 2) - pow((a + b), 2))/(2*d))+(d/2);
 	return(cirle_center);
 }
 
@@ -69,3 +69,5 @@ double calcZs (double a, double b, double c, double d){
 	double z_s = (a * cos((b/a) - (c * (M_PI/180)))) - d;
 	return(z_s);
 }
+
+

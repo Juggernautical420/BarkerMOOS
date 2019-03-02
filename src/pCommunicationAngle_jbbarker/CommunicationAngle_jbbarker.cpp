@@ -149,9 +149,44 @@ bool CommunicationAngle_jbbarker::Iterate()
   m_calc_rs = calcRs(m_calc_radius, m_calc_arclength, m_elev_angle);
   Notify("R_S", doubleToString(m_calc_rs));
   //Troubleshooting Notification
+  
   m_calc_zs = calcZs(m_calc_radius, m_calc_arclength, m_elev_angle, m_co_z);
   Notify("Z_S", doubleToString(m_calc_zs));
   //Troubleshooting Notification
+
+
+
+
+  double m_elev_rad = m_elev_angle * M_PI/180;
+
+  double m_graz_rad = m_elev_rad - (m_calc_arclength/m_calc_radius);
+  double m_graz_angle = m_graz_rad * 180/M_PI;
+  Notify("GRAZ_ANGLE", doubleToString(m_graz_angle));
+
+  double m_delta_theta = m_elev_rad + 0.0001;
+  double m_delta_degrees = m_delta_theta * 180/M_PI;
+  
+
+  double m_new_radius = m_sound_speed/(m_sound_speed_gradient * cos(m_delta_theta));
+  Notify("NEW_RADIUS", doubleToString(m_new_radius));
+
+  double m_new_arclength = calcArcLength(m_new_radius, m_distance);
+
+  double m_new_rs = calcRs(m_new_radius, m_new_arclength, m_delta_degrees);
+  Notify("R_S1", doubleToString(m_new_rs));
+
+  double m_dr_dtheta = (m_new_rs - m_calc_rs)/(m_delta_theta - m_elev_rad);
+  Notify("DR_DT", doubleToString(m_dr_dtheta));
+
+  double m_Js = (m_calc_rs/(sin(m_graz_rad))) * m_dr_dtheta;
+  Notify("J_S", doubleToString(m_Js));
+
+  double m_new_speed = calcSoundSpeed(m_surface_sound_speed, m_calc_zs, m_sound_speed_gradient);
+
+  double m_ps = m_normalized_press * sqrt(abs(((m_new_speed * cos(m_elev_rad))/(m_sound_speed * m_Js))));
+
+  double m_trans_loss = -20 * log10(m_ps/m_normalized_press);
+  Notify("TRANS_LOSS", doubleToString(m_trans_loss));
 
 
 
