@@ -207,15 +207,15 @@ bool CommunicationAngle_jbbarker::Iterate()
     string cona = ax + ay + adepth + id;
     Notify("CONNECTIVITY_LOCATION", cona);
   }
-  else{
+  else{//The following calculates a new radius and center based off the max theta to prevent bottom absoprtion
     double m_sound_max = calcSoundSpeed(m_surface_sound_speed, m_z_max, m_sound_speed_gradient);//Solve for sound speed at zmax
     double m_theta_max = acos(m_rev_sound_speed/m_sound_max); //Using collaborator as origin and calculate max angle for the collaborator
     double m_max_radius = m_rev_sound_speed/(m_sound_speed_gradient * cos(m_theta_max)); // Determine new radius using collaborator as origin
     double m_new_center = sqrt((pow(m_max_radius,2)) - (pow((m_c_nav_depth + m_co_g),2)));//Determine new center with new radius
-    double m_rho = atan((m_co_g+m_nav_depth)/(m_distance - m_new_center)); //Path to new point on new radius 
+    double m_rho = atan((m_co_g+m_nav_depth)/(m_distance - m_new_center)); //Path to new point on new radius (combining r and z in plane)
     double m_max_rs = m_max_radius * sin(m_rho); 
     double m_max_zs = m_max_radius * cos(m_rho);
-    double m_new_nav_x = m_max_rs * cos(m_phi);
+    double m_new_nav_x = m_max_rs * cos(m_phi);//phi converts r into x and y (from line 168)
     double m_new_nav_y = m_max_rs * sin(m_phi);
 
     string newx = "x=" + doubleToString(m_new_nav_x,3);
