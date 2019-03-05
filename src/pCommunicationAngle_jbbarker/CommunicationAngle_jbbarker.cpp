@@ -20,7 +20,7 @@ CommunicationAngle_jbbarker::CommunicationAngle_jbbarker()
 {
   m_surface_sound_speed = 1480;
   m_sound_speed_gradient = 0.016;
-  m_water_depth =0;
+  m_water_depth =6000;
   m_normalized_press = 1/(4 * M_PI);
 }
 
@@ -122,7 +122,7 @@ bool CommunicationAngle_jbbarker::OnConnectToServer()
 
 bool CommunicationAngle_jbbarker::Iterate()
 {
-  m_co_z = calcConstant(m_surface_sound_speed, m_sound_speed_gradient);
+  m_co_g = calcConstant(m_surface_sound_speed, m_sound_speed_gradient);
 
   m_distance = calc2Distance(m_nav_x, m_nav_y, m_c_nav_x, m_c_nav_y);
   Notify("DISTANCE", doubleToString(m_distance));
@@ -130,11 +130,11 @@ bool CommunicationAngle_jbbarker::Iterate()
 
   m_sound_speed = calcSoundSpeed(m_surface_sound_speed, m_nav_depth, m_sound_speed_gradient);
  
-  m_calc_center = calcCircleCenter(m_co_z, m_nav_depth, m_c_nav_depth, m_distance);
+  m_calc_center = calcCircleCenter(m_co_g, m_nav_depth, m_c_nav_depth, m_distance);
   Notify("CENTER", doubleToString(m_calc_center));
   //Troubleshooting Notification
 
-  m_calc_radius = calcRadius(m_nav_depth, m_co_z, m_calc_center);
+  m_calc_radius = calcRadius(m_nav_depth, m_co_g, m_calc_center);
   Notify("RADIUS", doubleToString(m_calc_radius));
   //Troubleshooting Notification
 
@@ -150,12 +150,12 @@ bool CommunicationAngle_jbbarker::Iterate()
   Notify("R_S", doubleToString(m_calc_rs));
   //Troubleshooting Notification
   
-  m_calc_zs = calcZs(m_calc_radius, m_calc_arclength, m_elev_angle, m_co_z);
+  m_calc_zs = calcZs(m_calc_radius, m_calc_arclength, m_elev_angle, m_co_g);
   Notify("Z_S", doubleToString(m_calc_zs));
   //Troubleshooting Notification
 
 
-
+  double m_phi = atan((m_c_nav_y - m_nav_y)/(m_c_nav_x - m_nav_x));//Angle between us and target in radians in the r plane
 
   double m_elev_rad = m_elev_angle * M_PI/180;
 
@@ -163,16 +163,14 @@ bool CommunicationAngle_jbbarker::Iterate()
   double m_graz_angle = m_graz_rad * 180/M_PI;
   Notify("GRAZ_ANGLE", doubleToString(m_graz_angle));
 
-  double m_delta_theta = m_elev_rad + 0.0001;
+  double m_delta_theta = m_elev_rad + 0.000001;
   double m_delta_degrees = m_delta_theta * 180/M_PI;
   
 
   double m_new_radius = m_sound_speed/(m_sound_speed_gradient * cos(m_delta_theta));
   Notify("NEW_RADIUS", doubleToString(m_new_radius));
 
-  double m_new_arclength = calcArcLength(m_new_radius, m_distance);
-
-  double m_new_rs = calcRs(m_new_radius, m_new_arclength, m_delta_degrees);
+  double m_new_rs = calcRs(m_new_radius, m_calc_arclength, m_delta_degrees);
   Notify("R_S1", doubleToString(m_new_rs));
 
   double m_dr_dtheta = (m_new_rs - m_calc_rs)/(m_delta_theta - m_elev_rad);
@@ -187,6 +185,41 @@ bool CommunicationAngle_jbbarker::Iterate()
 
   double m_trans_loss = -20 * log10(m_ps/m_normalized_press);
   Notify("TRANS_LOSS", doubleToString(m_trans_loss));
+
+
+  string elev = "elev_angle=" + doubleToString(m_elev_angle, 1);
+  string tl = ", transmission_loss=" + doubleToString(m_trans_loss,1);
+  string id = ", id=jbbarker@mit.edu";
+  string path = elev + tl + id;
+  Notify("ACOUSTIC_PATH", path);
+
+  double m_z_max = (m_sound_speed/((m_sound_speed_gradient*cos(m_elev_rad)))) - m_co_g;
+  
+
+  if(m_z_max <= m_water_depth){
+    string ax = "x=" + doubleToString(m_nav_x, 3);
+    string ay = ", y=" + doubleToString(m_nav_y, 3);
+    string adepth = ", depth=" + doubleToString(m_nav_depth, 1);
+    string cona = ax + ay + adepth + id;
+    Notify("CONNECTIVITY_LOCATION", cona);
+  }
+  else{
+    double m_sound_max = calcSoundSpeed(m_surface_sound_speed, m_z_max, m_sound_speed_gradient);
+    double m_rev_sound_speed = calcSoundSpeed(m_surface_sound_speed, m_c_nav_depth, m_sound_speed_gradient);
+    double m_theta_max = acos(m_rev_sound_speed/m_sound_max);
+    double m_max_radius = m_rev_sound_speed/(m_sound_speed_gradient * cos(m_theta_max));
+    double m_new_center = sqrt((pow(m_max_radius,2)) - (pow((m_c_nav_depth + m_co_g),2)));
+    double m_rho = atan((m_co_g+m_nav_depth)/(m_distance - m_new_center)); //Path to new point on new radius
+    double m_max_rs = m_max_radius * sin(m_rho);
+    double m_max_zs = m_max_radius * cos(m_rho);
+    double m_new_nav_x = m_max_rs * cos(m_phi);
+    double m_new_nav_y = m_max_rs * sin(m_phi);
+    string newx = "x=" + doubleToString(m_new_nav_x,3);
+    string newy = ", y=" + doubleToString(m_new_nav_y, 3);
+    string newz = ", depth=" + doubleToString(m_max_zs, 1);
+    string newcon = newx + newy + newz + id;
+    Notify("CONNECTIVITY_LOCATION", newcon);
+  }
 
 
 

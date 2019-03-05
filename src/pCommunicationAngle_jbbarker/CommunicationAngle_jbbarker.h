@@ -63,8 +63,8 @@ class CommunicationAngle_jbbarker : public CMOOSApp
    std::string m_coll_nav_heading;
    std::string m_coll_nav_speed;
 
-   
-   double m_co_z;
+   double m_z_max;
+   double m_co_g;
    double m_distance;
    double m_sound_speed;
    double m_calc_center;
