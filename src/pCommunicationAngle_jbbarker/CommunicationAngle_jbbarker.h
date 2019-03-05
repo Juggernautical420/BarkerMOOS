@@ -67,6 +67,7 @@ class CommunicationAngle_jbbarker : public CMOOSApp
    double m_co_g;
    double m_distance;
    double m_sound_speed;
+   double m_rev_sound_speed;
    double m_calc_center;
    double m_calc_radius;
    double m_calc_arclength;
