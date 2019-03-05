@@ -73,6 +73,8 @@ class CommunicationAngle_jbbarker : public CMOOSApp
    double m_elev_angle;
    double m_calc_rs;
    double m_calc_zs;
+
+  
    
 
 
