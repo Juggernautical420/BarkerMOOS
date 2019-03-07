@@ -6,7 +6,7 @@
 
 ServerHost   = localhost
 ServerPort   = 9000
-Community    = alpha
+Community    = bravo
 MOOSTimeWarp = 10
 
 // Forest Lake
@@ -164,7 +164,7 @@ ProcessConfig = pMarineViewer
   //op_vertex = x=94.6, y=-62.2,   lwidth=1,lcolor=yellow,looped=true,group=moa
   //op_vertex = x=58,   y=20,    lwidth=1,lcolor=yellow,looped=true,group=moa
 
-	// vcolor = alpha=dodgerblue
+	// vcolor = bravo=dodgerblue
 
   // Appcast configuration
   appcast_height       = 75
@@ -205,7 +205,7 @@ ProcessConfig = pMarineViewer
   button_one = DEPLOY # DEPLOY=true
   button_one = MOOS_MANUAL_OVERRIDE=false # RETURN=false
   button_two = RETURN # RETURN=true
-  button_three = BRAKES # DEPLOY=false
+ 
 
 
   action  = MENU_KEY=deploy # DEPLOY = true # RETURN = false
