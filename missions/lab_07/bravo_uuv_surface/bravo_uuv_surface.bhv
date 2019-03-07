@@ -1,0 +1,168 @@
+//--------    FILE: bravo_uuv_surface.bhv   -------------
+// NAME: Jason Barker
+
+initialize   DEPLOY = false
+initialize   RETURN = false
+initialize   REGION = A
+
+set MODE = ACTIVE{
+  DEPLOY = true
+}INACTIVE
+
+set MODE = RETURNING{
+  MODE = ACTIVE
+  RETURN = true
+}
+
+set MODE = LOITER_A{
+  MODE = ACTIVE
+  REGION = A
+}LOITER_B
+
+	
+//----------------------------------------------
+
+Behavior = BHV_Loiter
+ {
+   // General Behavior Parameters
+   // ---------------------------
+   name         = loiter_a               // specific behavior under BHV_Loiter
+   pwt          = 100                   // default
+   //condition    = DEPLOY = true
+   //condition    = RETURN = false     // example
+   condition = MODE == LOITER_A
+   condition    = REGION = A
+   endflag      = REGION = B
+   updates      = LOITER_UPDATES        // variable for updates
+
+   // Parameters specific to this behavior
+   // ------------------------------------
+        acquire_dist = 10               // default
+      capture_radius = 3                // default  
+     center_activate = false            // default
+           clockwise = false             // per lab instruction to go counter clockwise 
+         slip_radius = 15               // default
+               speed = 2.5                // default
+       spiral_factor = -2               // default
+            duration = 150              // per lab instruction to end after 150 seconds
+            perpetual = true
+            duration_idle_decay = false
+
+            polygon = radial:: x=100,y=-75,radius=30,pts=8  // Eight sided polygon, radius 30, centered at 100,-75
+
+             center_assign = 100,-75
+            xcenter_assign = 100
+            ycenter_assign = -75
+
+
+        visual_hints = vertex_size  = 1             // default
+        visual_hints = edge_size    = 1             // default
+        visual_hints = vertex_color = dodger_blue   // default
+        visual_hints = edge_color   = white         // default
+        visual_hints = nextpt_color = yellow        // default
+        visual_hints = nextpt_lcolor = aqua         // default
+        visual_hints = nextpt_vertex_size = 5       // default
+        visual_hints = label        = Loiter_Region        // example
+ }
+ //----------------------------------------------
+
+Behavior = BHV_Loiter
+ {
+   // General Behavior Parameters
+   // ---------------------------
+   name         = loiter_b               // specific behavior under BHV_Loiter
+   pwt          = 100                   // default
+   //condition    = DEPLOY = true
+   //condition    = RETURN = false     // example
+   condition = MODE == LOITER_B
+   condition    = REGION = B
+   endflag      = REGION = A
+   updates      = LOITER_UPDATES        // variable for updates
+
+   // Parameters specific to this behavior
+   // ------------------------------------
+        acquire_dist = 10               // default
+      capture_radius = 3                // default  
+     center_activate = false            // default
+           clockwise = false             // per lab instruction to go counter clockwise 
+         slip_radius = 15               // default
+               speed = 2.5                // default
+       spiral_factor = -2               // default
+            duration = 150              // per lab instruction to end after 150 seconds
+            perpetual = true
+            duration_idle_decay = false
+
+             polygon = radial:: x=160,y=-50,radius=20,pts=8  // Eight sided polygon, radius 20, centered at 160,-50
+
+             center_assign = 160,-50
+            xcenter_assign = 160
+            ycenter_assign = -50
+
+        visual_hints = vertex_size  = 1             // default
+        visual_hints = edge_size    = 1             // default
+        visual_hints = vertex_color = dodger_blue   // default
+        visual_hints = edge_color   = white         // default
+        visual_hints = nextpt_color = yellow        // default
+        visual_hints = nextpt_lcolor = aqua         // default
+        visual_hints = nextpt_vertex_size = 5       // default
+        visual_hints = label        = Loiter_Region       // example
+ }
+
+ Behavior = BHV_ConstantDepth
+ {
+   // General Behavior Parameters
+   // ---------------------------
+   name         = const_dep_a   // example
+   pwt          = 100                // default
+   condition    = DEPLOY = true
+   condition    = REGION = A   // example
+   updates      = CONST_DEP_UPDATES  // example
+   perpetual    = true
+
+   // Parameters specific to this behavior
+   // ------------------------------------
+            basewidth = 100          // default
+                depth = 30           // default
+   depth_mismatch_var = DEPTH_DIFF   // example
+             duration = 150            // default
+            peakwidth = 3            // default
+          summitdelta = 50           // default
+ }
+
+ Behavior = BHV_ConstantDepth
+ {
+   // General Behavior Parameters
+   // ---------------------------
+   name         = const_dep_b   // example
+   pwt          = 100  
+   condition    = DEPLOY = true             // default
+   condition    = REGION = B  // example
+   updates      = CONST_DEP_UPDATES  // example
+   perpetual    = true
+
+   // Parameters specific to this behavior
+   // ------------------------------------
+            basewidth = 100          // default
+                depth = 10            // default
+   depth_mismatch_var = DEPTH_DIFF   // example
+             duration = 150            // default
+            peakwidth = 3            // default
+          summitdelta = 50           // default
+ }
+ //----------------------------------------------
+Behavior=BHV_Waypoint
+{
+  name       = waypt_return
+  pwt        = 100
+  condition  = RETURN = true
+  condition  = DEPLOY = true
+  updates    = RETURN_UPDATE
+  endflag    = RETURN = false
+  endflag    = DEPLOY = false
+  endflag    = MISSION = complete
+  
+           speed = 2.0
+  capture_radius = 2.0
+     slip_radius = 8.0
+          points = 0,0
+ }
