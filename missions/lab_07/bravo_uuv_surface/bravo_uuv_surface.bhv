@@ -4,6 +4,11 @@
 initialize   DEPLOY = false
 initialize   RETURN = false
 initialize   REGION = A
+initialize   SURFACE = false
+initialize   SURFACE_WAIT = false
+
+
+
 
 set MODE = ACTIVE{
   DEPLOY = true
@@ -19,19 +24,19 @@ set MODE = LOITER_A{
   REGION = A
 }LOITER_B
 
+
 	
 //----------------------------------------------
 
-Behavior = BHV_Loiter
+Behavior = BHV_Loiter //Region A loiter behavior
  {
    // General Behavior Parameters
    // ---------------------------
    name         = loiter_a               // specific behavior under BHV_Loiter
    pwt          = 100                   // default
-   //condition    = DEPLOY = true
-   //condition    = RETURN = false     // example
    condition = MODE == LOITER_A
    condition    = REGION = A
+   condition    = SURFACE = false
    endflag      = REGION = B
    updates      = LOITER_UPDATES        // variable for updates
 
@@ -66,16 +71,15 @@ Behavior = BHV_Loiter
  }
  //----------------------------------------------
 
-Behavior = BHV_Loiter
+Behavior = BHV_Loiter //Region B loiter behavior
  {
    // General Behavior Parameters
    // ---------------------------
    name         = loiter_b               // specific behavior under BHV_Loiter
    pwt          = 100                   // default
-   //condition    = DEPLOY = true
-   //condition    = RETURN = false     // example
    condition = MODE == LOITER_B
    condition    = REGION = B
+   condition    = SURFACE = false
    endflag      = REGION = A
    updates      = LOITER_UPDATES        // variable for updates
 
@@ -107,8 +111,8 @@ Behavior = BHV_Loiter
         visual_hints = nextpt_vertex_size = 5       // default
         visual_hints = label        = Loiter_Region       // example
  }
-
- Behavior = BHV_ConstantDepth
+ 
+ Behavior = BHV_ConstantDepth //Depth behavior for region A
  {
    // General Behavior Parameters
    // ---------------------------
@@ -116,6 +120,7 @@ Behavior = BHV_Loiter
    pwt          = 100                // default
    condition    = DEPLOY = true
    condition    = REGION = A   // example
+   condition    = SURFACE = false
    updates      = CONST_DEP_UPDATES  // example
    perpetual    = true
 
@@ -129,7 +134,7 @@ Behavior = BHV_Loiter
           summitdelta = 50           // default
  }
 
- Behavior = BHV_ConstantDepth
+ Behavior = BHV_ConstantDepth //Depth behavior for region B
  {
    // General Behavior Parameters
    // ---------------------------
@@ -137,6 +142,7 @@ Behavior = BHV_Loiter
    pwt          = 100  
    condition    = DEPLOY = true             // default
    condition    = REGION = B  // example
+   condition    = SURFACE = false
    updates      = CONST_DEP_UPDATES  // example
    perpetual    = true
 
@@ -145,12 +151,14 @@ Behavior = BHV_Loiter
             basewidth = 100          // default
                 depth = 10            // default
    depth_mismatch_var = DEPTH_DIFF   // example
-             duration = 150            // default
+             duration = 100            // default
             peakwidth = 3            // default
           summitdelta = 50           // default
  }
+
+
  //----------------------------------------------
-Behavior=BHV_Waypoint
+Behavior=BHV_Waypoint //This is the return behavior that returns to the origin OR the mouse click (depending on moos setup)
 {
   name       = waypt_return
   pwt        = 100
@@ -165,4 +173,74 @@ Behavior=BHV_Waypoint
   capture_radius = 2.0
      slip_radius = 8.0
           points = 0,0
+ }
+ 
+
+ Behavior = BHV_Timer //This Timer behavior counts the 200 secs to start the surfacing for gps fix
+ {
+   // General Behavior Parameters
+   // ---------------------------
+   name         = bhv_timer_surface            // default
+   condition    = DEPLOY = true    // example
+   condition    = SURFACE = false
+   duration     = 200                  // example
+   endflag      = SURFACE = true       // example
+   perpetual    = true
+   duration_idle_decay = false
+   
+   // Parameters specific to this behavior
+   // ------------------------------------
+   // None
+ }
+  
+  Behavior = BHV_Timer // This Timer behavior acknowledges the 200 sec wait and sets depth = 0 
+ {
+   // General Behavior Parameters
+   // ---------------------------
+   name         = bhv_timer_gps_fix            // default
+   condition    = DEPLOY = true
+   condition    = SURFACE = true    // example
+   activeflag   = CONST_DEP_UPDATES = "depth = 0"
+   duration_status = SURFACE_WAIT = true                  // example
+   perpetual    = true
+   duration_idle_decay = false
+
+   // Parameters specific to this behavior
+   // ------------------------------------
+   // None
+ }
+ Behavior = BHV_Timer //This timer behavior waits until NAV_DEPTH = 0 to reset the depth update
+ {
+   // General Behavior Parameters
+   // ---------------------------
+   name         = bhv_timer_surf_wait           // default
+   condition    = DEPLOY = true
+   condition    = SURFACE = true    // example
+   condition    = NAV_DEPTH = 0
+   duration     = 0                  // example
+   endflag      = SURFACE_WAIT = true
+   perpetual    = true
+   duration_idle_decay = false
+
+   // Parameters specific to this behavior
+   // ------------------------------------
+   // None
+ }
+  Behavior = BHV_Timer //This timer behavior is the 60 sec timer before submerging 
+ {
+   // General Behavior Parameters
+   // ---------------------------
+   name         = bhv_timer_submerged            // default
+   condition    = DEPLOY = true
+   condition    = SURFACE = true    // example
+   condition    = SURFACE_WAIT = true
+   duration     = 60                  // example
+   endflag      = SURFACE = false         // example
+   endflag      = SURFACE_WAIT = false
+   perpetual    = true
+   duration_idle_decay = false
+
+   // Parameters specific to this behavior
+   // ------------------------------------
+   // None
  }
