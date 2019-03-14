@@ -3,3 +3,10 @@ CMakeFiles/*
 clean.sh
 scripts/*
 !.gitignore
+
+*.alog
+*.blog
+*.ylog
+*MOOSLog*
+*LOG_*
+*._moos
