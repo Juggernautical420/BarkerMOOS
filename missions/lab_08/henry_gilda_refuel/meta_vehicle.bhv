@@ -86,7 +86,7 @@ Behavior = BHV_StationKeep
 }
 
 //----------------------------------------------
-<<<<<<< HEAD
+
 Behavior = BHV_StationKeep
 {
   name      = refuel_keep
@@ -104,8 +104,7 @@ Behavior = BHV_StationKeep
 }
 
 //----------------------------------------------
-=======
->>>>>>> f0fa3e304c8f9f53d55da8cf7383a5a182fca142
+
 Behavior = BHV_Waypoint
 {
   name      = refueling
