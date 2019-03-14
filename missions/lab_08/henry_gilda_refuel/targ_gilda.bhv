@@ -86,6 +86,7 @@ Behavior = BHV_StationKeep
 }
 
 //----------------------------------------------
+<<<<<<< HEAD
 Behavior = BHV_StationKeep
 {
   name      = refuel_keep
@@ -103,6 +104,8 @@ Behavior = BHV_StationKeep
 }
 
 //----------------------------------------------
+=======
+>>>>>>> f0fa3e304c8f9f53d55da8cf7383a5a182fca142
 Behavior = BHV_Waypoint
 {
   name      = refueling
@@ -126,7 +129,12 @@ Behavior = BHV_Waypoint
    condition    = REFUELED = true
    duration     = 60                  
    endflag      = REFUELED = false 
+<<<<<<< HEAD
    endflag      = REFUEL_NEEDED = false 
+=======
+   endflag      = REFUEL_NEEDED = false
+   //endflag      = DEPLOY = true 
+>>>>>>> f0fa3e304c8f9f53d55da8cf7383a5a182fca142
 
    perpetual    = true
    duration_idle_decay = false

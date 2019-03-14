@@ -1,0 +1,25 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% LOG FILE:       ./LOG_HENRY_14_3_2019_____09_43_25/LOG_HENRY_14_3_2019_____09_43_25.ylog
+%% FILE OPENED ON  Wed Dec 31 19:00:00 1969
+%% LOGSTART               46577130162.9
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+4.195465   MOOS_DEBUG           pMarinePID           ** NEW CONTROLLER GAINS ARE ** 
+4.195923   MOOS_DEBUG           pMarinePID           YAW_PID_KP             = 0.400 
+4.196014   MOOS_DEBUG           pMarinePID           YAW_PID_KD             = 0.100 
+4.196251   MOOS_DEBUG           pMarinePID           YAW_PID_KI             = 0.000 
+4.196342   MOOS_DEBUG           pMarinePID           YAW_PID_INTEGRAL_LIMIT = 0.070 
+4.196396   MOOS_DEBUG           pMarinePID           MAXRUDDER              = 100.000 
+4.22187    MOOS_DEBUG           pMarinePID           SPEED_PID_KP           = 1.000 
+4.221992   MOOS_DEBUG           pMarinePID           SPEED_PID_KD           = 0.000 
+4.222046   MOOS_DEBUG           pMarinePID           SPEED_PID_KI           = 0.000 
+4.222137   MOOS_DEBUG           pMarinePID           SPEED_PID_INTEGRAL_LIMIT = 0.070 
+4.222198   MOOS_DEBUG           pMarinePID           MAXTHRUST              = 100.000 
+4.356781   MOOS_DEBUG           pMarinePID           Paused Due To Tardy HELM Input: THRUST=0 
+6.232109   MOOS_DEBUG           pHelmIvP             pHelmIvP AllStop: ManualOverride 
+8.464233   MOOS_DEBUG           pMarinePID           Paused Due To Tardy HELM Input: THRUST=0 
+81.45138   MOOS_DEBUG           pMarinePID           pMarinePID Control Is On 
+81.59118   MOOS_DEBUG           pHelmIvP             pHelmIvP AllStop: clear 
+426.6196   MOOS_DEBUG           pMarinePID           pMarinePID Control Is On 
+504.3844   MOOS_DEBUG           pHelmIvP             pHelmIvP AllStop: NothingToDo 
+504.6884   MOOS_DEBUG           pHelmIvP             pHelmIvP AllStop: NothingToDo 
+507.1562   MOOS_DEBUG           pMarinePID           Paused Due To Tardy HELM Input: THRUST=0 

@@ -5,7 +5,11 @@ ServerHost = localhost
 ServerPort = 9000
 Community  = shoreside
 
+<<<<<<< HEAD
 MOOSTimeWarp = 30
+=======
+MOOSTimeWarp = 20
+>>>>>>> f0fa3e304c8f9f53d55da8cf7383a5a182fca142
 LatOrigin  = 43.825300 
 LongOrigin = -70.330400 
 
@@ -119,6 +123,10 @@ ProcessConfig = pMarineViewer
   BUTTON_TWO   = STATION_KEEP_ALL=false
 
   BUTTON_THREE = STATION  # STATION_KEEP_ALL=true
+<<<<<<< HEAD
   BUTTON_FOUR = REFUEL # REFUEL_NEEDED_ALL=true # STATION_KEEP_ALL=false
+=======
+  BUTTON_FOUR = REFUEL # REFUEL_NEEDED_ALL=true
+>>>>>>> f0fa3e304c8f9f53d55da8cf7383a5a182fca142
 }
 
