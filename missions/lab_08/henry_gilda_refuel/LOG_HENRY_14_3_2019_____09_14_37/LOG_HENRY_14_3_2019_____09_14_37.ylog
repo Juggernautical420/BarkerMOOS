@@ -1,0 +1,25 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% LOG FILE:       ./LOG_HENRY_14_3_2019_____09_14_37/LOG_HENRY_14_3_2019_____09_14_37.ylog
+%% FILE OPENED ON  Wed Dec 31 19:00:00 1969
+%% LOGSTART               46577078323.9
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+4.101448   MOOS_DEBUG           pMarinePID           ** NEW CONTROLLER GAINS ARE ** 
+4.102104   MOOS_DEBUG           pMarinePID           YAW_PID_KP             = 0.400 
+4.102196   MOOS_DEBUG           pMarinePID           YAW_PID_KD             = 0.100 
+4.10228    MOOS_DEBUG           pMarinePID           YAW_PID_KI             = 0.000 
+4.102348   MOOS_DEBUG           pMarinePID           YAW_PID_INTEGRAL_LIMIT = 0.070 
+4.102432   MOOS_DEBUG           pMarinePID           MAXRUDDER              = 100.000 
+4.124458   MOOS_DEBUG           pMarinePID           SPEED_PID_KP           = 1.000 
+4.12455    MOOS_DEBUG           pMarinePID           SPEED_PID_KD           = 0.000 
+4.124603   MOOS_DEBUG           pMarinePID           SPEED_PID_KI           = 0.000 
+4.124664   MOOS_DEBUG           pMarinePID           SPEED_PID_INTEGRAL_LIMIT = 0.070 
+4.124725   MOOS_DEBUG           pMarinePID           MAXTHRUST              = 100.000 
+4.238693   MOOS_DEBUG           pMarinePID           Paused Due To Tardy HELM Input: THRUST=0 
+6.373344   MOOS_DEBUG           pHelmIvP             pHelmIvP AllStop: ManualOverride 
+8.705757   MOOS_DEBUG           pMarinePID           Paused Due To Tardy HELM Input: THRUST=0 
+71.74274   MOOS_DEBUG           pMarinePID           pMarinePID Control Is On 
+71.96339   MOOS_DEBUG           pHelmIvP             pHelmIvP AllStop: clear 
+245.3317   MOOS_DEBUG           pHelmIvP             pHelmIvP AllStop: NothingToDo 
+245.6252   MOOS_DEBUG           pHelmIvP             pHelmIvP AllStop: NothingToDo 
+247.797    MOOS_DEBUG           pMarinePID           Paused Due To Tardy HELM Input: THRUST=0 
+440.9269   MOOS_DEBUG           pMarinePID           pMarinePID Control Is On 
