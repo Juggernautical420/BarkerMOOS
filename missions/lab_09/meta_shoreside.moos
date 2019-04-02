@@ -13,18 +13,22 @@ Processconfig = ANTLER
   MSBetweenLaunches = 100
 
   Run = MOOSDB          @ NewConsole = false
-//  Run = pMarineViewer   @ NewConsole = false
-//  Run = pLogger         @ NewConsole = false
-//  Run = pShare          @ NewConsole = false
-//  Run = pHostInfo       @ NewConsole = false
-//  Run = uFldShoreBroker @ NewConsole = false
+  Run = pMarineViewer   @ NewConsole = false
+  Run = pLogger         @ NewConsole = false
+  Run = pShare          @ NewConsole = false
+  Run = pHostInfo       @ NewConsole = false
+  Run = uFldShoreBroker @ NewConsole = false
   Run = uTimerScript    @ NewConsole = false
-  Run = uXMS            @ NewConsole = true
+  Run = uXMS            @ NewConsole = true ~uXMS_GILDA
+  Run = uXMS            @ NewConsole = true ~uXMS_HENRY
+  Run = pPointAssign    @ NewConsole = false
 }
 
 #include plug_pShare.moos
 #include plug_pHostInfo.moos
 #include plug_pLogger.moos
+#include plug_pPointAssign.moos
+
 
 //--------------------------------------------------
 // uFldShoreBroker Configuration Block
@@ -37,13 +41,17 @@ ProcessConfig = uFldShoreBroker
   QBRIDGE  = DEPLOY, NODE_REPORT
   QBRIDGE  = STATION_KEEP, APPCAST_REQ
   QBRIDGE  = MOOS_MANUAL_OVERRIDE
-  QBRIDGE  = REFUEL_NEEDED
+  QBRIDGE  = RETURN, REFUEL_NEEDED
+  QBRIDGE  = VISIT_POINT, LOITER
+  //BRIDGE  = src=VISIT_POINT_$V, alias=VISIT_POINT
 
-  BRIDGE   = src=RETURN_ALL, alias=RETURN
-  BRIDGE   = src=RETURN_$V,  alias=RETURN
+  //BRIDGE   = src=RETURN_ALL, alias=RETURN
+  //BRIDGE   = src=RETURN_$V,  alias=RETURN
+  BRIDGE    = src=REFUEL_NEEDED_ALL, alias=REFUEL_NEEDED
 }
 
 //--------------------------------------------------------
+
 ProcessConfig = pMarineViewer
 {
   AppTick    = 4
@@ -66,7 +74,7 @@ ProcessConfig = pMarineViewer
 
   SCOPE = PHI_HOST_INFO
 
-  BUTTON_ONE   = DEPLOY  # DEPLOY_ALL=true 
+  BUTTON_ONE   = DEPLOY  # DEPLOY_ALL=true # LOITER_ALL = true
   BUTTON_ONE   = MOOS_MANUAL_OVERRIDE_ALL=false 
   BUTTON_ONE   = RETURN_ALL=false # STATION_KEEP_ALL=false
 
@@ -80,21 +88,62 @@ ProcessConfig = pMarineViewer
 //------------------------------------------
  ProcessConfig = uTimerScript                                    
  { 
+    AppTick   = 4
+    CommsTick = 4
 
-   rand_var    = varname=RND_NAV_X, min=-25, max=200, key=at_post
-   rand_var    = varname=RND_NAV_Y, min=-175, max=-25, key=at_post
+    paused = true
+    pause_var = POINTS_PAUSE
 
-   event = var=VISIT_POINT, val="firstpoint", time=0
-   event = var=VISIT_POINT, val="x=$[RND_NAV_X], y=$[RND_NAV_Y],id=$[TCOUNT]", time=0, amt=100 
-   event = var=VISIT_POINT, val="lastpoint", time=0
+    rand_var    = varname=RND_NAV_X, min=-25, max=200, key=at_post
+    rand_var    = varname=RND_NAV_Y, min=-175, max=-25, key=at_post
+
+    event = var=VISIT_POINT, val="firstpoint", time= 2.5
+    event = var=VISIT_POINT, val="x=$[RND_NAV_X], y=$[RND_NAV_Y], id=$[TCOUNT]", time=3.0, amt=100 
+   
+
+    event = var=VISIT_POINT, val="lastpoint", time=4.0
  } 
 
 //------------------------------------------
- ProcessConfig = uXMS                                            
-    {                                                               
+ ProcessConfig = uXMS_HENRY                                            
+ {                                                               
      AppTick   = 4                                                 
-     CommsTick = 4                                                 
-                                                                    
-    VAR           = VISIT_POINT
-    history_var   = VISIT_POINT
-    }
+     CommsTick = 4   
+
+    //DISPLAY_ALL   = true                                                                
+    //VAR           = VISIT_POINT_GILDA
+    VAR           = VISIT_POINT_HENRY
+    
+      VAR           = REGEN
+    //VAR           = REGION
+    //VAR           = REFER
+    //HISTORY_VAR   = VISIT_POINT
+    //HISTORY_VAR   = REFER
+    //HISTORY_VAR   = POINTS
+    //HISTORY_VAR           = VISIT_POINT_GILDA
+    HISTORY_VAR           = VISIT_POINT_HENRY
+
+ }
+ //------------------------------------------
+ ProcessConfig = uXMS_GILDA                                            
+ {                                                               
+     AppTick   = 4                                                 
+     CommsTick = 4   
+
+    //DISPLAY_ALL   = true                                                                
+    VAR           = VISIT_POINT_GILDA
+    //VAR           = VISIT_POINT_HENRY
+    VAR           = VEH1
+    VAR           = VEH2 
+    //VAR           = VIEW_POINT
+    //VAR           = REFER
+   // HISTORY_VAR   = VISIT_POINT
+    //HISTORY_VAR   = REP
+    //HISTORY_VAR   = POINTS
+    HISTORY_VAR           = VISIT_POINT_GILDA
+    //HISTORY_VAR           = VISIT_POINT_HENRY
+
+ }
+
+
+

@@ -2,9 +2,9 @@ ServerHost = localhost
 ServerPort = 9002
 
 // Community name IS the vehicle name
-Community  = henry
+Community  = HENRY
 
-MOOSTimeWarp = 30
+MOOSTimeWarp = 20
 LatOrigin  = 43.825300 
 LongOrigin = -70.330400 
 
@@ -25,6 +25,7 @@ Processconfig = ANTLER
   Run = pShare             @ NewConsole = false
   Run = pHostInfo          @ NewConsole = false
   Run = uFldNodeBroker     @ NewConsole = false
+  Run = pGenPath           @ NewConsole = false
 }
  
 //------------------------------------------------------
@@ -116,7 +117,7 @@ ProcessConfig = pHelmIvP
 
   ok_skew      = any
   
-  Behaviors    = targ_henry.bhv  
+  Behaviors    = targ_HENRY.bhv  
   Verbose      = false
   Domain       = course:0:359:360
   Domain       = speed:0:5:26
@@ -181,7 +182,31 @@ ProcessConfig = uFldNodeBroker
   BRIDGE = src=VIEW_SEGLIST
   BRIDGE = src=APPCAST
   BRIDGE = src=NODE_REPORT_LOCAL,  alias=NODE_REPORT
-  BRIDGE = src=NODE_MESSAGE_LOCAL, alias=NODE_MESSAGE
+  BRIDGE = src=NODE_MESSAGE_LOCAL, alias=NODE_MESSAGE  
+}
+
+//------------------------------------------------
+// pGenPath config block
+
+ProcessConfig = pGenPath
+{
+   AppTick   = 4
+   CommsTick = 4
+
+   VNAME = HENRY
+   START_POS = 80,0
 }
 
 
+
+
+//--------------------------------------------------------
+ProcessConfig = uXMS
+{
+   AppTick   = 4
+   CommsTick = 4
+ 
+   VAR = VISIT_POINT, WPT_UPDATE_HENRY
+   
+   HISTORY_VAR =VISIT_POINT
+   }

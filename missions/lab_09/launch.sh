@@ -23,8 +23,8 @@ done
 #-----------------------------------------------------------
 #  Part 2: Create the .moos and .bhv files. 
 #-----------------------------------------------------------
-VNAME1="gilda"  
-VNAME2="henry"  
+VNAME1="GILDA"  
+VNAME2="HENRY"  
 START_POS1="0,0"    
 START_POS2="80,0"   
 LOITER_POS1="x=0,y=-75"
