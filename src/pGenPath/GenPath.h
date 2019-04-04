@@ -43,8 +43,7 @@ class GenPath : public AppCastingMOOSApp
    std::string m_visit_point;
 
    XYSegList sorted_points;
-   XYSegList remaining_waypoints;
-   XYSegList list_waypoints;
+   
 
  private: // Configuration variables
    std::string m_veh_name;

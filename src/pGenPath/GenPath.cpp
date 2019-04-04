@@ -174,7 +174,7 @@ bool GenPath::Iterate()
   //Notify("CLOSE_X", doubleToString(closest_x));
   //Notify("CLOSE_Y", doubleToString(closest_y));
   double distance = sqrt(pow((closest_x - m_current_x),2) + pow((closest_y - m_current_y),2));
-    if(distance < 5){
+    if(distance < visit_radius){
       m_waypoints.delete_vertex(closest_waypoint);//removes waypoint from list if within visit radius
     }     
 
