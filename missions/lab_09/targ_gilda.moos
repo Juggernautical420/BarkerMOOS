@@ -4,7 +4,7 @@ ServerPort = 9001
 // Community name IS the vehicle name
 Community  = GILDA
 
-MOOSTimeWarp = 20
+MOOSTimeWarp = 30
 LatOrigin  = 43.825300 
 LongOrigin = -70.330400 
 
@@ -26,6 +26,7 @@ Processconfig = ANTLER
   Run = pHostInfo          @ NewConsole = false
   Run = uFldNodeBroker     @ NewConsole = false
   Run = pGenPath           @ NewConsole = false
+  Run = uXMS               @ NewConsole = true
 }
  
 //------------------------------------------------------
@@ -182,7 +183,8 @@ ProcessConfig = uFldNodeBroker
   BRIDGE = src=VIEW_SEGLIST
   BRIDGE = src=APPCAST
   BRIDGE = src=NODE_REPORT_LOCAL,  alias=NODE_REPORT
-  BRIDGE = src=NODE_MESSAGE_LOCAL, alias=NODE_MESSAGE  
+  BRIDGE = src=NODE_MESSAGE_LOCAL, alias=NODE_MESSAGE 
+  BRIDGE = src=GENPATH_REGENERATE
 }
 
 //------------------------------------------------
@@ -195,6 +197,7 @@ ProcessConfig = pGenPath
 
    VNAME = GILDA
    START_POS = 0,0
+   VISIT_RADIUS = 5
 }
 
 
@@ -207,6 +210,9 @@ ProcessConfig = uXMS
    CommsTick = 4
  
    VAR = VISIT_POINT, WPT_UPDATE_GILDA
+   VAR = REGEN
+   VAR = START
+   
    
    HISTORY_VAR =VISIT_POINT
    }

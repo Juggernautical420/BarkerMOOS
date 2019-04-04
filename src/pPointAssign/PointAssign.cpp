@@ -40,18 +40,18 @@ bool PointAssign::OnNewMail(MOOSMSG_LIST &NewMail)
   for(p=NewMail.begin(); p!=NewMail.end(); p++) {
     CMOOSMsg &msg = *p;
     string key   = msg.GetKey();
-     if (key == "NODE_REPORT"){
+    //  if (key == "NODE_REPORT"){
 
-       string sval  = msg.GetString();
-      VehicalAssign1(sval);
-      if(VehicalAssign1(sval)){
-      VehicalAssign2(sval);
-      Notify("POINTS_PAUSE", "false");  
+    //    string sval  = msg.GetString();
+    //   VehicalAssign1(sval);
+    //   if(VehicalAssign1(sval)){
+    //   VehicalAssign2(sval);
+    //   Notify("POINTS_PAUSE", "false");  
      
 
 
-    }
-  }
+    // }
+  
 
 
 
@@ -159,6 +159,23 @@ bool PointAssign::OnStartUp()
         //handled
       }
 
+      if(param == "vname1") {
+      m_veh_1 = "VISIT_POINT_" + toupper(value);
+      m_veh1_named = true;
+      Notify("VEH1", m_veh_1);
+      Register(m_veh_1, 0);
+      }
+
+      if(param == "vname2") {
+      m_veh_2 = "VISIT_POINT_" + toupper(value);
+      m_veh2_named = true;
+      Notify("VEH2", m_veh_2);
+      Register(m_veh_2, 0); 
+      }
+
+      if(m_veh1_named && m_veh2_named){
+        Notify("POINTS_PAUSE", "false");
+      }
 
   
      

@@ -22,6 +22,7 @@ Processconfig = ANTLER
   Run = pHostInfo          @ NewConsole = false
   Run = uFldNodeBroker     @ NewConsole = false
   Run = pGenPath           @ NewConsole = false
+  Run = uXMS               @ NewConsole = true
 }
  
 #include plug_uSimMarine.moos
@@ -43,6 +44,9 @@ ProcessConfig = uXMS
    CommsTick = 4
  
    VAR = VISIT_POINT, WPT_UPDATE_$(VNAME)
+   VAR = REGEN
+   VAR = START
+   
    
    HISTORY_VAR =VISIT_POINT
    }

@@ -5,7 +5,7 @@ ServerHost = localhost
 ServerPort = 9000
 Community  = shoreside
 
-MOOSTimeWarp = 20
+MOOSTimeWarp = 30
 LatOrigin  = 43.825300 
 LongOrigin = -70.330400 
 
@@ -81,7 +81,8 @@ ProcessConfig = pPointAssign
    AppTick   = 4
    CommsTick = 4
 
-   VNAME = shoreside
+   VNAME1 = GILDA
+   VNAME2 = HENRY
 
    ASSIGN_BY_REGION = true
 }
@@ -156,11 +157,11 @@ ProcessConfig = pMarineViewer
     rand_var    = varname=RND_NAV_X, min=-25, max=200, key=at_post
     rand_var    = varname=RND_NAV_Y, min=-175, max=-25, key=at_post
 
-    event = var=VISIT_POINT, val="firstpoint", time= 2.5
-    event = var=VISIT_POINT, val="x=$[RND_NAV_X], y=$[RND_NAV_Y], id=$[TCOUNT]", time=3.0, amt=100 
+    event = var=VISIT_POINT, val="firstpoint", time= 0
+    event = var=VISIT_POINT, val="x=$[RND_NAV_X], y=$[RND_NAV_Y], id=$[TCOUNT]", time=0, amt=100 
    
 
-    event = var=VISIT_POINT, val="lastpoint", time=4.0
+    event = var=VISIT_POINT, val="lastpoint", time=0
  } 
 
 //------------------------------------------
@@ -173,7 +174,8 @@ ProcessConfig = pMarineViewer
     //VAR           = VISIT_POINT_GILDA
     VAR           = VISIT_POINT_HENRY
     
-      VAR           = REGEN
+    VAR           = REGEN
+    VAR           = LOITER
     //VAR           = REGION
     //VAR           = REFER
     //HISTORY_VAR   = VISIT_POINT

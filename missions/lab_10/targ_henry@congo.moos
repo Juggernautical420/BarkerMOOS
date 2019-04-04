@@ -1,0 +1,218 @@
+ServerHost = localhost
+ServerPort = 9002
+
+// Community name IS the vehicle name
+Community  = HENRY@congo
+
+MOOSTimeWarp = 10
+LatOrigin  = 43.825300 
+LongOrigin = -70.330400 
+
+
+  
+//------------------------------------------------------------
+Processconfig = ANTLER
+{
+  MSBetweenLaunches = 200
+   
+  Run = MOOSDB             @ NewConsole = false
+  Run = uSimMarine         @ NewConsole = false
+  Run = pShare             @ NewConsole = false
+  Run = pLogger            @ NewConsole = false
+  Run = pNodeReporter      @ NewConsole = false
+  Run = pMarinePID         @ NewConsole = false
+  Run = pHelmIvP           @ NewConsole = false
+  Run = uProcessWatch      @ NewConsole = false
+  Run = pHostInfo          @ NewConsole = false
+  Run = uFldNodeBroker     @ NewConsole = false
+  Run = pMarineViewer      @ NewConsole = false
+}
+  
+//--------------------------------------------------------
+ProcessConfig = pMarineViewer
+{
+  AppTick    = 4
+  CommsTick  = 4
+
+  TIFF_FILE              = forrest19.tif
+  set_pan_x              = -90
+  set_pan_y              = -280
+  zoom                   = 0.65
+  vehicles_shape_scale   = 1.5
+  vehicles_name_mode     = names+shortmode
+
+  // Appcast configuration
+  appcast_height       = 75
+  appcast_width        = 30
+  appcast_viewable     = true
+  appcast_color_scheme = indigo
+  nodes_font_size      = medium
+  procs_font_size      = medium
+  appcast_font_size    = small
+
+  SCOPE = PSHARE_INPUT_SUMMARY
+
+  ACTION = STATION_ALL = false
+  ACTION = STATION_ALL = true
+
+  BUTTON_ONE   = DEPLOY  # DEPLOY=true 
+  BUTTON_ONE   = MOOS_MANUAL_OVERRIDE=false 
+  BUTTON_ONE   = RETURN=false
+  BUTTON_TWO   = RETURN  # RETURN=true
+  BUTTON_THREE = STATION:T  # STATION=true
+  BUTTON_FOUR  = STATION:F  # STATION=false
+}
+
+//---------------------------------------------------------
+// pShare Config Block  (Created from Plugin)
+
+ProcessConfig = pShare
+{
+  AppTick    = 2
+  CommsTick  = 2
+
+  input = route =  localhost:9202
+}
+
+
+//--------------------------------------------------
+// uFldNodeBroker configuration block from plugin
+
+ProcessConfig = uFldNodeBroker
+{
+  AppTick   = 1
+  CommsTick = 1
+
+  TRY_SHORE_HOST = pshare_route=18.21.185.167:9200
+
+  bridge = src=VIEW_POLYGON
+  bridge = src=VIEW_POINT
+  bridge = src=VIEW_SEGLIST
+
+  bridge = src=APPCAST
+
+  bridge = src=NODE_REPORT_LOCAL,  alias=NODE_REPORT
+  bridge = src=NODE_MESSAGE_LOCAL, alias=NODE_MESSAGE
+}
+
+//--------------------------------------------------
+// pHostInfo configuration block from plugin
+
+ProcessConfig = pHostInfo
+{
+  AppTick 	= 1
+  CommsTick 	= 1
+}
+
+//------------------------------------------------------
+// uSimMarine Configuration Block  (Created from plugin)
+
+ProcessConfig = uSimMarine
+{
+  AppTick   = 10
+  CommsTick = 10
+
+  START_POS = 155,-47, 180, 0
+  PREFIX    = NAV
+}
+
+
+//----------------------------------------------------
+// pHelmIvP Configuration Block  (Created from Plugin)
+
+ProcessConfig = pHelmIvP
+{
+  AppTick    = 4
+  CommsTick  = 4
+
+  ok_skew      = any
+  
+  Behaviors    = targ_HENRY@congo.bhv  
+  Verbose      = false
+  Domain       = course:0:359:360
+  Domain       = speed:0:5:26
+}
+
+//-----------------------------------------------------
+// pMarinePID Configuration Block (created from plugin)
+
+ProcessConfig = pMarinePID
+{
+  AppTick    = 10
+  CommsTick  = 10
+  
+  VERBOSE       = true
+  DEPTH_CONTROL = false
+  ACTIVE_START  = true
+  
+  // Yaw PID controller
+  YAW_PID_KP             = 0.4
+  YAW_PID_KD             = 0.1
+  YAW_PID_KI             = 0.0
+  YAW_PID_INTEGRAL_LIMIT = 0.07
+  
+  // Speed PID controller
+  SPEED_PID_KP           = 1.0
+  SPEED_PID_KD           = 0.0
+  SPEED_PID_KI           = 0.0
+  SPEED_PID_INTEGRAL_LIMIT = 0.07
+  
+  // Maximums
+  MAXRUDDER  = 100
+  MAXTHRUST  = 100
+  
+  // A non-zero SPEED_FACTOR overrides use of SPEED_PID
+  // Will set DESIRED_THRUST = DESIRED_SPEED * SPEED_FACTOR
+  SPEED_FACTOR = 20
+}
+
+//--------------------------------------------------
+// pLogger Configuration Block (Created from Plugin)
+
+ProcessConfig = pLogger
+{
+  AppTick 	= 10
+  CommsTick 	= 10
+  
+  File		= LOG_HENRY@CONGO
+  PATH		= ./
+  SyncLog 	= true @ 0.2
+  AsyncLog 	= true
+  FileTimeStamp = true
+
+  Log = IVPHELM_LIFE_EVENT @ 0 nosync
+
+  // Log it all!!!!!
+  LogAuxSrc = true
+  WildCardLogging = true 
+  LoggingDirectorySummaryFile = ~/.pLogger_HENRY@CONGO
+
+  CompressAlogs = false
+}
+
+//--------------------------------------------------------
+// pNodeReporter Configuration Block (Created from Plugin)
+
+ProcessConfig = pNodeReporter
+{
+  AppTick     = 2
+  CommsTick   = 2
+  
+  VESSEL_TYPE = KAYAK
+//  GROUP       = $(GROUP)
+}
+
+//--------------------------------------------------------
+// uProcessWatch Configuration Block (Created from Plugin)
+
+ProcessConfig = uProcessWatch
+{
+  AppTick   = 2
+  CommsTick = 2
+  
+  WATCH_ALL = true
+}
+
+
+
+

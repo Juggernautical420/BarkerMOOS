@@ -8,5 +8,6 @@ ProcessConfig = pGenPath
 
    VNAME = $(VNAME)
    START_POS = $(START_POS)
+   VISIT_RADIUS = 5
 }
 

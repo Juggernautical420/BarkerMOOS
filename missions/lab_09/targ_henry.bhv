@@ -7,7 +7,7 @@ initialize   STATION_KEEP = false
 initialize   LOITER  = true
 initialize   REFUEL_NEEDED = false
 initialize   REFUELED = false
-initialize   GENPATH_REGENERATE = false
+
 
 
 set MODE = ACTIVE {
@@ -44,7 +44,7 @@ Behavior = BHV_Waypoint
   condition = MODE==LOITERING
   updates   = WPT_UPDATE_HENRY
  
-  endflag   = REFUEL_NEEDED = true
+  endflag   = REFUEL_NEEDED = true 
   endflag   = RETURN = true
   
   perpetual = true
@@ -136,6 +136,7 @@ Behavior = BHV_Waypoint
    duration     = 60                  
    endflag      = REFUELED = false 
    endflag      = REFUEL_NEEDED = false
+   endflag      = GENPATH_REGENERATE = true 
    
 
    perpetual    = true
@@ -157,7 +158,7 @@ Behavior = BHV_Waypoint
    duration     = 600 
    duration_reset = REFUELED = true                 
    endflag      = REFUEL_NEEDED = true 
-   endflag      = GENPATH_REGENERATE = true     
+      
    perpetual    = true
    duration_idle_decay = false
    

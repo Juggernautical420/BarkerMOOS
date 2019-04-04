@@ -17,8 +17,7 @@ using namespace std;
 
 GenPath::GenPath()
 {
-  m_sorted = false;
-  m_genpath = false;
+ 
 }
 
 //---------------------------------------------------------
@@ -41,35 +40,92 @@ bool GenPath::OnNewMail(MOOSMSG_LIST &NewMail)
     string key    = msg.GetKey();
 
       if(key == "VISIT_POINT") {
-        m_sorted = false;
         m_visit_point = msg.GetString();
         if(m_visit_point != "firstpoint" || m_visit_point != "lastpoint"){
           VectorPoints(m_visit_point);
           m_waypoints.add_vertex(m_dbl_x, m_dbl_y);
         }
-      }
-      
-      else if(key == "NAV_X"){
+    
+    XYSegList sorted_waypoints;
+    XYSegList working_waypoints = m_waypoints;
+    int closest_index = working_waypoints.closest_vertex(m_origin_x, m_origin_y); 
+    double next_x = working_waypoints.get_vx(closest_index);
+    double next_y = working_waypoints.get_vy(closest_index);
+    working_waypoints.delete_vertex(closest_index);
+    sorted_waypoints.add_vertex(next_x, next_y); 
+    for(int i=1; i<m_waypoints.size(); i++){
+      int closest_index = working_waypoints.closest_vertex(next_x, next_y);
+       next_x = working_waypoints.get_vx(closest_index);
+      next_y = working_waypoints.get_vy(closest_index);
+      sorted_waypoints.add_vertex(next_x, next_y);
+      working_waypoints.delete_vertex(closest_index);
+    }
+    string color;
+    // if(next_x < 88){
+    // color = "orange";
+    // }
+    if(next_x > 88){
+    color = "orange";
+    }
+
+    string update_str = "points = ";
+    update_str += sorted_waypoints.get_spec();
+    update_str += " # visual_hints = edge_color = " + color + ", vertex_color = " + color;
+  
+
+     Notify("WPT_UPDATE_" + m_veh_name, update_str);
+    }
+
+
+
+    else if(key == "NAV_X"){
         m_current_x = msg.GetDouble();
       }
-      else if(key == "NAV_Y"){
+    else if(key == "NAV_Y"){
         m_current_y = msg.GetDouble();
       }
+      
+
+
+
+
 
       else if(key == "GENPATH_REGENERATE"){
-          m_genpath = true;
-          //m_waypoints.add_vertex(m_origin_x, m_origin_y);
-          Notify("REGEN", "true");
-        }
-      else if(key == "NODE_REPORT"){
-       string sval  = msg.GetString(); 
-       string mode = tokStringParse(sval, "MODE", ',', '=');
-       if(mode == "MODE@ACTIVE:REFUELING"){
-        m_genpath = true;
-       // m_waypoints.add_vertex(m_origin_x, m_origin_y);
-        Notify("REGEN", "true");
-       } 
+          //Notify("REGEN", "true");
+      m_waypoints.add_vertex(m_origin_x, m_origin_y);
+      XYSegList sorted_waypoints;
+      XYSegList working_waypoints = m_waypoints;
+      int closest_index = working_waypoints.closest_vertex(m_origin_x, m_origin_y); 
+      double next_x = working_waypoints.get_vx(closest_index);
+      double next_y = working_waypoints.get_vy(closest_index);
+      working_waypoints.delete_vertex(closest_index);
+      sorted_waypoints.add_vertex(next_x, next_y); 
+      for(int i=1; i<m_waypoints.size(); i++){
+      int closest_index = working_waypoints.closest_vertex(next_x, next_y);
+       next_x = working_waypoints.get_vx(closest_index);
+      next_y = working_waypoints.get_vy(closest_index);
+      sorted_waypoints.add_vertex(next_x, next_y);
+      working_waypoints.delete_vertex(closest_index);
       }
+      string color;
+      // if(next_x < 88){
+      // color = "orange";
+      // }
+      if(next_x > 88){
+      color = "yellow";
+      }
+
+      string update_str = "points = ";
+      update_str += sorted_waypoints.get_spec();
+      update_str += " # visual_hints = edge_color = " + color + ", vertex_color = " + color;
+    
+
+      Notify("WPT_UPDATE_" + m_veh_name, update_str); 
+          
+        //}
+      }
+
+
         
       
 
@@ -111,21 +167,17 @@ bool GenPath::Iterate()
   AppCastingMOOSApp::Iterate();
   // Do your thing here!
 
-  if(!m_sorted){ //Boolean to force original formation of GenPath waypoints
-    GenSortedPath();
-  }
-  if(m_sorted){ 
-    int closest_waypoint = m_waypoints.closest_vertex(m_current_x, m_current_y); //waypoint closest to the current position
-    double closest_x = m_waypoints.get_vx(closest_waypoint); //grabs the x/y value for waypoint
-    double closest_y = m_waypoints.get_vy(closest_waypoint);
-    double distance = sqrt(pow((closest_x-m_current_x),2)+pow((closest_y-m_current_y),2));
-    if(distance < visit_radius){
+  
+  int closest_waypoint = m_waypoints.closest_vertex(m_current_x, m_current_y); //waypoint closest to the current position
+  double closest_x = m_waypoints.get_vx(closest_waypoint); //grabs the x/y value for waypoint
+  double closest_y = m_waypoints.get_vy(closest_waypoint);
+  //Notify("CLOSE_X", doubleToString(closest_x));
+  //Notify("CLOSE_Y", doubleToString(closest_y));
+  double distance = sqrt(pow((closest_x - m_current_x),2) + pow((closest_y - m_current_y),2));
+    if(distance < 5){
       m_waypoints.delete_vertex(closest_waypoint);//removes waypoint from list if within visit radius
-    }
-    if(m_genpath){
-    GenSortedPath();
-    }
-  }
+    }     
+
  
 
   
@@ -168,9 +220,9 @@ bool GenPath::OnStartUp()
     }    
     else if(param == "start_pos") {
       string m_start_pos = value;
+      Notify("START", m_start_pos);
       m_origin_x = stod(MOOSChomp(m_start_pos, ","));
       m_origin_y = stod(m_start_pos);
-      m_veh_name = toupper(value);
       handled=true;
     }    
 
@@ -214,7 +266,8 @@ bool GenPath::buildReport()
   m_msgs << "Author: Jason Barker                         \n";
   m_msgs << "============================================ \n";
 
-  m_msgs << m_veh_name << " Waypoints Recieved: " << m_waypoints.size();
+  m_msgs << m_veh_name << " Waypoints Remaining: " << m_waypoints.size() << endl;
+  
 
   return(true);
 }
@@ -240,42 +293,6 @@ void GenPath::VectorPoints(string point)
 }
 
 //---------------------------------------------------------------
-// Procedure:  GenSortedPath() Sorts waypoints
-
-void GenPath::GenSortedPath()
-{
-  XYSegList sorted_waypoints;
-  XYSegList working_waypoints = m_waypoints;
-  int closest_index = working_waypoints.closest_vertex(m_origin_x, m_origin_y); 
-  double next_x = working_waypoints.get_vx(closest_index);
-  double next_y = working_waypoints.get_vy(closest_index);
-  working_waypoints.delete_vertex(closest_index);
-  sorted_waypoints.add_vertex(next_x, next_y); 
-  for(int i=1; i<m_waypoints.size(); i++){
-     int closest_index = working_waypoints.closest_vertex(next_x, next_y);
-     next_x = working_waypoints.get_vx(closest_index);
-     next_y = working_waypoints.get_vy(closest_index);
-     sorted_waypoints.add_vertex(next_x, next_y);
-     working_waypoints.delete_vertex(closest_index);
-  }
-  string color;
-  if(next_x < 88){
-   color = "red";
-  }
-  if(next_x>88){
-   color = "yellow";
-  }
-
-  string update_str = "points = ";
-  update_str += sorted_waypoints.get_spec();
-  update_str += " # visual_hints = edge_color = " + color + ", vertex_color = " + color;
-  
-
-  Notify("WPT_UPDATE_" + m_veh_name, update_str);
-  m_sorted = true;
-}
-//---------------------------------------------------------------
-
 
 
   
