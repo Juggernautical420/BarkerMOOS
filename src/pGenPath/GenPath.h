@@ -17,7 +17,11 @@ class GenPath : public AppCastingMOOSApp
  public:
    GenPath();
    ~GenPath();
-   XYSegList m_waypoints;
+   double m_origin_x;
+   double m_origin_y;
+   double next_x;
+   double next_y;
+   
 
  protected: // Standard MOOSApp functions to overload  
    bool OnNewMail(MOOSMSG_LIST &NewMail);
@@ -39,17 +43,19 @@ class GenPath : public AppCastingMOOSApp
    double m_dbl_id;
    double m_current_x;
    double m_current_y;
+   double x_check;
+   double y_check;
    std::string point;
    std::string m_visit_point;
 
    XYSegList sorted_points;
+   XYSegList m_waypoints;
    
 
  private: // Configuration variables
    std::string m_veh_name;
    double visit_radius;
-   double m_origin_x;
-   double m_origin_y;
+  
    
 
  

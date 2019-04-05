@@ -33,7 +33,6 @@ GenPath::~GenPath()
 bool GenPath::OnNewMail(MOOSMSG_LIST &NewMail)
 {
   AppCastingMOOSApp::OnNewMail(NewMail);
-
   MOOSMSG_LIST::iterator p;
   for(p=NewMail.begin(); p!=NewMail.end(); p++) {
     CMOOSMsg &msg = *p;
@@ -46,6 +45,8 @@ bool GenPath::OnNewMail(MOOSMSG_LIST &NewMail)
           m_waypoints.add_vertex(m_dbl_x, m_dbl_y);
         }
     
+
+
     XYSegList sorted_waypoints;
     XYSegList working_waypoints = m_waypoints;
     int closest_index = working_waypoints.closest_vertex(m_origin_x, m_origin_y); 
@@ -55,19 +56,18 @@ bool GenPath::OnNewMail(MOOSMSG_LIST &NewMail)
     sorted_waypoints.add_vertex(next_x, next_y); 
     for(int i=1; i<m_waypoints.size(); i++){
       int closest_index = working_waypoints.closest_vertex(next_x, next_y);
-       next_x = working_waypoints.get_vx(closest_index);
+      next_x = working_waypoints.get_vx(closest_index);
       next_y = working_waypoints.get_vy(closest_index);
       sorted_waypoints.add_vertex(next_x, next_y);
       working_waypoints.delete_vertex(closest_index);
     }
     string color;
-    // if(next_x < 88){
-    // color = "orange";
-    // }
     if(next_x > 88){
-    color = "orange";
+      color = "red";
     }
-
+    else{
+      color = "yellow";
+    }
     string update_str = "points = ";
     update_str += sorted_waypoints.get_spec();
     update_str += " # visual_hints = edge_color = " + color + ", vertex_color = " + color;
@@ -108,12 +108,12 @@ bool GenPath::OnNewMail(MOOSMSG_LIST &NewMail)
       working_waypoints.delete_vertex(closest_index);
       }
       string color;
-      // if(next_x < 88){
-      // color = "orange";
-      // }
       if(next_x > 88){
-      color = "yellow";
+      color = "green";
       }
+      else{
+      color = "orange";
+    }
 
       string update_str = "points = ";
       update_str += sorted_waypoints.get_spec();
@@ -122,7 +122,7 @@ bool GenPath::OnNewMail(MOOSMSG_LIST &NewMail)
 
       Notify("WPT_UPDATE_" + m_veh_name, update_str); 
           
-        //}
+        
       }
 
 
@@ -266,6 +266,7 @@ bool GenPath::buildReport()
   m_msgs << "Author: Jason Barker                         \n";
   m_msgs << "============================================ \n";
 
+
   m_msgs << m_veh_name << " Waypoints Remaining: " << m_waypoints.size() << endl;
   
 
@@ -285,9 +286,15 @@ void GenPath::VectorPoints(string point)
     if(tolower(param) == "id"){
       m_dbl_id = stod(value);}
     else if(tolower(param) == "x"){
-      m_dbl_x = stod(value);}
+      x_check = stod(value);
+      //if(x_check != 0)
+      m_dbl_x = x_check;
+    }
     else if(tolower(param) == "y"){ 
-      m_dbl_y = stod(value);}
+      y_check = stod(value);
+      //if(y_check !=0)
+      m_dbl_y = y_check;
+  }
   }
   return;
 }

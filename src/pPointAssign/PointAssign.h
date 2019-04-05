@@ -21,6 +21,7 @@ class PointAssign : public AppCastingMOOSApp
  public:
    PointAssign();
    ~PointAssign();
+  
 
  protected: // Standard MOOSApp functions to overload  
    bool OnNewMail(MOOSMSG_LIST &NewMail);
@@ -29,6 +30,7 @@ class PointAssign : public AppCastingMOOSApp
    bool OnStartUp();
    std::string m_veh_1;
    std::string m_veh_2;
+  
    
  protected:
    void RegisterVariables();
@@ -38,7 +40,7 @@ class PointAssign : public AppCastingMOOSApp
    void postViewPoint(double x, double y, std::string label, std::string color);
    bool VehicalAssign1(std::string sval);
    bool VehicalAssign2(std::string sval);
-   //bool buildReport(); 
+   bool buildReport(); 
 
 
    std::string m_color;
@@ -46,7 +48,7 @@ class PointAssign : public AppCastingMOOSApp
    std::string vname;
    std::string vname1;
    std::string vname2;
-  
+ 
 
    int m_string_x;
    int m_string_y;

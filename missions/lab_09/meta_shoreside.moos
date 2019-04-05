@@ -14,14 +14,14 @@ Processconfig = ANTLER
 
   Run = MOOSDB          @ NewConsole = false
   Run = pMarineViewer   @ NewConsole = false
-  Run = pLogger         @ NewConsole = false
+  //Run = pLogger         @ NewConsole = false
   Run = pShare          @ NewConsole = false
   Run = pHostInfo       @ NewConsole = false
   Run = uFldShoreBroker @ NewConsole = false
   Run = uTimerScript    @ NewConsole = false
-  Run = uXMS            @ NewConsole = true ~uXMS_GILDA
-  Run = uXMS            @ NewConsole = true ~uXMS_HENRY
-  Run = pPointAssign    @ NewConsole = false
+  //Run = uXMS            @ NewConsole = true ~uXMS_HENRY 
+  //Run = uXMS            @ NewConsole = true ~uXMS_GILDA 
+  Run = pPointAssign    @ NewConsole = true
 }
 
 #include plug_pShare.moos
@@ -97,11 +97,11 @@ ProcessConfig = pMarineViewer
     rand_var    = varname=RND_NAV_X, min=-25, max=200, key=at_post
     rand_var    = varname=RND_NAV_Y, min=-175, max=-25, key=at_post
 
-    event = var=VISIT_POINT, val="firstpoint", time= 0
-    event = var=VISIT_POINT, val="x=$[RND_NAV_X], y=$[RND_NAV_Y], id=$[TCOUNT]", time=0, amt=100 
+    event = var=VISIT_POINT, val="firstpoint", time= 2.0
+    event = var=VISIT_POINT, val="x=$[RND_NAV_X], y=$[RND_NAV_Y], id=$[TCOUNT]", time=3.5, amt=100 
    
 
-    event = var=VISIT_POINT, val="lastpoint", time=0
+    event = var=VISIT_POINT, val="lastpoint", time=5.0
  } 
 
 //------------------------------------------

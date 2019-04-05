@@ -1,9 +1,10 @@
+//--------------------------------------------------
 // pPointAssign config block
 
 ProcessConfig = pPointAssign
 {
-   AppTick   = 4
-   CommsTick = 4
+   AppTick   = 1
+   CommsTick = 1
 
    VNAME1 = GILDA
    VNAME2 = HENRY

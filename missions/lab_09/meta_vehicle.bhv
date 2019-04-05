@@ -45,7 +45,8 @@ Behavior = BHV_Waypoint
   updates   = WPT_UPDATE_$(VNAME)
  
   endflag   = REFUEL_NEEDED = true 
-  endflag   = RETURN = true
+  endflag   = GENPATH_REGENERATE = true 
+  //endflag   = RETURN = true
   
   perpetual = true
 

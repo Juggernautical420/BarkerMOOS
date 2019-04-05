@@ -35,8 +35,7 @@ PointAssign::~PointAssign()
 bool PointAssign::OnNewMail(MOOSMSG_LIST &NewMail)
 {
   AppCastingMOOSApp::OnNewMail(NewMail); 
-  MOOSMSG_LIST::iterator p;
-   
+  MOOSMSG_LIST::iterator p;  
   for(p=NewMail.begin(); p!=NewMail.end(); p++) {
     CMOOSMsg &msg = *p;
     string key   = msg.GetKey();
@@ -69,7 +68,9 @@ bool PointAssign::OnNewMail(MOOSMSG_LIST &NewMail)
         continue;
       }
 
+      if(visit_points != "firstpoint" || visit_points != "lastpoint"){
       VectorPoints(visit_points);
+
 
       if(!assign_by_region){
         AssignAlternating(visit_points);
@@ -79,6 +80,7 @@ bool PointAssign::OnNewMail(MOOSMSG_LIST &NewMail)
         AssignRegionally(visit_points);
         postViewPoint(m_string_x, m_string_y, to_string(m_string_id), m_color);
       }
+    }
       
     }
 
@@ -98,8 +100,8 @@ bool PointAssign::OnNewMail(MOOSMSG_LIST &NewMail)
      if(key == "FOO") 
        cout << "great!";
 
-     else if(key != "APPCAST_REQ") // handled by AppCastingMOOSApp
-       reportRunWarning("Unhandled Mail: " + key);
+     //else if(key != "APPCAST_REQ") // handled by AppCastingMOOSApp
+       //reportRunWarning("Unhandled Mail: " + key);
 
 
 
@@ -131,6 +133,7 @@ bool PointAssign::OnConnectToServer()
 bool PointAssign::Iterate()
 {
   AppCastingMOOSApp::Iterate(); 
+
 
   AppCastingMOOSApp::PostReport();
   return(true);
@@ -185,7 +188,7 @@ bool PointAssign::OnStartUp()
           assign_by_region = false;
         }
         else{
-          assign_by_region = true;
+          assign_by_region = true; 
         }
         Notify("REGION", boolToString(assign_by_region));
       }
@@ -205,8 +208,8 @@ void PointAssign::RegisterVariables()
   // Register("FOOBAR", 0);
  
   Register("VISIT_POINT", 0);
-  Register("NODE_REPORT", 0);
-  Register("VIEW_POINT", 0);
+  //Register("NODE_REPORT", 0);
+  //Register("VIEW_POINT", 0);
 
 
 }
@@ -244,7 +247,7 @@ void PointAssign::AssignAlternating(std::string sval)
 }
 void PointAssign::AssignRegionally(std::string sval)
 {
-  if(m_string_x >88){
+  if(m_string_x < 88){
     Notify(m_veh_2, sval); 
     m_color = "red";
   }
@@ -254,7 +257,8 @@ void PointAssign::AssignRegionally(std::string sval)
   }
   return;
 }
- void PointAssign::postViewPoint(double x, double y, std::string label, std::string color)
+
+void PointAssign::postViewPoint(double x, double y, std::string label, std::string color)
  {
    XYPoint point(x, y);
    point.set_label(label);
@@ -292,17 +296,19 @@ void PointAssign::AssignRegionally(std::string sval)
 //------------------------------------------------------------
 // Procedure: buildReport()
 
-// bool PointAssign::buildReport() 
-// {
-//   m_msgs << "============================================ \n";
-//   m_msgs << "File:                                        \n";
-//   m_msgs << "============================================ \n";
+bool PointAssign::buildReport() 
+{
+  m_msgs << "============================================ \n";
+  m_msgs << "File: PointAssign.cpp                        \n";
+  m_msgs << "Author: Jason Barker                         \n";
+  m_msgs << "============================================ \n";
 
-//   ACTable actab(4);
-//   actab << "Alpha | Bravo | Charlie | Delta";
-//   actab.addHeaderLines();
-//   actab << "one" << "two" << "three" << "four";
-//   m_msgs << actab.getFormattedString();
 
-//   return(true);
-// }
+  m_msgs << "Vname1: " << m_veh_1 << endl;
+  m_msgs << "Vname2: " << m_veh_2 << endl;
+
+ 
+  
+
+  return(true);
+}
