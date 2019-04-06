@@ -109,10 +109,10 @@ bool GenPath::OnNewMail(MOOSMSG_LIST &NewMail)
       }
       string color;
       if(next_x > 88){
-      color = "green";
+      color = "red";
       }
       else{
-      color = "orange";
+      color = "yellow";
     }
 
       string update_str = "points = ";
