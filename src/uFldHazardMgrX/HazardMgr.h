@@ -53,6 +53,9 @@ class HazardMgr : public AppCastingMOOSApp
    void handleMailMissionParams(std::string);
    void handleMailConcatenateHazards(std::string);
 
+   double m_origin_x;
+   double m_origin_y;
+
  protected: 
    void postSensorConfigRequest();
    void postSensorInfoRequest();
