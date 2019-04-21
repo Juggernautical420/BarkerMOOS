@@ -17,6 +17,7 @@ TARGET_LINK_LIBRARIES(uFldHazardMgrX
    geometry
    apputil
    mbutil
+   ufield
    ${SYSTEM_LIBS}
 )
 

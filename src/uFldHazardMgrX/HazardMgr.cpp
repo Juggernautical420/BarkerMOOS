@@ -28,6 +28,7 @@
 #include "XYFormatUtilsPoly.h"
 #include "XYFormatUtilsHazardSet.h"
 #include "ACTable.h"
+#include "NodeMessage.h"
 
 using namespace std;
 
@@ -89,10 +90,6 @@ bool HazardMgr::OnNewMail(MOOSMSG_LIST &NewMail)
 
     else if(key == "HAZARDSET_REQUEST") 
       handleMailReportRequest();
- 
-    else if(key == "HAZARDSET_REPORT")
-      handleMailConcatenateHazards(sval);
-
 
     else if(key == "UHZ_MISSION_PARAMS") 
       handleMailMissionParams(sval);
@@ -135,8 +132,8 @@ bool HazardMgr::OnNewMail(MOOSMSG_LIST &NewMail)
       Notify("WAYPOINT_UPDATE_" + m_report_name, update_str); 
     }
 
-    //else 
-      //reportRunWarning("Unhandled Mail: " + key);
+    // else 
+    //   reportRunWarning("Unhandled Mail: " + key);
   }
 	
    return(true);
@@ -165,10 +162,15 @@ bool HazardMgr::Iterate()
   if(m_sensor_config_set)
     postSensorInfoRequest();
 
+  NodeMessage node_message;
+  node_message.setSourceNode(m_report_name);
+  node_message.setDestNode("all");
+  node_message.setVarName("HAZARDSET_" + toupper(m_report_name));
   m_hazardset_local = m_hazard_set.getSpec();
-  string node_message = "src_node=" + m_report_name + ",dest_node=all,var_name=HAZARDSET_" + toupper(m_report_name) +",string_val=" + m_hazardset_local;
-  Notify("NODE_MESSAGE_LOCAL", node_message);
+  node_message.setStringVal(m_hazardset_local);
 
+  string msg = node_message.getSpec();
+  Notify("NODE_MESSAGE_LOCAL", msg);
 
 
   AppCastingMOOSApp::PostReport();
@@ -247,8 +249,8 @@ void HazardMgr::registerVariables()
   Register("UHZ_MISSION_PARAMS", 0);
   Register("HAZARDSET_REQUEST", 0);
   Register("NODE_MESSAGE",0);
-  Register("NODE_MESSAGE_LOCAL",0);
-  Register("HAZARDSET_REPORT",0);
+  //Register("NODE_MESSAGE_LOCAL",0);
+  //Register("HAZARDSET_REPORT",0);
   Register("GENPATH_REGENERATE", 0);
   Register("NAV_X", 0);
   Register("NAV_Y", 0);
