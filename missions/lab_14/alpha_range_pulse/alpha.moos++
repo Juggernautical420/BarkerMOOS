@@ -6,7 +6,9 @@
 ServerHost   = localhost
 ServerPort   = 9000
 Community    = alpha
-MOOSTimeWarp = 1
+//----  Next Line was commented and replaced with a command line overload ---- //
+//MOOSTimeWarp = 1    (default)
+MOOSTimeWarp = 20
 
 // Forest Lake
 //LatOrigin  = 43.825300 
@@ -216,4 +218,5 @@ ProcessConfig = pNodeReporter
   platform_color  = yellow
   platform_length = 4
 }
+
 

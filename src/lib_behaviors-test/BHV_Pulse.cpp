@@ -32,6 +32,7 @@ BHV_Pulse::BHV_Pulse(IvPDomain domain) :
   m_current_wpt = 0;
   addInfoVars("NAV_X, NAV_Y");
   addInfoVars("WPT_INDEX", "no_warning");
+  addInfoVars("CYCLE_COMPLETE", "no_warning");
 }
 
 //---------------------------------------------------------------
@@ -134,21 +135,48 @@ IvPFunction* BHV_Pulse::onRunState()
   }
   bool ok3;
   m_next_wpt = getBufferDoubleVal("WPT_INDEX", ok3);
- 
 
+ 
 
 if(m_next_wpt != m_current_wpt){
  m_wpt_time = getBufferCurrTime();
  m_moos_time = m_wpt_time + 5;
+
  XYRangePulse pulse;
+//The following lines of code change the pulse color for each of the waypoints in the alpha mission
+if(m_current_wpt == 0){
+  pulse.set_color("edge", "red");
+  pulse.set_color("fill", "red");
+  }  
+
+if(m_current_wpt == 1){
+  pulse.set_color("edge", "orange");
+  pulse.set_color("fill", "orange");
+  }
+
+if(m_current_wpt == 2){
+  pulse.set_color("edge", "yellow");
+  pulse.set_color("fill", "yellow");
+  }
+
+if(m_current_wpt == 3){
+  pulse.set_color("edge", "green");
+  pulse.set_color("fill", "green");
+  }
+
+if(m_current_wpt == 4){
+  pulse.set_color("edge", "blue");
+  pulse.set_color("fill", "blue");
+  }
+
+
   pulse.set_x(m_current_x);
   pulse.set_y(m_current_y);
   pulse.set_label("bhv_pulse");
   pulse.set_rad(m_range);
   pulse.set_duration(m_pulse_duration);
   pulse.set_time(m_moos_time);
-  pulse.set_color("edge", "green");
-  pulse.set_color("fill", "green");
+ 
 
   string spec = pulse.get_spec();
   postMessage("VIEW_RANGE_PULSE", spec); 

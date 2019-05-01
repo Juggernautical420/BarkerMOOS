@@ -41,6 +41,7 @@ double 	m_next_wpt;
 double 	m_wpt_time;
 double 	m_range;
 double	m_pulse_duration;
+
 XYRangePulse pulse;
 };
 
