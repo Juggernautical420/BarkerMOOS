@@ -16,9 +16,10 @@ WIDTH1=120
 LANE_WIDTH1=25
 DEGREES1=0
 
-MOOS_PORT="9001"
-UDP_LISTEN_PORT="9201"
-
+MOOS_PORT1="9001"
+MOOS_PORT2="9002"
+UDP_LISTEN_PORT1="9301"
+UDP_LISTEN_PORT2="9302"
 SHOREIP="localhost"
 SHORE_LISTEN="9200"
 
@@ -80,8 +81,8 @@ START_POS="0,0"
 #start first vehicle:                                                                                                                                                                                                                         
 nsplug meta_vehicle.moos targ_$VNAME1.moos -f WARP=$TIME_WARP  \
    VNAME=$VNAME1     START_POS=$START_POS                    \
-   VPORT="9001"      SHARE_LISTEN="9301"    \
-   SHOREIP=$SHOREIP    SHORE_LISTEN="9200"\
+   VPORT=$MOOS_PORT1      SHARE_LISTEN=$UDP_LISTEN_PORT1    \
+   SHOREIP=$SHOREIP    SHORE_LISTEN=$SHORE_LISTEN\
    VNAME1=$VNAME1        VNAME2=$VNAME2                       \
    VTYPE=KAYAK \
    COOL_FAC=$COOL_FAC  COOL_STEPS=$COOL_STEPS\
@@ -90,8 +91,8 @@ nsplug meta_vehicle.moos targ_$VNAME1.moos -f WARP=$TIME_WARP  \
 #start second vehicle:                                                                                                                                                                                                                         
 nsplug meta_vehicle.moos targ_$VNAME2.moos -f WARP=$TIME_WARP  \
    VNAME=$VNAME2     START_POS=$START_POS                    \
-   VPORT="9002"      SHARE_LISTEN="9302"    \
-   SHOREIP=$SHOREIP   SHORE_LISTEN="9200"\
+   VPORT=$MOOS_PORT2     SHARE_LISTEN=$UDP_LISTEN_PORT2     \
+   SHOREIP=$SHOREIP   SHORE_LISTEN=$SHORE_LISTEN\
    VNAME1=$VNAME1        VNAME2=$VNAME2                       \
    VTYPE=KAYAK \
    COOL_FAC=$COOL_FAC  COOL_STEPS=$COOL_STEPS\
