@@ -13,9 +13,9 @@ ADD_EXECUTABLE(pTempGenPath ${SRC})
 
 TARGET_LINK_LIBRARIES(pTempGenPath
    ${MOOS_LIBRARIES}
+   geometry
    apputil
    mbutil
    m
-   geometry
    pthread)
 

@@ -1,11 +1,11 @@
 ServerHost = localhost
-ServerPort = 9002
+ServerPort = 9001
 Simulator  = true
 
 // Community name IS the vehicle name
 Community  = kasper
 
-MOOSTimeWarp = 60
+MOOSTimeWarp = 15
 //LatOrigin  = 43.825300 
 //LongOrigin = -70.330400 
 LatOrigin  = 42.3584
@@ -53,7 +53,7 @@ ProcessConfig = uFldNodeBroker
   CommsTick = 1
 
   //TRY_SHORE_HOST = pshare_route=multicast_9
-  TRY_SHORE_HOST = pshare_route=localhost:9200
+  TRY_SHORE_HOST = pshare_route=192.162.1.214:9200
 
   BRIDGE = src=VIEW_POLYGON
   BRIDGE = src=VIEW_POINT
@@ -75,7 +75,7 @@ ProcessConfig = pShare
   AppTick    = 2
   CommsTick  = 2
 
-  input = route =  localhost:9302
+  input = route =  localhost:9201
 
   // =======================================================
   // Usage Info below
@@ -94,7 +94,7 @@ ProcessConfig = pShare
   // Setting up an input
   // input = route = multicast_9
   
-  // input = route = localhost:9302 & multicast_9
+  // input = route = localhost:9201 & multicast_9
 
  
   // Setting up lots of inputs at once
@@ -137,7 +137,7 @@ ProcessConfig = uFldHazardMgrX
 
   swath_width = 10
   sensor_pd   = 0.5
-  //start_pos = 45,0
+  //start_pos = 0,0
   report_name = kasper
 }
 
@@ -149,7 +149,7 @@ ProcessConfig = uSimMarine
   AppTick   = 10
   CommsTick = 10
 
-  START_POS = 45,0, 180, 0
+  START_POS = 0,0, 180, 0
   PREFIX    = NAV
 
   BUOYANCY_RATE    = 0.025
