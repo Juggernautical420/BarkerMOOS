@@ -77,4 +77,49 @@ TARGET_LINK_LIBRARIES(BHV_SimpleWaypoint
     bhvutil 
     mbutil 
     geometry 
-    ${SYSTEM_LIBS} )    
+    ${SYSTEM_LIBS} )
+#--------------------------------------------------------
+#                                     BHV_InitialSweep 
+#--------------------------------------------------------
+ ADD_LIBRARY(BHV_InitialSweep SHARED 
+    BHV_InitialSweep.cpp AOF_SimpleWaypoint.cpp)
+ TARGET_LINK_LIBRARIES(BHV_InitialSweep
+    helmivp
+    behaviors 
+    ivpbuild 
+    logic 
+    ivpcore 
+    bhvutil 
+    mbutil 
+    geometry 
+    ${SYSTEM_LIBS} ) 
+#--------------------------------------------------------
+#                                           BHV_Tripwire 
+#--------------------------------------------------------
+ ADD_LIBRARY(BHV_Tripwire SHARED 
+    BHV_Tripwire.cpp)
+ TARGET_LINK_LIBRARIES(BHV_Tripwire
+    helmivp
+    behaviors 
+    ivpbuild 
+    logic 
+    ivpcore 
+    bhvutil 
+    mbutil 
+    geometry 
+    ${SYSTEM_LIBS} )  
+#--------------------------------------------------------
+#                                         BHV_FrontSurvey 
+#--------------------------------------------------------
+ ADD_LIBRARY(BHV_FrontSurvey SHARED 
+    BHV_FrontSurvey.cpp)
+ TARGET_LINK_LIBRARIES(BHV_FrontSurvey
+    helmivp
+    behaviors 
+    ivpbuild 
+    logic 
+    ivpcore 
+    bhvutil 
+    mbutil 
+    geometry 
+    ${SYSTEM_LIBS} )                

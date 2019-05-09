@@ -24,6 +24,7 @@ ADD_SUBDIRECTORY(pOdometry)
 ADD_SUBDIRECTORY(pCommunicationAngle_jbbarker)
 ADD_SUBDIRECTORY(pPointAssign)
 ADD_SUBDIRECTORY(pGenPath)
+ADD_SUBDIRECTORY(pTempGenPath)
 
 ##############################################################################
 #                           END of CMakeLists.txt

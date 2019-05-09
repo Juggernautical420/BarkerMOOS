@@ -27,6 +27,8 @@ Processconfig = ANTLER
   Run = uTimerScript       @ NewConsole = false
   Run = pFrontEstimate     @ NewConsole = false
   Run = pBasicContactMgr   @ NewConsole = false
+  Run = pTempGenPath       @ NewConsole = false
+  //Run = uXMS               @ NewConsole = true
 
 }
 
@@ -45,3 +47,16 @@ Processconfig = ANTLER
 #include plug_uProcessWatch.moos
 
 #include plug_pBasicContactMgr.moos
+#include plug_pTempGenPath.moos
+
+//------------------------------------------------------------
+Processconfig = uXMS
+{
+  var = OPREG_TRAJECTORY_PERIM_ETA
+  //var = UCTD_MSMNT_REPORT
+  //var = GENPATH
+  //var = N_S_DELTA
+  //var = CURRENT_TEMP
+
+  //history_var = UCTD_MSMNT_REPORT
+}

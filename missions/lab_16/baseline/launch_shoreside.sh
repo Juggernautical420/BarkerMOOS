@@ -25,7 +25,9 @@ done
 #  Part 2: Create the .moos file(s)
 #-------------------------------------------------------
 nsplug meta_shoreside.moos targ_shoreside.moos -f WARP=$TIME_WARP \
-   VNAME="shoreside" SHARE_LISTEN=$SHORE_LISTEN
+   VNAME="shoreside" SHORE_LISTEN=9200\
+   SHOREIP=localhost \
+
 
 if [ ${JUST_MAKE} = "yes" ] ; then
     exit 0

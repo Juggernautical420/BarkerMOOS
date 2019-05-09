@@ -8,26 +8,26 @@ ProcessConfig = pFrontEstimate
   cooling_steps = $(COOL_STEPS)
 
   // OFFSET
-  //min_offset = -120
-  //max_offset = -60
+  min_offset = -120
+  max_offset = -60
 
-  min_offset = -100 
-  max_offset = -100 
+  //min_offset = -100 
+  //max_offset = -100 
  
 
   // ANGLE 
-  //min_angle = -5
-  //max_angle = 15
+  min_angle = -5
+  max_angle = 15
 
-  min_angle = 5
-  max_angle = 5
+  //min_angle = 5
+  //max_angle = 5
 
   // AMPLITUDE
-  //min_amplitude = 0
-  //max_amplitude = 50
+  min_amplitude = 0
+  max_amplitude = 50
 
-  min_amplitude = 20
-  max_amplitude = 20
+  //min_amplitude = 20
+  //max_amplitude = 20
 
   // PERIOD
   //min_period = 200
@@ -52,25 +52,25 @@ ProcessConfig = pFrontEstimate
 
 
   // BETA
-  //min_beta = 10
-  //max_beta = 30
+  min_beta = 10
+  max_beta = 30
   
-  min_beta = 20
-  max_beta = 20
+  //min_beta = 20
+  //max_beta = 20
   
   // T_N
-  //min_T_N = 15
-  //max_T_N = 25
+  min_T_N = 15
+  max_T_N = 25
   
-  min_T_N = 22
-  max_T_N = 22 
+  //min_T_N = 22
+  //max_T_N = 22 
   
   // T_S
-  //min_T_S = 20
-  //max_T_S = 30
+  min_T_S = 20
+  max_T_S = 30
   
-  min_T_S = 28
-  max_T_S = 28 
+  //min_T_S = 28
+  //max_T_S = 28 
   
   concurrent = $(CONCURRENT)
   adaptive=$(ADAPTIVE)
