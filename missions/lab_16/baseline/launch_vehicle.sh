@@ -19,8 +19,8 @@ DEGREES1=0
 # MOOS_PORT="9001"
 # UDP_LISTEN_PORT="9201"
 
-# SHOREIP="localhost"
-# SHORE_LISTEN="9200"
+SHOREIP="localhost"
+SHORE_LISTEN="9200"
 
 for ARGI; do
     if [ "${ARGI}" = "--help" -o "${ARGI}" = "-h" ] ; then
