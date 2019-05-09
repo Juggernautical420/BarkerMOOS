@@ -270,22 +270,22 @@ IvPFunction* BHV_Tripwire::onRunState()
   // // ///Tripwire Actions
   if (tripwire_active){
 
-  if ((m_distance <= 40) && (!got_heading)){
+  if ((m_distance <= 50) && (!got_heading)){
   m_tripwire_heading = m_current_heading;
   got_heading = true;
   }
 
-  if ((m_current_x <= -30) && (!got_heading)){
-  m_tripwire_heading = m_current_heading;
-  got_heading = true;
-  }
+  // if ((m_current_x <= -30) && (!got_heading)){
+  // m_tripwire_heading = m_current_heading;
+  // got_heading = true;
+  // }
 
-  if ((got_heading) && (m_current_x >= 150)){
+  if ((got_heading) && (m_current_x >= 130)){
   zig_direction = (m_tripwire_heading + m_zig_angle); 
   ipf = buildFunctionWithZAIC(); 
   }
 
-   if ((got_heading) && (m_current_x <= -50)){
+   if ((got_heading) && (m_current_x <= -20)){
   zig_direction = (m_tripwire_heading + m_zig_angle); 
   ipf = buildFunctionWithZAIC(); 
   }
@@ -304,6 +304,9 @@ IvPFunction* BHV_Tripwire::onRunState()
   if((got_heading) && (m_distance >= 60)){
     got_heading = false;
   }
+  // if((got_heading) && (m_current_x >= -60)){
+  //   got_heading = false;
+  // }
   }
   // Part N: Prior to returning the IvP function, apply the priority wt
   // Actual weight applied may be some value different than the configured

@@ -142,7 +142,7 @@ if(m_next_wpt == 4){
 Notify("GENPATH", "true");  
   string update_str = "points = -30,-120: 130,-40";
   //update_str += m_waypoints.get_spec();
-  //update_str +=" # repeat = 2";
+  update_str +=" # repeat = 1";
   //update_str +=" # visual_hints = edge_color = yellow, vertex_color = yellow ";
 Notify("SURVEY_UPDATES", update_str);
 }
