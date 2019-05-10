@@ -28,6 +28,7 @@ Processconfig = ANTLER
   Run = pFrontEstimate     @ NewConsole = false
   Run = pBasicContactMgr   @ NewConsole = false
   Run = pTempGenPath       @ NewConsole = false
+  Run = pTempPassing       @ NewConsole = false
   //Run = uXMS               @ NewConsole = true
 
 }
@@ -48,6 +49,7 @@ Processconfig = ANTLER
 
 #include plug_pBasicContactMgr.moos
 #include plug_pTempGenPath.moos
+#include plug_pTempPassing.moos
 
 //------------------------------------------------------------
 Processconfig = uXMS

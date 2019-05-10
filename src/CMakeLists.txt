@@ -25,6 +25,8 @@ ADD_SUBDIRECTORY(lib_behaviors-test)
 #ADD_SUBDIRECTORY(pPointAssign)
 #ADD_SUBDIRECTORY(pGenPath)
 ADD_SUBDIRECTORY(pTempGenPath)
+ADD_SUBDIRECTORY(pTempPassing)
+
 
 ##############################################################################
 #                           END of CMakeLists.txt

@@ -99,7 +99,7 @@ Behavior = BHV_OpRegion
 Behavior = BHV_Tripwire
 {
   name       = tripwire
-  pwt        = 500
+  pwt        = 300
   condition  = MODE==SURVEYING
   condition  = OPREGION=true
  
