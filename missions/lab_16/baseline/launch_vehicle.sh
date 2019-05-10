@@ -4,7 +4,7 @@
 #-------------------------------------------------------
 TIME_WARP=1
 JUST_MAKE="no"
-//VNAME="archie"
+# VNAME="archie"
 COOL_FAC=50
 COOL_STEPS=1000
 CONCURRENT="true"
@@ -15,13 +15,14 @@ HEIGHT1=150
 WIDTH1=120
 LANE_WIDTH1=25
 DEGREES1=0
+# SIM="false"
 
 MOOS_PORT1="9001"
 MOOS_PORT2="9002"
-UDP_LISTEN_PORT1="9301"
-UDP_LISTEN_PORT2="9302"
+UDP_LISTEN_PORT1="9201"
+UDP_LISTEN_PORT2="9202"
 SHOREIP="localhost"
-SHORE_LISTEN="9300"
+SHORE_LISTEN="9200"
 
 for ARGI; do
     if [ "${ARGI}" = "--help" -o "${ARGI}" = "-h" ] ; then
@@ -50,6 +51,8 @@ for ARGI; do
     UDP_LISTEN_PORT="${ARGI#--lport=*}"    
     elif [ "${ARGI}" = "--just_build" -o "${ARGI}" = "-j" ] ; then
 	JUST_MAKE="yes"
+  # elif [ "${ARGI}" = "--sim" -o "${ARGI}" = "-s" ] ; then
+  #       SIM="true"
     elif [ "${ARGI:0:6}" = "--warp" ] ; then
         WARP="${ARGI#--warp=*}"
         UNDEFINED_ARG=""
@@ -70,6 +73,11 @@ for ARGI; do
 	exit 0
     fi
 done
+
+if [ ${SIM} = "false" -a ! "$TIME_WARP" = 1 ] ; then
+    echo "Time Warp must be 1 unless in sim mode. Exiting (2)."
+    exit 2
+fi
 
 #-------------------------------------------------------
 #  Part 2: Create the .moos and .bhv files. 
