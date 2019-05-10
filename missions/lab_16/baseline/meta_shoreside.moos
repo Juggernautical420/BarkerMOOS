@@ -62,6 +62,7 @@ ProcessConfig = pShare
   CommsTick  = 2
 
   input = route = localhost:9300 & multicast_12
+  input = route = $(SHOREIP):$(SHORE_LISTEN)
 }
 
 

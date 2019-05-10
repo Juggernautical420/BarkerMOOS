@@ -21,7 +21,7 @@ MOOS_PORT2="9002"
 UDP_LISTEN_PORT1="9301"
 UDP_LISTEN_PORT2="9302"
 SHOREIP="localhost"
-SHORE_LISTEN="9200"
+SHORE_LISTEN="9300"
 
 for ARGI; do
     if [ "${ARGI}" = "--help" -o "${ARGI}" = "-h" ] ; then
