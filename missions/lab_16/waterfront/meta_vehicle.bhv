@@ -85,7 +85,7 @@ Behavior=BHV_Waypoint
          speed = 2.0
         radius = 2.0
      nm_radius = 8.0
-        points = $(START_POS)
+        points = 0,0
         repeat = 10
           lead = 8
  }
