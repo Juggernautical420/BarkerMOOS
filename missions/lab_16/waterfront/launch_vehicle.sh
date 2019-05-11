@@ -142,6 +142,8 @@ BOT_MOOSDB="90$INDEX"
 #    Note: Failed nsplug will abort launch due to bash -e on line 1
 #    Note: Undef macros will be aletered to user with nsplug -i flag
 #---------------------------------------------------------
+START_POS="0,0"
+
 nsplug meta_vehicle.moos targ_${VNAME}.moos -f -i              \
        WARP=$TIME_WARP             VNAME=$VNAME                \
        BOT_PSHARE=$BOT_PSHARE      SHORE_PSHARE=$SHORE_PSHARE  \
