@@ -1,16 +1,14 @@
 ServerHost = localhost
-ServerPort = $(VPORT)
-
-// Community name IS the vehicle name
+ServerPort = $(BOT_MOOSDB)
 Community  = $(VNAME)
 
 #include plug_origin_warp.moos
-  
+
 //------------------------------------------------------------
-Processconfig = ANTLER
+ProcessConfig = ANTLER
 {
-  MSBetweenLaunches = 100
-   
+  MSBetweenLaunches = 150
+
   Run = MOOSDB             @ NewConsole = false
   Run = uSimMarine         @ NewConsole = false
   Run = pLogger            @ NewConsole = false
@@ -19,46 +17,42 @@ Processconfig = ANTLER
   Run = pHelmIvP           @ NewConsole = false
   Run = uProcessWatch      @ NewConsole = false
 
-  Run = pShare             @ NewConsole = false
+  Run = pShare             @ NewConsole = false 
   Run = pHostInfo          @ NewConsole = false
   Run = uFldNodeBroker     @ NewConsole = false
   Run = uFldMessageHandler @ NewConsole = false
-  
+  Run = pBasicContactMgr   @ NewConsole = false
+ 
   Run = uTimerScript       @ NewConsole = false
   Run = pFrontEstimate     @ NewConsole = false
-  Run = pBasicContactMgr   @ NewConsole = false
   Run = pTempGenPath       @ NewConsole = false
   Run = pTempPassing       @ NewConsole = false
-  //Run = uXMS               @ NewConsole = true
 
+#ifdef SIM true
+  Run = uSimMarine         @ NewConsole = false
+#else 
+  Run = iM200              @ NewConsole = false
+#endif
 }
 
-#include plug_pFrontEstimate.moos
-#include plug_uTimerScript.moos  
-#include plug_uFldNodeBroker.moos
-#include plug_pShare.moos
-#include plug_pHostInfo.moos
-#include plug_uFldMessageHandler.moos
-
-#include plug_uSimMarine.moos
-#include plug_pHelmIvP.moos
 #include plug_pMarinePID.moos
+#include plug_pShare.moos
+#include plug_uTimerScript.moos  
 #include plug_pLogger.moos
 #include plug_pNodeReporter.moos
+#include plug_pHelmIvP.moos
+#include plug_pHostInfo.moos
+#include plug_uFldNodeBroker.moos
+#include plug_uFldMessageHandler.moos
 #include plug_uProcessWatch.moos
-
 #include plug_pBasicContactMgr.moos
 #include plug_pTempGenPath.moos
 #include plug_pTempPassing.moos
+#include plug_pFrontEstimate.moos
 
-//------------------------------------------------------------
-Processconfig = uXMS
-{
-  var = OPREG_TRAJECTORY_PERIM_ETA
-  //var = UCTD_MSMNT_REPORT
-  //var = GENPATH
-  //var = N_S_DELTA
-  //var = CURRENT_TEMP
 
-  //history_var = UCTD_MSMNT_REPORT
-}
+#ifdef SIM true
+  #include plug_uSimMarine.moos
+#else 
+  #include plug_iM200.moos
+#endif
