@@ -51,6 +51,7 @@ class TempPassing : public AppCastingMOOSApp
   list<TempEntry> m_temperature_queue;
   unsigned int m_received_index;
   unsigned int m_sent_time;
+  std::string m_veh_name;
 
 
 };
