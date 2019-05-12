@@ -1,0 +1,9 @@
+//------------------------------------------------
+// pTempPassing config block
+
+ProcessConfig = pTempPassing
+{
+   AppTick   = 4
+   CommsTick = 4
+}
+

@@ -1,0 +1,9 @@
+//------------------------------------------------
+// pTempGenPath config block
+
+ProcessConfig = pTempGenPath
+{
+   AppTick   = 4
+   CommsTick = 4
+}
+
