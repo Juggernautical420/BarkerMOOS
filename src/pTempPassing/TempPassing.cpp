@@ -145,11 +145,11 @@ bool TempPassing::OnStartUp()
 
   else if(param=="VNAME"){
     m_veh_name = value;
-      handled = true;
+    handled = true;
   }
 
-    if(!handled)
-      reportUnhandledConfigWarning(orig);
+    // if(!handled)
+    //   reportUnhandledConfigWarning(orig);
 
   }
   
