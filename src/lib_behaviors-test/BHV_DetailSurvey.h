@@ -1,12 +1,12 @@
 /************************************************************/
 /*    NAME: Jason Barker                                              */
 /*    ORGN: MIT                                             */
-/*    FILE: BHV_FrontSurvey.h                                      */
+/*    FILE: BHV_DetailSurvey.h                                      */
 /*    DATE:                                                 */
 /************************************************************/
 
-#ifndef FrontSurvey_HEADER
-#define FrontSurvey_HEADER
+#ifndef DetailSurvey_HEADER
+#define DetailSurvey_HEADER
 
 #include <string>
 #include "IvPBehavior.h"
@@ -15,10 +15,10 @@
 #include "XYPolygon.h"
 #include "XYSegList.h"
 
-class BHV_FrontSurvey : public IvPBehavior {
+class BHV_DetailSurvey : public IvPBehavior {
 public:
-  BHV_FrontSurvey(IvPDomain);
-  ~BHV_FrontSurvey() {};
+  BHV_DetailSurvey(IvPDomain);
+  ~BHV_DetailSurvey() {};
   
   bool         setParam(std::string, std::string);
   void         onSetParamComplete();
@@ -34,7 +34,6 @@ public:
   bool getting_hot;
   bool getting_cold;
 
-  bool cycle_done;
   bool straight_done;
   double m_left_tave;
   double m_right_tave;
@@ -51,7 +50,6 @@ double m_low_temp_turn;
 double m_high_temp_turn;
 double m_avg_temp;
 
-std::string m_cycle_done;
 std::string m_straightpath_done;
 
 double  m_current_x;
@@ -68,6 +66,6 @@ protected: // State variables
 
 extern "C" {
   IVP_EXPORT_FUNCTION IvPBehavior * createBehavior(std::string name, IvPDomain domain) 
-  {return new BHV_FrontSurvey(domain);}
+  {return new BHV_DetailSurvey(domain);}
 }
 #endif

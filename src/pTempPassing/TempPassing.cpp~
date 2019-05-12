@@ -98,7 +98,7 @@ bool TempPassing::Iterate()
         p = m_temperature_queue.begin();
         TempEntry& current_temp = *p;
         NodeMessage node_message; //generate and send a Node Message containing the current temperature reading in the queue
-        node_message.setSourceNode("felix");//my boat name ===SET ME!!!!
+        node_message.setSourceNode("evan");//my boat name ===SET ME!!!!
         node_message.setDestNode("all");
         node_message.setVarName("UCTD_MSMNT_REPORT");
         node_message.setStringVal(current_temp.genMessage());

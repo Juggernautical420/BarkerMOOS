@@ -11,7 +11,7 @@
 #include "MBUtils.h"
 #include "BuildUtils.h"
 #include "AngleUtils.h"
-#include "BHV_FrontSurvey.h"
+#include "BHV_DetailSurvey.h"
 #include "ZAIC_PEAK.h"
 #include "OF_Coupler.h"
 #include "OF_Reflector.h"
@@ -22,7 +22,7 @@ using namespace std;
 //---------------------------------------------------------------
 // Constructor
 
-BHV_FrontSurvey::BHV_FrontSurvey(IvPDomain domain) :
+BHV_DetailSurvey::BHV_DetailSurvey(IvPDomain domain) :
   IvPBehavior(domain)
 {
   // Provide a default behavior name
@@ -32,7 +32,7 @@ BHV_FrontSurvey::BHV_FrontSurvey(IvPDomain domain) :
   m_domain = subDomain(m_domain, "course,speed");
 
   // Add any variables this behavior needs to subscribe for
-  cycle_done = false;
+  straight_done = false;
   getting_cold = false;
   getting_hot = false;
 
@@ -42,14 +42,13 @@ BHV_FrontSurvey::BHV_FrontSurvey(IvPDomain domain) :
   addInfoVars("CURRENT_TEMP", "no_warning");
   addInfoVars("SOUTH_TEMP", "no_warning");
   addInfoVars("N_S_DELTA", "no_warning");
-  addInfoVars("GENPATH", "no_warning");
-  addInfoVars("STRAIGHTPATH", "no_warning");          
+  addInfoVars("STRAIGHTPATH", "no_warning");     
 }
 
 //---------------------------------------------------------------
 // Procedure: setParam()
 
-bool BHV_FrontSurvey::setParam(string param, string val)
+bool BHV_DetailSurvey::setParam(string param, string val)
 {
   // Convert the parameter to lower case for more general matching
   param = tolower(param);
@@ -75,7 +74,7 @@ bool BHV_FrontSurvey::setParam(string param, string val)
 //            Good place to ensure all required params have are set.
 //            Or any inter-param relationships like a<b.
 
-void BHV_FrontSurvey::onSetParamComplete()
+void BHV_DetailSurvey::onSetParamComplete()
 {
 }
 
@@ -84,7 +83,7 @@ void BHV_FrontSurvey::onSetParamComplete()
 //   Purpose: Invoked once upon helm start, even if this behavior
 //            is a template and not spawned at startup
 
-void BHV_FrontSurvey::onHelmStart()
+void BHV_DetailSurvey::onHelmStart()
 {
 }
 
@@ -92,14 +91,14 @@ void BHV_FrontSurvey::onHelmStart()
 // Procedure: onIdleState()
 //   Purpose: Invoked on each helm iteration if conditions not met.
 
-void BHV_FrontSurvey::onIdleState()
+void BHV_DetailSurvey::onIdleState()
 {
 }
 
 //---------------------------------------------------------------
 // Procedure: onCompleteState()
 
-void BHV_FrontSurvey::onCompleteState()
+void BHV_DetailSurvey::onCompleteState()
 {
 }
 
@@ -107,7 +106,7 @@ void BHV_FrontSurvey::onCompleteState()
 // Procedure: postConfigStatus()
 //   Purpose: Invoked each time a param is dynamically changed
 
-void BHV_FrontSurvey::postConfigStatus()
+void BHV_DetailSurvey::postConfigStatus()
 {
 }
 
@@ -115,7 +114,7 @@ void BHV_FrontSurvey::postConfigStatus()
 // Procedure: onIdleToRunState()
 //   Purpose: Invoked once upon each transition from idle to run state
 
-void BHV_FrontSurvey::onIdleToRunState()
+void BHV_DetailSurvey::onIdleToRunState()
 {
 }
 
@@ -123,7 +122,7 @@ void BHV_FrontSurvey::onIdleToRunState()
 // Procedure: onRunToIdleState()
 //   Purpose: Invoked once upon each transition from run to idle state
 
-void BHV_FrontSurvey::onRunToIdleState()
+void BHV_DetailSurvey::onRunToIdleState()
 {
 }
 
@@ -131,7 +130,7 @@ void BHV_FrontSurvey::onRunToIdleState()
 // Procedure: onRunState()
 //   Purpose: Invoked each iteration when run conditions have been met.
 
-IvPFunction* BHV_FrontSurvey::onRunState()
+IvPFunction* BHV_DetailSurvey::onRunState()
 {
   // Part 1: Build the IvP function
   IvPFunction *ipf = 0;
@@ -163,32 +162,22 @@ IvPFunction* BHV_FrontSurvey::onRunState()
   if(m_current_temp >= m_high_temp_turn)
     getting_hot = true;
 
-  bool okzig;
-  m_cycle_done = getBufferStringVal("GENPATH", okzig);
-  if(m_cycle_done == "true")
-    cycle_done = true;
-
-  bool okcurrtemp;
-  m_current_temp = getBufferDoubleVal("CURRENT_TEMP", okcurrtemp);
-
   bool okstr8;
   m_straightpath_done = getBufferStringVal("STRAIGHTPATH", okstr8);
   if(m_straightpath_done == "true")
     straight_done = true;
+
+  bool okcurrtemp;
+  m_current_temp = getBufferDoubleVal("CURRENT_TEMP", okcurrtemp);
  
 
 
  //Zigline Process
-  if(cycle_done){
+  if(straight_done){
     
   //Zigline North if Temp is Hot
     if((getting_hot) && (m_current_temp >= m_low_temp)){
-      if(m_current_heading < 180){
-        zig_direction = 030;
-      }
-      else{
-        zig_direction = 330;
-      }
+      zig_direction = 0;
       ipf = buildFunctionWithZAIC(); 
     }
 
@@ -201,12 +190,7 @@ IvPFunction* BHV_FrontSurvey::onRunState()
 
     //Zigline South if Temp is Cold
     if((getting_cold) && (m_current_temp <= m_high_temp_turn)){
-      if(m_current_heading < 180){
-        zig_direction = 120;
-      }
-      else{
-        zig_direction = 210;
-      }
+        zig_direction = 180;
       ipf = buildFunctionWithZAIC(); 
     }
 
@@ -234,7 +218,7 @@ IvPFunction* BHV_FrontSurvey::onRunState()
 //-----------------------------------------------------------
 // Procedure: buildFunctionWithZAIC
 
-IvPFunction *BHV_FrontSurvey::buildFunctionWithZAIC() 
+IvPFunction *BHV_DetailSurvey::buildFunctionWithZAIC() 
 {
   // ZAIC_PEAK spd_zaic(m_domain, "speed");
   // spd_zaic.setSummit(2);
