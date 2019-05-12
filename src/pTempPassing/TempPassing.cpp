@@ -52,10 +52,10 @@ bool TempPassing::OnNewMail(MOOSMSG_LIST &NewMail)
        m_new_entry.parseMessage(msg.GetString()); //Parse MOOS Message and get object member variables
        m_temperature_queue.push_back(m_new_entry); //Add the item to the list of entries
       }
-     else if(key != "APPCAST_REQ") // handled by AppCastingMOOSApp
-      {
-        reportRunWarning("Unhandled Mail: " + key);
-      }
+     // else if(key != "APPCAST_REQ") // handled by AppCastingMOOSApp
+     //  {
+     //    reportRunWarning("Unhandled Mail: " + key);
+     //  }
    }
   
    return(true);
