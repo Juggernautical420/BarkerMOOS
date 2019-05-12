@@ -43,7 +43,7 @@ BHV_FrontSurvey::BHV_FrontSurvey(IvPDomain domain) :
   addInfoVars("SOUTH_TEMP", "no_warning");
   addInfoVars("N_S_DELTA", "no_warning");
   addInfoVars("GENPATH", "no_warning");
-  addInfoVars("STRAIGHTPATH", "no_warning");          
+         
 }
 
 //---------------------------------------------------------------
@@ -171,10 +171,6 @@ IvPFunction* BHV_FrontSurvey::onRunState()
   bool okcurrtemp;
   m_current_temp = getBufferDoubleVal("CURRENT_TEMP", okcurrtemp);
 
-  bool okstr8;
-  m_straightpath_done = getBufferStringVal("STRAIGHTPATH", okstr8);
-  if(m_straightpath_done == "true")
-    straight_done = true;
  
 
 
@@ -184,10 +180,10 @@ IvPFunction* BHV_FrontSurvey::onRunState()
   //Zigline North if Temp is Hot
     if((getting_hot) && (m_current_temp >= m_low_temp)){
       if(m_current_heading < 180){
-        zig_direction = 030;
+        zig_direction = 015;
       }
       else{
-        zig_direction = 330;
+        zig_direction = 345;
       }
       ipf = buildFunctionWithZAIC(); 
     }
@@ -202,10 +198,10 @@ IvPFunction* BHV_FrontSurvey::onRunState()
     //Zigline South if Temp is Cold
     if((getting_cold) && (m_current_temp <= m_high_temp_turn)){
       if(m_current_heading < 180){
-        zig_direction = 120;
+        zig_direction = 165;
       }
       else{
-        zig_direction = 210;
+        zig_direction = 195;
       }
       ipf = buildFunctionWithZAIC(); 
     }

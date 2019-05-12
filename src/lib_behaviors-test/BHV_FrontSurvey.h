@@ -35,7 +35,7 @@ public:
   bool getting_cold;
 
   bool cycle_done;
-  bool straight_done;
+
   double m_left_tave;
   double m_right_tave;
 
@@ -52,7 +52,7 @@ double m_high_temp_turn;
 double m_avg_temp;
 
 std::string m_cycle_done;
-std::string m_straightpath_done;
+
 
 double  m_current_x;
 double  m_current_y;

@@ -27,6 +27,7 @@ ProcessConfig = ANTLER
   Run = pFrontEstimate     @ NewConsole = false
   Run = pTempGenPath       @ NewConsole = false
   Run = pTempPassing       @ NewConsole = false
+ // Run = uXMS               @ NewConsole = true
 
 #ifdef SIM true
   Run = uSimMarine         @ NewConsole = false
@@ -56,3 +57,15 @@ ProcessConfig = ANTLER
 #else 
   #include plug_iM200.moos
 #endif
+
+//------------------------------------------------------------
+Processconfig = uXMS
+{
+  var = RETURN
+  //var = UCTD_MSMNT_REPORT
+  //var = GENPATH
+  //var = N_S_DELTA
+  //var = CURRENT_TEMP
+
+  //history_var = UCTD_MSMNT_REPORT
+}

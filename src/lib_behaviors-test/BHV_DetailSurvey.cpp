@@ -32,7 +32,7 @@ BHV_DetailSurvey::BHV_DetailSurvey(IvPDomain domain) :
   m_domain = subDomain(m_domain, "course,speed");
 
   // Add any variables this behavior needs to subscribe for
-  straight_done = false;
+  cycle_done = false;
   getting_cold = false;
   getting_hot = false;
 
@@ -42,7 +42,7 @@ BHV_DetailSurvey::BHV_DetailSurvey(IvPDomain domain) :
   addInfoVars("CURRENT_TEMP", "no_warning");
   addInfoVars("SOUTH_TEMP", "no_warning");
   addInfoVars("N_S_DELTA", "no_warning");
-  addInfoVars("STRAIGHTPATH", "no_warning");     
+   addInfoVars("GENPATH", "no_warning");    
 }
 
 //---------------------------------------------------------------
@@ -162,10 +162,10 @@ IvPFunction* BHV_DetailSurvey::onRunState()
   if(m_current_temp >= m_high_temp_turn)
     getting_hot = true;
 
-  bool okstr8;
-  m_straightpath_done = getBufferStringVal("STRAIGHTPATH", okstr8);
-  if(m_straightpath_done == "true")
-    straight_done = true;
+  bool okzig;
+  m_cycle_done = getBufferStringVal("GENPATH", okzig);
+  if(m_cycle_done == "true")
+    cycle_done = true;
 
   bool okcurrtemp;
   m_current_temp = getBufferDoubleVal("CURRENT_TEMP", okcurrtemp);
@@ -173,14 +173,18 @@ IvPFunction* BHV_DetailSurvey::onRunState()
 
 
  //Zigline Process
-  if(straight_done){
+  if(cycle_done){
     
   //Zigline North if Temp is Hot
     if((getting_hot) && (m_current_temp >= m_low_temp)){
-      zig_direction = 0;
+     if(m_current_heading < 180){
+        zig_direction = 030;
+      }
+      else{
+        zig_direction = 330;
+      }
       ipf = buildFunctionWithZAIC(); 
     }
-
     // //Zigline North if Temp is Hot (local maximum)
     // if((m_current_temp == m_high_temp) && (m_current_heading >= m_low_temp)){
     //   zig_direction = 0;     
@@ -190,10 +194,14 @@ IvPFunction* BHV_DetailSurvey::onRunState()
 
     //Zigline South if Temp is Cold
     if((getting_cold) && (m_current_temp <= m_high_temp_turn)){
-        zig_direction = 180;
+     if(m_current_heading < 180){
+        zig_direction = 150;
+      }
+      else{
+        zig_direction = 210;
+      }
       ipf = buildFunctionWithZAIC(); 
     }
-
     // //Zigline South if Temp is Cold (local minimum)
     // if((m_current_temp < m_low_temp_turn) && (m_current_heading <=m_avg_temp)){
     //  if(m_current_heading < 180){
