@@ -49,11 +49,11 @@ void TempEntry::parseMessage(string str)
 void TempEntry::setVname(string v)
 {
     m_vname = v;
-    if(m_vname == "archie"){
-        m_other_vname = "betty";
+    if(m_vname == "evan"){
+        m_other_vname = "felix";
     }
-    else if(m_vname == "betty") {
-        m_other_vname = "archie";
+    else if(m_vname == "felix") {
+        m_other_vname = "evan";
     }
 }
 
