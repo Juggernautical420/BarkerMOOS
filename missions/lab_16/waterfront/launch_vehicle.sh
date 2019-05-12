@@ -145,7 +145,6 @@ BOT_MOOSDB="90$INDEX"
 #    Note: Undef macros will be aletered to user with nsplug -i flag
 #---------------------------------------------------------
 START_POS="0,0"
-VNAME1="evan"
 
 
 
