@@ -6,6 +6,6 @@ ProcessConfig = pTempPassing
    AppTick   = 4
    CommsTick = 4
 
-   VNAME = evan
+   VNAME = felix
 }
 
