@@ -41,6 +41,8 @@ for ARGI; do
 	HELP="yes"
     elif [ "${ARGI//[^0-9]/}" = "$ARGI" -a "$TIME_WARP" = 1 ]; then
         TIME_WARP=$ARGI
+    elif [ "${ARGI:0:8}" = "--vname=" ] ; then
+        VNAME="${ARGI#--vname=*}"        
     elif [ "${ARGI}" = "--just_make" -o "${ARGI}" = "-j" ] ; then
         JUST_MAKE="yes"
     elif [ "${ARGI}" = "--sim" -o "${ARGI}" = "-s" ] ; then
@@ -143,6 +145,9 @@ BOT_MOOSDB="90$INDEX"
 #    Note: Undef macros will be aletered to user with nsplug -i flag
 #---------------------------------------------------------
 START_POS="0,0"
+VNAME1="evan"
+
+
 
 nsplug meta_vehicle.moos targ_${VNAME}.moos -f -i              \
        WARP=$TIME_WARP             VNAME=$VNAME                \
