@@ -145,6 +145,7 @@ bool TempPassing::OnStartUp()
 
   else if(param=="VNAME"){
     m_veh_name = value;
+      handled = true;
   }
 
     if(!handled)
