@@ -54,23 +54,10 @@ Behavior = BHV_Waypoint
    slip_radius = 15.0
           lead = 8
     lead_damper=1
-    points = 0,-160: 150,-30: 150,-160: -30,-60: 70,-110
-  //points = format=lawnmower, label=archie_survey, x=$(SURVEY_X), y=$(SURVEY_Y), width=$(WIDTH), height=$(HEIGHT),lane_width=$(LANE_WIDTH), rows=north-south, degs=$(DEGREES)
-  //points = format=ellipse, label=archie_survey, x=$(SURVEY_X), y=$(SURVEY_Y), degs=$(DEGREES), pts=14, snap=1, major=300, minor=80
+    points = 150,-160: -30,-60: 0, -160: 150, -30: 70,-110
+  //points = format=lawnmower, label=archie_survey, x=70, y=-100, width=120, height=150,lane_width=25, rows=north-south, degs=0
+  //points = format=ellipse, label=archie_survey, x=70, y=-100, degs=0, pts=14, snap=1, major=300, minor=80
         //repeat = 1
-#ifdef VNAMES evan
-       points = 0,-160: 150,-30: 150,-160: -30,-60: 70,-110
-#elseifdef VNAMES felix
-       points = 0,-160: 150,-30: 150,-160: -30,-60: 70,-110
-#elseifdef VNAMES gus
-       points = 0,-160: 150,-30: 150,-160: -30,-60: 70,-110
-#elseifdef VNAMES hal
-       points = 150,-160: -30,-60: 0, -160: 150, -30: 70,-110
-#elseifdef VNAMES ida
-       points = 150,-160: -30,-60: 0, -160: 150, -30: 70,-110
-#elseifdef VNAMES jing
-       points = 150,-160: -30,-60: 0, -160: 150, -30: 70,-110              
-#endif
 
 
   // #ifdef VNAME VNAME2
@@ -99,7 +86,7 @@ Behavior=BHV_Waypoint
          speed = 2.0
         radius = 2.0
      nm_radius = 8.0
-        points = $(START_POS)
+        points = 0,0
         repeat = 10
           lead = 8
  }

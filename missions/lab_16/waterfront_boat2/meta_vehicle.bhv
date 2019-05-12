@@ -9,6 +9,8 @@ initialize   SURVEY  = true
 initialize   AVOID   = true
 initialize   SURVEY_UNDERWAY = false
 initialize   OPREGION = true
+initialize   ANGLEPATH = true
+initialize   STRAIGHTPATH = false
 
 
 set MODE = ACTIVE {
@@ -149,9 +151,20 @@ Behavior = BHV_Tripwire
 //----------------------------------------------
 Behavior=BHV_FrontSurvey
 {
-    name       = survey
+    name       = frontsurvey
     pwt        = 100
     condition  = MODE==SURVEYING
+    condition  = ANGLEPATH=true
+    condition  = STRAIGHTPATH = false
+}
+//----------------------------------------------
+Behavior=BHV_DetailSurvey
+{
+    name       = detailsurvey
+    pwt        = 100
+    condition  = MODE==SURVEYING
+    condition  = ANGLEPATH=false
+    condition  = STRAIGHTPATH =true
 }
 //------------------------------------------------
 Behavior = BHV_AvoidCollision
@@ -179,12 +192,32 @@ Behavior = BHV_AvoidCollision
 //----------------------------------------------
  Behavior = BHV_Timer 
  {
+
    // General Behavior Parameters
    // ---------------------------
    name         = bhv_timer_finish
    condition    = DEPLOY = true   
    duration     = 1100                
    endflag      = RETURN = true       
+   perpetual    = true
+   duration_idle_decay = false
+   
+   // Parameters specific to this behavior
+   // ------------------------------------
+   // None
+ }
+//----------------------------------------------
+ Behavior = BHV_Timer 
+ {
+
+   // General Behavior Parameters
+   // ---------------------------
+   name         = bhv_timer_shifting
+   condition    = DEPLOY = true   
+   duration     = 900  
+   activeflag   = STRAIGHTPATH = true
+   activeflag   = ANGLEPATH = false              
+        
    perpetual    = true
    duration_idle_decay = false
    
