@@ -27,7 +27,7 @@ ProcessConfig = ANTLER
   Run = pFrontEstimate     @ NewConsole = false
   Run = pTempGenPath       @ NewConsole = false
   Run = pTempPassing       @ NewConsole = false
-  Run = uXMS               @ NewConsole = true
+  //Run = uXMS               @ NewConsole = true
 
 #ifdef SIM true
   Run = uSimMarine         @ NewConsole = false
