@@ -158,7 +158,7 @@ IvPFunction* BHV_DetailSurvey::onRunState()
   if(m_current_temp <= m_low_temp_turn)
     getting_cold = true;
 
-  m_high_temp_turn = (0.5 * m_delta_temp) + m_low_temp;
+  m_high_temp_turn = (0.75 * m_delta_temp) + m_low_temp;
   if(m_current_temp >= m_high_temp_turn)
     getting_hot = true;
 

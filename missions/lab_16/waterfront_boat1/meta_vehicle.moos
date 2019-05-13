@@ -27,7 +27,7 @@ ProcessConfig = ANTLER
   Run = pFrontEstimate     @ NewConsole = false
   Run = pTempGenPath       @ NewConsole = false
   Run = pTempPassing       @ NewConsole = false
- // Run = uXMS               @ NewConsole = true
+  Run = uXMS               @ NewConsole = true
 
 #ifdef SIM true
   Run = uSimMarine         @ NewConsole = false
@@ -61,7 +61,7 @@ ProcessConfig = ANTLER
 //------------------------------------------------------------
 Processconfig = uXMS
 {
-  var = RETURN
+  var = RANGE_AVD
   //var = UCTD_MSMNT_REPORT
   //var = GENPATH
   //var = N_S_DELTA

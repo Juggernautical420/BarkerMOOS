@@ -11,7 +11,6 @@ initialize   SURVEY_UNDERWAY = false
 initialize   OPREGION = true
 
 
-
 set MODE = ACTIVE {
   DEPLOY = true
 } INACTIVE
@@ -53,13 +52,12 @@ Behavior = BHV_Waypoint
    slip_radius = 15.0
           lead = 8
     lead_damper=1
-    points = 0,-160: 150,-30: 150,-160: -30,-60: 70,-110 
-    //points for veh1
-    // points = 150,-160: -30,-60: 0, -160: 150, -30: 70,-110
-    // //points for veh 2
-
-  //points = format=lawnmower, label=archie_survey, x=$(SURVEY_X), y=$(SURVEY_Y), width=$(WIDTH), height=$(HEIGHT),lane_width=$(LANE_WIDTH), rows=north-south, degs=$(DEGREES)
-  //points = format=ellipse, label=archie_survey, x=$(SURVEY_X), y=$(SURVEY_Y), degs=$(DEGREES), pts=14, snap=1, major=300, minor=80
+    // points = 0,-160: 150,-30: 150,-160: -30,-60: 70,-110 
+    // //points for veh1
+    points = 150,-160: -30,-60: 0, -160: 150, -30: 70,-110
+    //points for veh 2
+  //points = format=lawnmower, label=archie_survey, x=70, y=-100, width=120, height=150,lane_width=25, rows=north-south, degs=0
+  //points = format=ellipse, label=archie_survey, x=70, y=-100, degs=0, pts=14, snap=1, major=300, minor=80
         //repeat = 1
 
   // #ifdef VNAME VNAME2
@@ -88,7 +86,7 @@ Behavior=BHV_Waypoint
          speed = 2.0
         radius = 2.0
      nm_radius = 8.0
-        points = $(START_POS)
+        points = 0,0
         repeat = 10
           lead = 8
  }
@@ -100,7 +98,7 @@ Behavior = BHV_OpRegion
   pwt        = 100
   condition  = MODE==ACTIVE
   condition  = OPREGION=true
-            
+ 
              soft_poly_breach = true
              polygon = pts={-50,-40 : 100,20 : 180,20 : 180,-200 : -50,-200 : -100,-75}
   trigger_entry_time = 1
@@ -138,15 +136,15 @@ Behavior = BHV_Tripwire
              polygon = pts={-50,-50 : 100,10 : 170,10 : 170,-190 : -40,-190 : -85,-75}
         visual_hints = edge_size=1, vertex_size=2
 }
+
 //----------------------------------------------
-Behavior=BHV_FrontSurvey
+Behavior=BHV_DetailSurvey
 {
-    name       = frontsurvey
+    name       = detailsurvey
     pwt        = 100
     condition  = MODE==SURVEYING
 
 }
-
 //------------------------------------------------
 Behavior = BHV_AvoidCollision
 {
@@ -187,3 +185,4 @@ Behavior = BHV_AvoidCollision
    // ------------------------------------
    // None
  }
+

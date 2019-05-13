@@ -45,6 +45,12 @@ class TempPassing : public AppCastingMOOSApp
    void registerVariables();
 
  private: // Configuration variables
+  double m_range;
+  bool in_range;
+  bool in_period;
+
+
+
 
  private: // State variables
   TempEntry m_new_entry;
@@ -52,6 +58,8 @@ class TempPassing : public AppCastingMOOSApp
   unsigned int m_received_index;
   unsigned int m_sent_time;
   std::string m_veh_name;
+
+
 
 
 };

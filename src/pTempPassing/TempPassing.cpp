@@ -15,6 +15,8 @@ using namespace std;
 TempPassing::TempPassing()
 {
   m_sent_time = 0;
+  m_range = 0;
+  in_period = false;
 }
 
 //---------------------------------------------------------
@@ -52,6 +54,11 @@ bool TempPassing::OnNewMail(MOOSMSG_LIST &NewMail)
        m_new_entry.parseMessage(msg.GetString()); //Parse MOOS Message and get object member variables
        m_temperature_queue.push_back(m_new_entry); //Add the item to the list of entries
       }
+
+     if(key == "RANGE_AVD")
+     {
+      m_range = msg.GetDouble();
+     } 
      // else if(key != "APPCAST_REQ") // handled by AppCastingMOOSApp
      //  {
      //    reportRunWarning("Unhandled Mail: " + key);
@@ -79,15 +86,10 @@ bool TempPassing::Iterate()
   AppCastingMOOSApp::Iterate();
   // Do your thing here!
 
-  bool in_range = true;
+  in_range = true;
 
-  bool in_period;
-    if(MOOSTime() - m_sent_time > 15) {
-      in_period = true;
-    }
-    else {
-      in_period = false;
-    }
+ if(MOOSTime() - m_sent_time > 15)
+  in_period = true;
 
   if(in_range && in_period)
     {
@@ -163,6 +165,7 @@ void TempPassing::registerVariables()
 {
   AppCastingMOOSApp::RegisterVariables();
   Register("UCTD_MSMNT_REPORT", 0);
+
 }
 
 

@@ -47,7 +47,7 @@ Behavior = BHV_Waypoint
   cycleflag    = CYCLE_COMPLETE = true
   endflag      = RETURN = true
 
-         speed = 2   // meters per second
+         speed = 1.3   // meters per second
         radius = 5.0
    slip_radius = 15.0
           lead = 8
