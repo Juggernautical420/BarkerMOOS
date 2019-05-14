@@ -283,22 +283,22 @@ IvPFunction* BHV_Tripwire::onRunState()
   // got_heading = true;
   // }
 
-  if ((got_heading) && (m_current_x >= 130)){
+  if ((got_heading) && (m_current_x >= 150)){
   zig_direction = (m_tripwire_heading + m_zig_angle); 
   ipf = buildFunctionWithZAIC(); 
   }
 
-   if ((got_heading) && (m_current_x <= -20)){
+   if ((got_heading) && (m_current_x <= -40)){
   zig_direction = (m_tripwire_heading + m_zig_angle); 
   ipf = buildFunctionWithZAIC(); 
   }
 
-  if ((got_heading) && (m_current_y >= -50)){
+  if ((got_heading) && (m_current_y >= -40)){
   zig_direction = (m_tripwire_heading + m_zig_angle); 
   ipf = buildFunctionWithZAIC(); 
   }
 
-  if ((got_heading) && (m_current_y <= -120)){
+  if ((got_heading) && (m_current_y <= -160)){
   zig_direction = (m_tripwire_heading + m_zig_angle); 
   ipf = buildFunctionWithZAIC(); 
   }
@@ -312,7 +312,7 @@ IvPFunction* BHV_Tripwire::onRunState()
   if((got_heading) && (m_distance >= 60)){
     got_heading = false;
   }
-  if((got_heading) && (m_current_x >= -60)){
+  if((got_heading) && (m_current_x >= -30)){
     got_heading = false;
   }
   }

@@ -29,6 +29,9 @@ Processconfig = ANTLER
 }
 #include plug_uFldCTDSensor.moos
 //#include plug_uFldCTDSensor_1.moos
+//#include plug_uFldCTDSensor_2.moos
+//#include plug_uFldCTDSensor_3.moos
+//#include plug_uFldCTDSensor_1_2018.moos
 #include plug_pHostInfo.moos
 #include plug_pLogger.moos
 //---------------------------------------------------------
@@ -90,11 +93,12 @@ ProcessConfig = pMarineViewer
   CommsTick  = 4
 
   //TIFF_FILE          = forrest19.tif
-  TIFF_FILE            = AerialMIT.tif
-  set_pan_x            = -30
-  set_pan_y            = 60
-  zoom                 = 2.3
-  vehicles_shape_scale = 1.5
+  TIFF_FILE          = MIT_SP.tif
+  //TIFF_FILE            = AerialMIT.tif
+  set_pan_x            = -50
+  set_pan_y            = -200
+  zoom                 = 0.85
+  vehicles_shape_scale = 2.0
   vehicles_name_mode   = names
 
   circle_viewable_all = true

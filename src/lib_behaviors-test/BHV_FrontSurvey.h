@@ -31,10 +31,12 @@ public:
   IvPFunction* onRunState();
 
   double  zig_direction;
+ 
   bool getting_hot;
   bool getting_cold;
 
   bool cycle_done;
+ 
 
   double m_left_tave;
   double m_right_tave;
@@ -57,6 +59,8 @@ std::string m_cycle_done;
 double  m_current_x;
 double  m_current_y;
 double  m_current_heading;
+bool    m_typewriter;
+
 
 
 

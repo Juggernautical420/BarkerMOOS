@@ -9,6 +9,8 @@ initialize   SURVEY  = true
 initialize   AVOID   = true
 initialize   SURVEY_UNDERWAY = false
 initialize   OPREGION = true
+initialize   FRONTSURVEY = true
+initialize   DETAILSURVEY = false
 
 
 set MODE = ACTIVE {
@@ -52,12 +54,15 @@ Behavior = BHV_Waypoint
    slip_radius = 15.0
           lead = 8
     lead_damper=1
-    // points = 0,-160: 150,-30: 150,-160: -30,-60: 70,-110 
+    // points = 0, -160: 60, -30: 85, -160  
+    //points = 50, -180: 100, -30: 105, 160 
+
+     points = 0,-160: 130,-50: 140,-150: -30,-60: 70,-110 
     // //points for veh1
-    points = 150,-160: -30,-60: 0, -160: 150, -30: 70,-110
+    //points = 150,-160: -30,-60: 0, -160: 150, -30: 70,-110
     //points for veh 2
   //points = format=lawnmower, label=archie_survey, x=$(SURVEY_X), y=$(SURVEY_Y), width=$(WIDTH), height=$(HEIGHT),lane_width=$(LANE_WIDTH), rows=north-south, degs=$(DEGREES)
-  //points = format=ellipse, label=archie_survey, x=$(SURVEY_X), y=$(SURVEY_Y), degs=$(DEGREES), pts=14, snap=1, major=300, minor=80
+  //points = format=ellipse, x=$(SURVEY_X), y=$(SURVEY_Y), degs=0, pts=5, snap=1, major=200, minor=80
         //repeat = 1
 
   // #ifdef VNAME VNAME2
@@ -136,14 +141,23 @@ Behavior = BHV_Tripwire
              polygon = pts={-50,-50 : 100,10 : 170,10 : 170,-190 : -40,-190 : -85,-75}
         visual_hints = edge_size=1, vertex_size=2
 }
-
+//----------------------------------------------
+Behavior=BHV_FrontSurvey
+{
+    name       = frontsurvey
+    pwt        = 100
+    condition  = MODE==SURVEYING
+    condition  = FRONTSURVEY = true
+    condition  = DETAILSURVEY = false
+}
 //----------------------------------------------
 Behavior=BHV_DetailSurvey
 {
     name       = detailsurvey
     pwt        = 100
     condition  = MODE==SURVEYING
-
+    condition  = FRONTSURVEY = false
+    condition  = DETAILSURVEY = true
 }
 //------------------------------------------------
 Behavior = BHV_AvoidCollision
@@ -176,8 +190,26 @@ Behavior = BHV_AvoidCollision
    // ---------------------------
    name         = bhv_timer_finish
    condition    = DEPLOY = true   
-   duration     = 1100                
+   duration     = 900                
    endflag      = RETURN = true       
+   perpetual    = true
+   duration_idle_decay = false
+   
+   // Parameters specific to this behavior
+   // ------------------------------------
+   // None
+ }
+//----------------------------------------------
+ Behavior = BHV_Timer 
+ {
+
+   // General Behavior Parameters
+   // ---------------------------
+   name         = bhv_timer_survey
+   condition    = DEPLOY = true   
+   //duration     = 700              
+   //endflag      = FRONTSURVEY = false 
+   //endflag      = DETAILSURVEY = true       
    perpetual    = true
    duration_idle_decay = false
    

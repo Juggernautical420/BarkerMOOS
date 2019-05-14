@@ -23,6 +23,7 @@ class TempGenPath : public AppCastingMOOSApp
    bool initial_temp;
    bool left_points;
    bool right_points;
+   bool period_attempt;
 
  protected: // Standard MOOSApp functions to overload  
    bool OnNewMail(MOOSMSG_LIST &NewMail);
@@ -43,6 +44,7 @@ class TempGenPath : public AppCastingMOOSApp
    std::string m_string_vname;
    std::string m_cycle_done;
    std::string m_temp_report;
+   std::string m_period_try;
    double m_string_utc;
    double m_string_x;
    double m_string_y;

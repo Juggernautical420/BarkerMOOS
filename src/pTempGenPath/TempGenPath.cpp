@@ -19,7 +19,7 @@ TempGenPath::TempGenPath()
 {
   cycle_done = false;
   initial_temp = false;
-
+  period_attempt = false;
   left_points = false;
   right_points = false;
 }
@@ -55,7 +55,13 @@ bool TempGenPath::OnNewMail(MOOSMSG_LIST &NewMail)
     if(m_cycle_done == "true"){
       cycle_done = true;
     }
-  } 
+  }
+  else if(key == "PERIODTRY"){
+    m_period_try = msg.GetString();
+    if(m_period_try == "true"){
+      period_attempt = true;
+    }
+  }  
 
 #if 0 // Keep these around just for template
     string comm  = msg.GetCommunity();
@@ -98,7 +104,7 @@ bool TempGenPath::Iterate()
 m_current_temp = m_string_temp;
 Notify("CURRENT_TEMP", m_current_temp);
 
-if(m_next_wpt == 0){
+
 if(!initial_temp){
 m_initial_temp = m_current_temp;
 Notify("INITIAL_TEMP", m_initial_temp);
@@ -116,7 +122,7 @@ Notify("SOUTH_TEMP", m_current_hot);
 m_tave = (m_current_hot + m_initial_temp)/2;
 m_temp_delta = m_current_hot - m_initial_temp;
 Notify("N_S_DELTA", m_temp_delta);
-}
+
 
 // m_delta_h = (0.75 * m_temp_delta) + m_initial_temp;
 // m_delta_l = (0.25 * m_temp_delta) + m_initial_temp;
@@ -138,14 +144,21 @@ Notify("N_S_DELTA", m_temp_delta);
 // }
 
 //if((left_points) && (right_points)){
-if(m_next_wpt == 4){
+if(m_next_wpt == 3){
 Notify("GENPATH", "true");  
   string update_str = "points = -30,-120: 130,-40";
+  //string update_str = "points =  130,-40: -30,-120";
   //update_str += m_waypoints.get_spec();
   update_str +=" # repeat = 1";
+  update_str +=" # speed = 1";
   //update_str +=" # visual_hints = edge_color = yellow, vertex_color = yellow ";
 Notify("SURVEY_UPDATES", update_str);
- 
+
+
+if(period_attempt){
+  string update_spd = "speed = 2";
+ Notify("SURVEY_UPDATES", update_spd); 
+} 
 
 }
 
@@ -203,6 +216,7 @@ void TempGenPath::registerVariables()
   Register("WPT_INDEX",0);
   Register("UCTD_MSMNT_REPORT",0);
   Register("CYCLE_COMPLETE",0);
+  Register("PERIODTRY", 0);
   // Register("FOOBAR", 0);
 }
 
