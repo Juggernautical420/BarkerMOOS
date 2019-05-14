@@ -19,7 +19,7 @@ INTERACTIVE="true"
 SHORE_IPADDR=192.168.10.100
 SHORE_PSHARE=9200
 
-VNAMES=(evan felix gus hal ida jing)
+VNAMES=(abe ben cal deb evan felix gus hal ida jing kirk luke)
 COOL_FAC=50
 COOL_STEPS=1000
 CONCURRENT="true"
