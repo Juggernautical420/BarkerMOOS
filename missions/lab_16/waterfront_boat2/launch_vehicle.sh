@@ -68,12 +68,12 @@ for ARGI; do
     # elif [ "${ARGI}" = "-v2"  -o "${ARGI}" = "-b" ]; then INDEX=2
     # elif [ "${ARGI}" = "-v3"  -o "${ARGI}" = "-c" ]; then INDEX=3
     # elif [ "${ARGI}" = "-v4"  -o "${ARGI}" = "-d" ]; then INDEX=4
-    elif [ "${ARGI}" = "-v5"  -o "${ARGI}" = "-e" ]; then INDEX=1
-    elif [ "${ARGI}" = "-v6"  -o "${ARGI}" = "-f" ]; then INDEX=2
-    elif [ "${ARGI}" = "-v7"  -o "${ARGI}" = "-g" ]; then INDEX=3
-    elif [ "${ARGI}" = "-v8"  -o "${ARGI}" = "-H" ]; then INDEX=4
-    elif [ "${ARGI}" = "-v9"  -o "${ARGI}" = "-i" ]; then INDEX=5
-    elif [ "${ARGI}" = "-v10" -o "${ARGI}" = "-J" ]; then INDEX=6
+    elif [ "${ARGI}" = "-v5"  -o "${ARGI}" = "-e" ]; then INDEX=5
+    elif [ "${ARGI}" = "-v6"  -o "${ARGI}" = "-f" ]; then INDEX=6
+    elif [ "${ARGI}" = "-v7"  -o "${ARGI}" = "-g" ]; then INDEX=7
+    elif [ "${ARGI}" = "-v8"  -o "${ARGI}" = "-H" ]; then INDEX=8
+    elif [ "${ARGI}" = "-v9"  -o "${ARGI}" = "-i" ]; then INDEX=9
+    elif [ "${ARGI}" = "-v10" -o "${ARGI}" = "-J" ]; then INDEX=10
     # elif [ "${ARGI}" = "-v11" -o "${ARGI}" = "-k" ]; then INDEX=11
     # elif [ "${ARGI}" = "-v12" -o "${ARGI}" = "-l" ]; then INDEX=12
     else
