@@ -1,6 +1,6 @@
 ServerHost = localhost
-ServerPort = 9001
-Community  = evan
+ServerPort = 9007
+Community  = gus
 
 MOOSTimeWarp = 15
 //LatOrigin  = 43.825300 
@@ -15,6 +15,9 @@ ProcessConfig = ANTLER
 
   Run = MOOSDB             @ NewConsole = false
   Run = uSimMarine         @ NewConsole = false
+
+
+
   Run = pLogger            @ NewConsole = false
   Run = pNodeReporter      @ NewConsole = false
   Run = pMarinePID         @ NewConsole = false
@@ -32,8 +35,7 @@ ProcessConfig = ANTLER
   Run = pTempGenPath       @ NewConsole = false
   Run = pTempPassing       @ NewConsole = false
   //Run = uXMS               @ NewConsole = true
-
-  Run = uSimMarine         @ NewConsole = false
+  //Run = uSimMarine         @ NewConsole = false
 }
 
 //----------------------------------------------
@@ -77,7 +79,7 @@ ProcessConfig = pShare
   AppTick    = 2
   CommsTick  = 2
 
-  input = route =  localhost:9201
+  input = route =  localhost:9207
 }
 
 //--------------------------------------------------------
@@ -96,9 +98,9 @@ ProcessConfig = uTimerScript
 
   //RANDVAR = varname=X, min=0,  max=100, key=at_reset
   //RANDVAR = varname=Y, min=0,  max=100, key=at_reset
-  //EVENT = var=NODE_MESSAGE_LOCAL, val="src_node=evan,dest_node=all,var_name=FOOBAR,string_val=$[X],$[Y]", time=0:30 
+  //EVENT = var=NODE_MESSAGE_LOCAL, val="src_node=gus,dest_node=all,var_name=FOOBAR,string_val=$[X],$[Y]", time=0:30 
 
-  EVENT = var=UCTD_SENSOR_REQUEST, val=vname=evan, time=2 
+  EVENT = var=UCTD_SENSOR_REQUEST, val=vname=gus, time=2 
 }
 
 
@@ -113,7 +115,7 @@ ProcessConfig = pLogger
   AppTick 	= 5
   CommsTick 	= 5
   
-  File		= LOG_EVAN
+  File		= LOG_GUS
   PATH		= ./
   SyncLog 	= true @ 0.2
   AsyncLog 	= true
@@ -143,7 +145,7 @@ ProcessConfig = pHelmIvP
   AppTick    = 4
   CommsTick  = 4
 
-  Behaviors    = targ_evan.bhv
+  Behaviors    = targ_gus.bhv
   Verbose      = false
   Domain       = course:0:359:360
   Domain       = speed:0:2.5:26
@@ -171,7 +173,7 @@ ProcessConfig = uFldNodeBroker
   AppTick   = 1
   CommsTick = 1
 
-  try_shore_host = pshare_route=192.168.1.214:9200
+  try_shore_host = pshare_route=192.168.1.215:9200
 
   BRIDGE = src=VIEW_POLYGON
   BRIDGE = src=VIEW_POINT
@@ -273,7 +275,7 @@ ProcessConfig = pFrontEstimate
   AppTick    = 4
   CommsTick  = 4
 
-  vname = evan
+  vname = gus
   temperature_factor = 50
   cooling_steps = 1000
 
@@ -346,6 +348,50 @@ ProcessConfig = pFrontEstimate
   adaptive=false
 }
 
+//------------------------------------------------------
+// uSimMarine Configuration Block  (Created from plugin)
+
+ProcessConfig = uSimMarine
+{
+  AppTick   = 10
+  CommsTick = 10
+
+  START_POS = 0,0
+  PREFIX    = NAV
+
+  //rotate_speed = 0.012
+  //drift_x      = 0.0045
+
+  //thrust_map = -100:-2, 0:0, 20:1, 40:2, 60:3, 80:5, 100:5
+  //thrust_map = -100:-2, 0:0, 20:1, 40:2, 60:3, 80:5, 100:5
+}
+
+//--------------------------------------------------------
+// iM200 config block (created from plugin) 
+
+ProcessConfig = iM200
+{
+  AppTick        = 10
+  CommsTick      = 10
+
+  PORT_NUMBER    = 29500
+  IP_ADDRESS     = 192.168.7.1  // Default is 'localhost'
+  GPS_PREFIX     = NAV_        // Prepended to GPS position messages.
+  DIRECT_THRUST  = false       // Default is false.
+                               // When true, vehicle in direct-thrust mode.
+                               // When false, vehicle in rudder-thrust mode.
+
+  HEADING_OFFSET = 0.0         // Offset to add to published heading
+
+	
+  PUBLISH_RAW    = true        // When true, publish all messages from
+                               // front seat to M200_RAW_NMEA
+  MAX_RUDDER     = 100.0        // Rudder value will be capped to this, +/-
+  MAX_THRUST     = 100.0        // Thrust value to each motor will be
+                               // capped to this value, +/-
+
+  PUBLISH_THRUST = TRUE
+}
 
 
 //------------------------------------------------------
@@ -370,8 +416,8 @@ ProcessConfig = uSimMarine
 //------------------------------------------------------------
 Processconfig = uXMS
 {
-  var = RANGE_AVD
-  //var = UCTD_MSMNT_REPORT
+  //var = RANGE_AVD
+  var = UCTD_MSMNT_REPORT
   //var = GENPATH
   //var = N_S_DELTA
   //var = CURRENT_TEMP

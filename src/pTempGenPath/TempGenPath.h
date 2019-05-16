@@ -58,6 +58,7 @@ class TempGenPath : public AppCastingMOOSApp
    double m_t_hot;
    double m_tave;
    double m_current_hot;
+   double m_current_cold;
    double m_temp_delta;
    double m_delta_h;
    double m_delta_l;

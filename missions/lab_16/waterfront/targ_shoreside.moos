@@ -5,7 +5,7 @@ ServerHost = localhost
 ServerPort = 9000
 Community  = shoreside
 
-MOOSTimeWarp = 1
+MOOSTimeWarp = 15
 //LatOrigin  = 43.825300 
 //LongOrigin = -70.330400 
 LatOrigin  = 42.3584
@@ -31,6 +31,9 @@ Processconfig = ANTLER
   Run = pGradeFrontEstimate @ NewConsole=false
 
 }
+//#include plug_uFldCTDSensor.moos
+//#include plug_uFldCTDSensor_1.moos
+//#include plug_uFldCTDSensor_2.moos
 //--------------------------------------------------
 // uFldGenericSensor configuration block from plugin
 
@@ -46,25 +49,18 @@ ProcessConfig = uFldCTDSensor
   ymax  =  0  
      
   offset = -100
-  //angle  = -4
-  angle = 5 //for testing in part A
-  amplitude = 20
-  period = 200 //4.3.3 instructions
-  //period = 1e6 //for testing in part A
+  angle  = -4
+  amplitude = 5
+  period = 297
   wavelength = 212
-  //alpha = 350
-  alpha = 500 //for testing in part A
-  //beta = 43
-  beta = 20 // for testing in part A
+  alpha = 350
+  beta = 43
   temperature_north = 22
   temperature_south = 28
   sigma = 0.01
 }
 
 
-//#include plug_uFldCTDSensor_1.moos
-//#include plug_uFldCTDSensor_2.moos
-//#include plug_uFldCTDSensor_3.moos
 //#include plug_uFldCTDSensor_1_2018.moos
 //--------------------------------------------------
 // pHostInfo configuration block from plugin

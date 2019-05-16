@@ -10,7 +10,14 @@ ProcessConfig = ANTLER
   MSBetweenLaunches = 150
 
   Run = MOOSDB             @ NewConsole = false
- // Run = uSimMarine         @ NewConsole = false
+#ifdef SIM true
+  Run = uSimMarine         @ NewConsole = false
+#else 
+  Run = iM200              @ NewConsole = false
+#endif
+
+
+
   Run = pLogger            @ NewConsole = false
   Run = pNodeReporter      @ NewConsole = false
   Run = pMarinePID         @ NewConsole = false
@@ -28,12 +35,7 @@ ProcessConfig = ANTLER
   Run = pTempGenPath       @ NewConsole = false
   Run = pTempPassing       @ NewConsole = false
   //Run = uXMS               @ NewConsole = true
-
-#ifdef SIM true
-  Run = uSimMarine         @ NewConsole = false
-#else 
-  Run = iM200              @ NewConsole = false
-#endif
+  //Run = uSimMarine         @ NewConsole = false
 }
 
 #include plug_pMarinePID.moos
@@ -50,7 +52,8 @@ ProcessConfig = ANTLER
 #include plug_pTempGenPath.moos
 #include plug_pTempPassing.moos
 #include plug_pFrontEstimate.moos
-
+#include plug_uSimMarine.moos
+#include plug_iM200.moos
 
 #ifdef SIM true
   #include plug_uSimMarine.moos
@@ -61,8 +64,8 @@ ProcessConfig = ANTLER
 //------------------------------------------------------------
 Processconfig = uXMS
 {
-  var = RANGE_AVD
-  //var = UCTD_MSMNT_REPORT
+  //var = RANGE_AVD
+  var = UCTD_MSMNT_REPORT
   //var = GENPATH
   //var = N_S_DELTA
   //var = CURRENT_TEMP

@@ -24,7 +24,7 @@ ProcessConfig = pFrontEstimate
 
   // AMPLITUDE
   min_amplitude = 0
-  max_amplitude = 50
+  max_amplitude = 20
 
   //min_amplitude = 20
   //max_amplitude = 20
@@ -41,19 +41,19 @@ ProcessConfig = pFrontEstimate
   //max_wavelength = 500
 
   min_wavelength = 100
-  max_wavelength = 500
+  max_wavelength = 300
 
   // ALPHA
   //min_alpha = 200
   //max_alpha = 500
 
-  min_alpha = 500 //keep this fixed at 500 (see lab 18)
-  max_alpha = 500
+  min_alpha = 350 //keep this fixed at 500 (see lab 18)
+  max_alpha = 350
 
 
   // BETA
   min_beta = 10
-  max_beta = 30
+  max_beta = 50
   
   //min_beta = 20
   //max_beta = 20

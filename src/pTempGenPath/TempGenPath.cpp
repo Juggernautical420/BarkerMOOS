@@ -116,6 +116,10 @@ if(m_current_temp > m_initial_temp){
     m_t_hot = max(m_initial_temp, m_current_temp);
     m_current_hot = max(m_t_hot, m_current_hot);
   }
+// if(m_current_temp < m_initial_temp){
+//   m_t_cold = min(m_initial_temp, m_current_temp);
+//   m_current_cold = min(m_t_cold, m_current_cold);
+// }  
 
 Notify("NORTH_TEMP", m_initial_temp);
 Notify("SOUTH_TEMP", m_current_hot);
@@ -144,7 +148,7 @@ Notify("N_S_DELTA", m_temp_delta);
 // }
 
 //if((left_points) && (right_points)){
-if(m_next_wpt == 3){
+if(m_next_wpt == 2){
 Notify("GENPATH", "true");  
   string update_str = "points = -30,-120: 130,-40";
   //string update_str = "points =  130,-40: -30,-120";

@@ -160,7 +160,7 @@ IvPFunction* BHV_FrontSurvey::onRunState()
   if(m_current_temp <= m_low_temp_turn)
     getting_cold = true;
 
-  m_high_temp_turn = (0.7 * m_delta_temp) + m_low_temp;
+  m_high_temp_turn = (0.6 * m_delta_temp) + m_low_temp;
   if(m_current_temp >= m_high_temp_turn)
     getting_hot = true;
 
@@ -190,11 +190,11 @@ IvPFunction* BHV_FrontSurvey::onRunState()
       ipf = buildFunctionWithZAIC(); 
     }
 
-    //Zigline North if Temp is Hot (local maximum)
-    if((m_current_temp == m_high_temp) && (m_current_heading > m_low_temp)){
-      zig_direction = 0;     
-      ipf = buildFunctionWithZAIC(); 
-    }
+    // //Zigline North if Temp is Hot (local maximum)
+    // if((m_current_temp == m_high_temp) && (m_current_heading > m_low_temp)){
+    //   zig_direction = 0;     
+    //   ipf = buildFunctionWithZAIC(); 
+    // }
 
 
     //Zigline South if Temp is Cold
@@ -208,11 +208,11 @@ IvPFunction* BHV_FrontSurvey::onRunState()
       ipf = buildFunctionWithZAIC(); 
     }
 
-    //Zigline South if Temp is Cold (local minimum)
-    if((m_current_temp == m_low_temp) && (m_current_heading < m_high_temp)){
-      zig_direction = 0;     
-      ipf = buildFunctionWithZAIC(); 
-    }
+    // //Zigline South if Temp is Cold (local minimum)
+    // if((m_current_temp == m_low_temp) && (m_current_heading < m_high_temp)){
+    //   zig_direction = 0;     
+    //   ipf = buildFunctionWithZAIC(); 
+    // }
 
   }  
 
