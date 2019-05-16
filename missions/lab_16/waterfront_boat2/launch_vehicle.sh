@@ -74,8 +74,8 @@ for ARGI; do
     elif [ "${ARGI}" = "-v8"  -o "${ARGI}" = "-H" ]; then INDEX=8
     elif [ "${ARGI}" = "-v9"  -o "${ARGI}" = "-i" ]; then INDEX=9
     elif [ "${ARGI}" = "-v10" -o "${ARGI}" = "-J" ]; then INDEX=10
-    # elif [ "${ARGI}" = "-v11" -o "${ARGI}" = "-k" ]; then INDEX=11
-    # elif [ "${ARGI}" = "-v12" -o "${ARGI}" = "-l" ]; then INDEX=12
+    elif [ "${ARGI}" = "-v11" -o "${ARGI}" = "-k" ]; then INDEX=11
+    elif [ "${ARGI}" = "-v12" -o "${ARGI}" = "-l" ]; then INDEX=12
     else
         echo "Bad arg:" $ARGI "Run with -h for help. Exiting (1)."
         exit 1
