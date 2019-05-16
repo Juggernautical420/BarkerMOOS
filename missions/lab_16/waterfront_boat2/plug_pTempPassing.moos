@@ -6,6 +6,6 @@ ProcessConfig = pTempPassing
    AppTick   = 4
    CommsTick = 4
 //set me as the other boat name
-   VNAME = gus
+   VNAME = kirk
 }
 
