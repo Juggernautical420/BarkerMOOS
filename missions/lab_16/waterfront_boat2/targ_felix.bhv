@@ -9,11 +9,18 @@ initialize   SURVEY  = true
 initialize   AVOID   = true
 initialize   SURVEY_UNDERWAY = false
 initialize   OPREGION = true
+initialize   FRONTSURVEY = true
+initialize   DETAILSURVEY = false
 
 
 set MODE = ACTIVE {
   DEPLOY = true
 } INACTIVE
+
+set MODE = STATION-KEEPING {
+  MODE = ACTIVE
+  STATION_KEEP = true
+} 
 
 set MODE = RETURNING {
   MODE = ACTIVE
@@ -25,6 +32,9 @@ set MODE = SURVEYING {
   SURVEY = true
   RETURN = false
 }
+
+
+
 
 //----------------------------------------------
 Behavior = BHV_Waypoint
@@ -39,15 +49,22 @@ Behavior = BHV_Waypoint
   cycleflag    = CYCLE_COMPLETE = true
   endflag      = RETURN = true
 
-         speed = 2   // meters per second
+         speed = 1.3   // meters per second
         radius = 5.0
    slip_radius = 15.0
           lead = 8
-	  lead_damper=1
-  //  points = 0,-170: 150,-30: 150,-160: -30,-60: 70,-110
-	//points = format=lawnmower, label=archie_survey, x=70, y=-100, width=120, height=150,lane_width=25, rows=north-south, degs=0
-  //points = format=ellipse, label=archie_survey, x=70, y=-100, degs=0, pts=14, snap=1, major=300, minor=80
+    lead_damper=1
+    // points = 0, -160: 60, -30: 85, -160  
+    //points = 50, -180: 100, -30: 105, 160 
+
+     points = -20,-180: 130,-50: 140,-150: -30,-60: 70,-110 
+    // //points for veh1
+    //points = 150,-160: -30,-60: 0, -160: 150, -30: 70,-110
+    //points for veh 2
+  //points = format=lawnmower, label=archie_survey, x=70, y=-100, width=120, height=150,lane_width=25, rows=north-south, degs=0
+  //points = format=ellipse, x=70, y=-100, degs=0, pts=5, snap=1, major=200, minor=80
         //repeat = 1
+
   // #ifdef VNAME VNAME2
   //         order = reverse
   // #endif             
@@ -59,7 +76,7 @@ Behavior = BHV_Waypoint
 }
 
 //----------------------------------------------
-Behavior = BHV_Waypoint
+Behavior=BHV_Waypoint
 {
   name       = waypt_return
   pwt        = 100
@@ -68,6 +85,8 @@ Behavior = BHV_Waypoint
   perpetual  = true
   endflag    = RETURN = false
   endflag    = DEPLOY = false
+  endflag    = STATION_KEEP = true
+  
 
          speed = 2.0
         radius = 2.0
@@ -75,7 +94,7 @@ Behavior = BHV_Waypoint
         points = 0,0
         repeat = 10
           lead = 8
-}
+ }
 
 //----------------------------------------------
 Behavior = BHV_OpRegion
@@ -85,10 +104,31 @@ Behavior = BHV_OpRegion
   condition  = MODE==ACTIVE
   condition  = OPREGION=true
  
+             soft_poly_breach = true
              polygon = pts={-50,-40 : 100,20 : 180,20 : 180,-200 : -50,-200 : -100,-75}
   trigger_entry_time = 1
   trigger_exit_time  = 1
         visual_hints = edge_size=1, vertex_size=2
+}
+
+
+//----------------------------------------------
+Behavior = BHV_StationKeep
+{
+  name         = station-keep
+  pwt          = 100
+  condition    = MODE==STATION-KEEPING
+  activeflag   = OPREGION=false
+  inactiveflag = OPREGION=true
+
+     center_activate = true
+        inner_radius = 5
+        outer_radius = 10 
+         outer_speed = 1.0
+
+       transit_speed = 1.3
+          swing_time = 7
+        visual_hints = vertex_size=0, edge_color=gray50
 }
 //----------------------------------------------
 Behavior = BHV_Tripwire
@@ -104,9 +144,20 @@ Behavior = BHV_Tripwire
 //----------------------------------------------
 Behavior=BHV_FrontSurvey
 {
-    name       = survey
+    name       = frontsurvey
     pwt        = 100
     condition  = MODE==SURVEYING
+    condition  = FRONTSURVEY = true
+    condition  = DETAILSURVEY = false
+}
+//----------------------------------------------
+Behavior=BHV_DetailSurvey
+{
+    name       = detailsurvey
+    pwt        = 100
+    condition  = MODE==SURVEYING
+    condition  = FRONTSURVEY = false
+    condition  = DETAILSURVEY = true
 }
 //------------------------------------------------
 Behavior = BHV_AvoidCollision
@@ -126,20 +177,39 @@ Behavior = BHV_AvoidCollision
         pwt_outer_dist = 50
         pwt_inner_dist = 20
         completed_dist = 75
-     min_util_cpa_dist = 8
-     max_util_cpa_dist = 25    
+     min_util_cpa_dist = 4
+     max_util_cpa_dist = 15    
              pwt_grade = linear
    bearing_line_config = white:0, green:0.65, yellow:0.8, red:1.0
 }
 //----------------------------------------------
  Behavior = BHV_Timer 
  {
+
    // General Behavior Parameters
    // ---------------------------
    name         = bhv_timer_finish
    condition    = DEPLOY = true   
-   duration     = 1100                
+   duration     = 900                
    endflag      = RETURN = true       
+   perpetual    = true
+   duration_idle_decay = false
+   
+   // Parameters specific to this behavior
+   // ------------------------------------
+   // None
+ }
+//----------------------------------------------
+ Behavior = BHV_Timer 
+ {
+
+   // General Behavior Parameters
+   // ---------------------------
+   name         = bhv_timer_survey
+   condition    = DEPLOY = true   
+   //duration     = 700              
+   //endflag      = FRONTSURVEY = false 
+   //endflag      = DETAILSURVEY = true       
    perpetual    = true
    duration_idle_decay = false
    

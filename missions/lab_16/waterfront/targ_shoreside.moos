@@ -1,4 +1,3 @@
-
 //*******************************************************
 // ShoreSide Configuration File
 
@@ -12,26 +11,29 @@ MOOSTimeWarp = 15
 LatOrigin  = 42.3584
 LongOrigin = -71.08745
 
-  
 //--------------------------------------------------------
 Processconfig = ANTLER
 {
-  MSBetweenLaunches = 400
+  MSBetweenLaunches = 100
 
-  Run = MOOSDB              @ NewConsole = false
-  Run = pMarineViewer       @ NewConsole = false
-  Run = pLogger             @ NewConsole = false
+  Run = MOOSDB          @ NewConsole = false
+  Run = pLogger         @ NewConsole = false
+//Run = uProcessWatch   @ NewConsole = false
 
-  Run = pShare              @ NewConsole = false
-  Run = pHostInfo           @ NewConsole = false
-  Run = uFldShoreBroker     @ NewConsole = false
-  Run = uFldNodeComms       @ NewConsole = false
+  Run = pMarineViewer   @ NewConsole = false
 
+  Run = pHostInfo       @ NewConsole = false
+  Run = pShare          @ NewConsole = false
+  Run = uFldShoreBroker @ NewConsole = false
+  Run = uFldNodeComms   @ NewConsole = false
   Run = uFldCTDSensor       @ NewConsole = false
   Run = pFrontGridRender    @ NewConsole = false
   Run = pGradeFrontEstimate @ NewConsole=false
-}
 
+}
+//#include plug_uFldCTDSensor.moos
+//#include plug_uFldCTDSensor_1.moos
+//#include plug_uFldCTDSensor_2.moos
 //--------------------------------------------------
 // uFldGenericSensor configuration block from plugin
 
@@ -47,23 +49,19 @@ ProcessConfig = uFldCTDSensor
   ymax  =  0  
      
   offset = -100
-  //angle  = -4
-  angle = 5 //for testing in part A
-  amplitude = 20
-  period = 200 //4.3.3 instructions
-  //period = 1e6 //for testing in part A
+  angle  = -4
+  amplitude = 5
+  period = 297
   wavelength = 212
-  //alpha = 350
-  alpha = 500 //for testing in part A
-  //beta = 43
-  beta = 20 // for testing in part A
+  alpha = 350
+  beta = 43
   temperature_north = 22
   temperature_south = 28
   sigma = 0.01
 }
 
 
-//#include plug_uFldCTDSensor_1.moos
+//#include plug_uFldCTDSensor_1_2018.moos
 //--------------------------------------------------
 // pHostInfo configuration block from plugin
 
@@ -98,44 +96,36 @@ ProcessConfig = pLogger
   LogAuxSrc = true
 }
 
-//--------------------------------------------------
-// pGradeFrontEstiamte Configuration Block
-
-ProcessConfig = pGradeFrontEstimate
-{
-  AppTick=1
-  CommsTick = 1
-
-}
-//--------------------------------------------------
-// pFrontGridRender Configuration Block
-ProcessConfig = pFrontGridRender
-{
-  AppTick       = 1
-  CommsTick     = 1
-
-  GRID_CONFIG = pts={-100,-200: 200,-200: 200,25: -100,25}
-  GRID_CONFIG = cell_size=7
-  GRID_CONFIG = cell_vars=x:0
-}
-
-
 //---------------------------------------------------------
-// pShare Config Block
+// pShare Configuration Block
 
 ProcessConfig = pShare
 {
   AppTick    = 2
   CommsTick  = 2
 
-  input = route = localhost:9200
-  input = route = localhost:9200
+  input = route =  localhost:9200
+}
+
+//--------------------------------------------------
+// ufldnodecomms Configuration Block
+
+ProcessConfig = uFldNodeComms
+{
+  AppTick       = 2
+  CommsTick     = 2
+
+  comms_range      = 100
+  critical_range   = 25
+  min_msg_interval = 0
+  max_msg_length   = 0
+  groups           = true
+  view_node_rpt_pulses = true
 }
 
 
 //--------------------------------------------------
 // uFldShoreBroker Configuration Block
-
 ProcessConfig = uFldShoreBroker
 {
   AppTick       = 1
@@ -156,21 +146,7 @@ ProcessConfig = uFldShoreBroker
   bridge   = src=APPCAST_REQ 
 }
 
-//--------------------------------------------------
-// uFldNodeComms Configuration Block
 
-ProcessConfig = uFldNodeComms
-{
-	AppTick   = 2
-	CommsTick = 2
-
-	comms_range      = 100
-	critical_range   = 25
-	min_msg_interval = 0
-	max_msg_length   = 0
-	groups           = true
-	view_node_rpt_pulses = true
-}
 
 //--------------------------------------------------------
 ProcessConfig = pMarineViewer
@@ -178,20 +154,21 @@ ProcessConfig = pMarineViewer
   AppTick    = 4
   CommsTick  = 4
 
-  TIFF_FILE            = AerialMIT.tif
-  set_pan_x            = -30
-  set_pan_y            = 60
-  zoom                 = 2.3
-  vehicles_shape_scale = 1.5
-  vehicles_name_mode   = names+shortmode
-  marker_viewable_labels = false
+  //TIFF_FILE          = forrest19.tif
+  TIFF_FILE          = MIT_SP.tif
+  //TIFF_FILE            = AerialMIT.tif
+  set_pan_x            = -50
+  set_pan_y            = -200
+  zoom                 = 0.85
+  vehicles_shape_scale = 2.0
+  vehicles_name_mode   = names
 
-  appcast_width = 30
+  circle_viewable_all = true
 
-  appcast_viewable     = true
+  appcast_viewable = true
   appcast_color_scheme = indigo
 
-  SCOPE = UCTD_PARAMETER_ESTIMATE
+ SCOPE = UCTD_PARAMETER_ESTIMATE
   //ACTION = STATION_ALL = true
 
   button_one   = DEPLOY_ALL  # DEPLOY_ALL=true 
@@ -203,5 +180,44 @@ ProcessConfig = pMarineViewer
   button_three = ALLSTOP  # DEPLOY_ALL=false # MOOS_MANUAL_OVERRIDE_ALL=true
 //  button_four  = SHOW:both   # FGR_SHOW=both
   button_four = STATION # STATION_KEEP_ALL=true
+
+}
+
+//--------------------------------------------------------
+// uProcessWatch Configuration Block
+
+ProcessConfig = uProcessWatch
+{
+  AppTick   = 1
+  CommsTick = 1
+
+  allow_retractions = true
+
+  watch_all = true      // default is true
+
+  nowatch = uXMS*
+  nowatch = uPokeDB*
+
+  summary_wait = 10
+}
+//--------------------------------------------------
+// pGradeFrontEstiamte Configuration Block
+
+ProcessConfig = pGradeFrontEstimate
+{
+  AppTick=1
+  CommsTick = 1
+
+}
+//--------------------------------------------------
+// pFrontGridRender Configuration Block
+ProcessConfig = pFrontGridRender
+{
+  AppTick       = 1
+  CommsTick     = 1
+
+  GRID_CONFIG = pts={-100,-200: 200,-200: 200,25: -100,25}
+  GRID_CONFIG = cell_size=7
+  GRID_CONFIG = cell_vars=x:0
 }
 

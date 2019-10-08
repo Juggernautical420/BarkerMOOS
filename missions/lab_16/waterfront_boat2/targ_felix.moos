@@ -1,0 +1,416 @@
+ServerHost = localhost
+ServerPort = 9006
+Community  = felix
+
+MOOSTimeWarp = 15
+//LatOrigin  = 43.825300 
+//LongOrigin = -70.330400 
+LatOrigin  = 42.3584
+LongOrigin = -71.08745
+
+//------------------------------------------------------------
+ProcessConfig = ANTLER
+{
+  MSBetweenLaunches = 150
+
+  Run = MOOSDB             @ NewConsole = false
+  Run = uSimMarine         @ NewConsole = false
+
+
+
+  Run = pLogger            @ NewConsole = false
+  Run = pNodeReporter      @ NewConsole = false
+  Run = pMarinePID         @ NewConsole = false
+  Run = pHelmIvP           @ NewConsole = false
+  Run = uProcessWatch      @ NewConsole = false
+
+  Run = pShare             @ NewConsole = false 
+  Run = pHostInfo          @ NewConsole = false
+  Run = uFldNodeBroker     @ NewConsole = false
+  Run = uFldMessageHandler @ NewConsole = false
+  Run = pBasicContactMgr   @ NewConsole = false
+ 
+  Run = uTimerScript       @ NewConsole = false
+  Run = pFrontEstimate     @ NewConsole = false
+  Run = pTempGenPath       @ NewConsole = false
+  Run = pTempPassing       @ NewConsole = false
+  //Run = uXMS               @ NewConsole = true
+  //Run = uSimMarine         @ NewConsole = false
+}
+
+//----------------------------------------------
+// pMarinePID config block (created from plugin) 
+
+ProcessConfig = pMarinePID
+{
+  AppTick    = 10
+  CommsTick  = 10
+
+  VERBOSE       = true
+  DEPTH_CONTROL = false
+  ACTIVE_START  = true
+
+  // Yaw PID controller (Set for M300)
+  YAW_PID_KP             = 0.9 
+  YAW_PID_KD             = 0.3 
+  YAW_PID_KI             = 0.3  
+  YAW_PID_INTEGRAL_LIMIT = 0.3 
+
+  // Speed PID controller
+  SPEED_PID_KP           = 1.0
+  SPEED_PID_KD           = 0.0
+  SPEED_PID_KI           = 0.0
+  SPEED_PID_INTEGRAL_LIMIT = 0.07
+
+  // Maximums
+  MAXRUDDER  = 100 // 100
+  MAXTHRUST  = 100
+
+  // A non-zero SPEED_FACTOR overrides use of SPEED_PID
+  // Will set DESIRED_THRUST = DESIRED_SPEED * SPEED_FACTOR
+  //SPEED_FACTOR = 20
+}
+
+//---------------------------------------------------------
+// pShare config block (created from plugin) (ROBOT ONLY!)
+
+ProcessConfig = pShare
+{
+  AppTick    = 2
+  CommsTick  = 2
+
+  input = route =  localhost:9206
+}
+
+//--------------------------------------------------------
+// uTimerScript Configuration Block
+
+ProcessConfig = uTimerScript
+{
+  AppTick   = 4
+  CommsTick = 4
+  
+  PAUSED     = false
+  RESET_MAX  = unlimited
+  RESET_TIME = end
+
+  DELAY_RESET = 0.5
+
+  //RANDVAR = varname=X, min=0,  max=100, key=at_reset
+  //RANDVAR = varname=Y, min=0,  max=100, key=at_reset
+  //EVENT = var=NODE_MESSAGE_LOCAL, val="src_node=felix,dest_node=all,var_name=FOOBAR,string_val=$[X],$[Y]", time=0:30 
+
+  EVENT = var=UCTD_SENSOR_REQUEST, val=vname=felix, time=2 
+}
+
+
+ 
+
+
+//--------------------------------------------------
+// pLogger Configuration Block (Created from Plugin)
+
+ProcessConfig = pLogger
+{
+  AppTick 	= 5
+  CommsTick 	= 5
+  
+  File		= LOG_FELIX
+  PATH		= ./
+  SyncLog 	= true @ 0.2
+  AsyncLog 	= true
+  FileTimeStamp = true
+
+  Log = IVPHELM_LIFE_EVENT @ 0 nosync
+
+  // Log it all!!!!!
+  WildCardLogging = true 
+  WildCardOmitPattern = *_STATUS
+  LogAuxSrc = true
+}
+
+//---------------------------------------
+ProcessConfig = pNodeReporter
+{
+  AppTick     = 2
+  CommsTick   = 2
+
+  vessel_type = kayak
+  //platform_color = blue
+}
+
+//---------------------------------------
+ProcessConfig = pHelmIvP
+{
+  AppTick    = 4
+  CommsTick  = 4
+
+  Behaviors    = targ_felix.bhv
+  Verbose      = false
+  Domain       = course:0:359:360
+  Domain       = speed:0:2.5:26
+
+  ok_skew      = any
+}
+
+//--------------------------------------------------
+// pHostInfo configuration block from plugin
+
+ProcessConfig = pHostInfo
+{
+  AppTick 	= 1
+  CommsTick 	= 1
+
+  DEFAULT_HOSTIP = localhost
+}
+
+
+//--------------------------------------------------
+// uFldNodeBroker config block (created from plugin) 
+
+ProcessConfig = uFldNodeBroker
+{
+  AppTick   = 1
+  CommsTick = 1
+
+  try_shore_host = pshare_route=192.168.1.215:9200
+
+  BRIDGE = src=VIEW_POLYGON
+  BRIDGE = src=VIEW_POINT
+  BRIDGE = src=VIEW_SEGLIST
+  BRIDGE = src=APPCAST
+  BRIDGE = src=UCTD_SENSOR_REQUEST
+  BRIDGE = src=UCTD_PARAMETER_ESTIMATE
+  BRIDGE = src=NODE_REPORT_LOCAL,  alias=NODE_REPORT
+  BRIDGE = src=NODE_MESSAGE_LOCAL, alias=NODE_MESSAGE
+}
+
+//------------------------------------------------------
+// uFldMessageHandler config block (created from plugin) 
+
+ProcessConfig = uFldMessageHandler
+{
+  AppTick   = 3
+  CommsTick = 3
+
+  STRICT_ADDRESSING = true
+}
+
+//--------------------------------------------------------
+ProcessConfig = uProcessWatch
+{
+  AppTick   = 2
+  CommsTick = 2
+
+  summary_wait  = 12
+
+  allow_retractions = true
+
+  watch_all = true // default is true
+
+  nowatch = uMAC*
+  nowatch = uXMS*
+  nowatch = uPokeDB*
+
+  watch   = pNodeReporter
+  watch   = pHelmIvP
+  watch   = pMarinePID
+  watch   = pShare
+
+  watch   = uSimMarine
+
+}
+
+//----------------------------------------------------
+// pBasicContactMgr config block (created from plugin) 
+
+ProcessConfig = pBasicContactMgr
+{
+  AppTick   = 2
+  CommsTick = 2
+
+  decay = 30,60
+  //decay = 2,5  // Don't really want extrapolation here
+
+  alert_verbose = true
+
+  contact_max_age = 3600
+  display_radii   = false
+
+  default_alert_range = 50
+  default_cpa_range   = 35
+  default_alert_range_color = gray70
+  default_cpa_range_color   = gray30
+
+
+//  Alert = id=trail, var=TRAIL_INFO, val="name=$[VNAME] # contact=$[VNAME]", alert_range=140
+  alert = id=avd, var=CONTACT_INFO, val="name=$[VNAME] # contact=$[VNAME]"
+  alert = id=avd, alert_range=40, cpa_range=45, alert_range_color=green
+}
+
+//------------------------------------------------
+// pTempGenPath config block
+
+ProcessConfig = pTempGenPath
+{
+   AppTick   = 4
+   CommsTick = 4
+}
+
+
+//------------------------------------------------
+// pTempPassing config block
+
+ProcessConfig = pTempPassing
+{
+   AppTick   = 4
+   CommsTick = 4
+//set me as the other boat name
+   VNAME = kirk
+}
+
+
+ProcessConfig = pFrontEstimate
+{
+  AppTick    = 4
+  CommsTick  = 4
+
+  vname = felix
+  temperature_factor = 50
+  cooling_steps = 1000
+
+  // OFFSET
+  min_offset = -120
+  max_offset = -60
+
+  //min_offset = -100 
+  //max_offset = -100 
+ 
+
+  // ANGLE 
+  min_angle = -5
+  max_angle = 15
+
+  //min_angle = 5
+  //max_angle = 5
+
+  // AMPLITUDE
+  min_amplitude = 0
+  max_amplitude = 20
+
+  //min_amplitude = 20
+  //max_amplitude = 20
+
+  // PERIOD
+  //min_period = 200
+  //max_period = 600
+
+  min_period = 100
+  max_period = 300
+  
+  // WAVELENGTH
+  //min_wavelength = 100
+  //max_wavelength = 500
+
+  min_wavelength = 100
+  max_wavelength = 300
+
+  // ALPHA
+  //min_alpha = 200
+  //max_alpha = 500
+
+  min_alpha = 350 //keep this fixed at 500 (see lab 18)
+  max_alpha = 350
+
+
+  // BETA
+  min_beta = 10
+  max_beta = 50
+  
+  //min_beta = 20
+  //max_beta = 20
+  
+  // T_N
+  min_T_N = 15
+  max_T_N = 25
+  
+  //min_T_N = 22
+  //max_T_N = 22 
+  
+  // T_S
+  min_T_S = 20
+  max_T_S = 30
+  
+  //min_T_S = 28
+  //max_T_S = 28 
+  
+  concurrent = true
+  adaptive=true
+}
+
+//------------------------------------------------------
+// uSimMarine Configuration Block  (Created from plugin)
+
+ProcessConfig = uSimMarine
+{
+  AppTick   = 10
+  CommsTick = 10
+
+  START_POS = 0,0
+  PREFIX    = NAV
+
+  //rotate_speed = 0.012
+  //drift_x      = 0.0045
+
+  //thrust_map = -100:-2, 0:0, 20:1, 40:2, 60:3, 80:5, 100:5
+  //thrust_map = -100:-2, 0:0, 20:1, 40:2, 60:3, 80:5, 100:5
+}
+
+//--------------------------------------------------------
+// iM200 config block (created from plugin) 
+
+ProcessConfig = iM200
+{
+  AppTick        = 10
+  CommsTick      = 10
+
+  PORT_NUMBER    = 29500
+  IP_ADDRESS     = 192.168.6.1  // Default is 'localhost'
+  GPS_PREFIX     = NAV_        // Prepended to GPS position messages.
+  DIRECT_THRUST  = false       // Default is false.
+                               // When true, vehicle in direct-thrust mode.
+                               // When false, vehicle in rudder-thrust mode.
+
+  HEADING_OFFSET = 0.0         // Offset to add to published heading
+
+	
+  PUBLISH_RAW    = true        // When true, publish all messages from
+                               // front seat to M200_RAW_NMEA
+  MAX_RUDDER     = 100.0        // Rudder value will be capped to this, +/-
+  MAX_THRUST     = 100.0        // Thrust value to each motor will be
+                               // capped to this value, +/-
+
+  PUBLISH_THRUST = TRUE
+}
+
+
+
+//------------------------------------------------------
+// uSimMarine Configuration Block  (Created from plugin)
+
+ProcessConfig = uSimMarine
+{
+  AppTick   = 10
+  CommsTick = 10
+
+  START_POS = 0,0
+  PREFIX    = NAV
+
+  //rotate_speed = 0.012
+  //drift_x      = 0.0045
+
+  //thrust_map = -100:-2, 0:0, 20:1, 40:2, 60:3, 80:5, 100:5
+  //thrust_map = -100:-2, 0:0, 20:1, 40:2, 60:3, 80:5, 100:5
+}
+
+

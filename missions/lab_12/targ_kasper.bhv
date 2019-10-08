@@ -106,7 +106,7 @@ Behavior = BHV_Waypoint
          speed = 2.0
         radius = 2.0
      nm_radius = 8.0
-        points = 0,0
+        points = 45,0
 }
 //----------------------------------------------
 Behavior = BHV_Waypoint
@@ -124,7 +124,7 @@ Behavior = BHV_Waypoint
         radius = 2.0
      nm_radius = 8.0
         //repeat = 1
-        points = 0,0
+        points = 45,0
 
   visual_hints = edge_color = yellow
 }
