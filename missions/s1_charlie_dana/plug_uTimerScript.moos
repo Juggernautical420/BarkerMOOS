@@ -1,0 +1,11 @@
+ ProcessConfig = uTimerScript
+ {
+   AppTick    = 2
+   CommsTick  = 2
+
+
+   event      = var=NODE_MESSAGE_LOCAL, val="src_node=$(VNAME),dest_node=all,var_name=NAME=$(VNAME),X=$[XPOS], Y=$[YPOS]", time=0:10 
+
+   reset_max = nolimit
+   reset_time = all-posted
+ }

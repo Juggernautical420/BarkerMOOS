@@ -1,10 +1,10 @@
 ServerHost = localhost
-ServerPort = 9002
+ServerPort = 9001
 
 // Community name IS the vehicle name
-Community  = HENRY@congo
+Community  = henry@congo
 
-MOOSTimeWarp = 10
+MOOSTimeWarp = 20
 LatOrigin  = 43.825300 
 LongOrigin = -70.330400 
 
@@ -71,7 +71,7 @@ ProcessConfig = pShare
   AppTick    = 2
   CommsTick  = 2
 
-  input = route =  localhost:9202
+  input = route =  localhost:9201
 }
 
 
@@ -83,7 +83,7 @@ ProcessConfig = uFldNodeBroker
   AppTick   = 1
   CommsTick = 1
 
-  TRY_SHORE_HOST = pshare_route=18.21.185.167:9200
+  TRY_SHORE_HOST = pshare_route=localhost:9200
 
   bridge = src=VIEW_POLYGON
   bridge = src=VIEW_POINT
@@ -112,7 +112,7 @@ ProcessConfig = uSimMarine
   AppTick   = 10
   CommsTick = 10
 
-  START_POS = 155,-47, 180, 0
+  START_POS = 139,-10, 180, 0
   PREFIX    = NAV
 }
 
@@ -127,7 +127,7 @@ ProcessConfig = pHelmIvP
 
   ok_skew      = any
   
-  Behaviors    = targ_HENRY@congo.bhv  
+  Behaviors    = targ_henry@congo.bhv  
   Verbose      = false
   Domain       = course:0:359:360
   Domain       = speed:0:5:26

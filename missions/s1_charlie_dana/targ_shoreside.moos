@@ -1,12 +1,13 @@
 //*******************************************************
 // ShoreSide Configuration File
 //
-
+//NAME: Jason Barker
+//FILE: s1_charlie_dana.moos (meta_shoreside)
 ServerHost = localhost
 ServerPort = 9000
 Community  = shoreside
 
-MOOSTimeWarp = 20
+MOOSTimeWarp = 5
 LatOrigin  = 43.825300 
 LongOrigin = -70.330400 
 
@@ -20,12 +21,15 @@ Processconfig = ANTLER
   Run = MOOSDB          @ NewConsole = false
   Run = pMarineViewer   @ NewConsole = false
   Run = pLogger         @ NewConsole = false
-  Run = uXMS            @ NewConsole = false
+  //Run = uXMS            @ NewConsole = false
   Run = uProcessWatch   @ NewConsole = false
   Run = pShare          @ NewConsole = false
   Run = pHostInfo       @ NewConsole = false
   Run = uFldShoreBroker @ NewConsole = false
   Run = uFldNodeComms   @ NewConsole = false
+
+  Run = pTransitAlpha   @ NewConsole = false ~ pTransitAlpha_PORT
+  Run = pTransitAlpha   @ NewConsole = false ~ pTransitAlpha_STARBOARD
 }
 
 //---------------------------------------------------------
@@ -87,8 +91,10 @@ ProcessConfig = uFldShoreBroker
   QBRIDGE  = DEPLOY, RETURN, STATION_KEEP, NODE_REPORT, NODE_MESSAGE
   QBRIDGE  = MOOS_MANUAL_OVERRIDE, APPCAST_REQ
 
+
   BRIDGE   = src=UP_LOITER_$N, alias=UP_LOITER
   BRIDGE   = src=HELM_MAP_CLEAR, alias=HELM_MAP_CLEAR
+ 
 }
 
 //--------------------------------------------------
@@ -189,10 +195,35 @@ ProcessConfig = uFldNodeComms
   AppTick    = 2
   CommsTick  = 2
 
-  comms_range      = 120
-  min_msg_interval = 0
-  max_msg_length   = 1000 
+  comms_range      = 1000
+  min_msg_interval = 10
+  max_msg_length   = 0 
 
   view_node_rpt_pulses = true
+}
+
+//------------------------------------------------
+// pTransitAlpha config block
+
+ProcessConfig = pTransitAlpha_PORT
+{
+   AppTick   = 4
+   CommsTick = 4
+
+   port = 0,-30 : 150,-180 : 170,-180 : 20,-30 
+
+//   starboard = 30,-30 : 180,-180 : 200,-180: 50,-30 
+}
+//------------------------------------------------
+// pTransitAlpha config block
+
+ProcessConfig = pTransitAlpha_STARBOARD
+{
+   AppTick   = 4
+   CommsTick = 4
+
+//   port = 0,-30 : 150,-180 : 170,-180 : 20,-30 
+
+   starboard = 30,-30 : 180,-180 : 200,-180: 50,-30 
 }
 

@@ -1,0 +1,13 @@
+//------------------------------------------------
+// pTransitAlpha config block
+
+ProcessConfig = pTransitAlpha
+{
+   AppTick   = 4
+   CommsTick = 4
+
+   southbound = 0,-30 : 150,-180 : 20,-30 : 170,-180
+
+   northbound = 30,-30 : 180,-180 : 50,-30 : 200,-180
+}
+

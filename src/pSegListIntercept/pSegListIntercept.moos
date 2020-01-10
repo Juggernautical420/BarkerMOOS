@@ -1,0 +1,11 @@
+//------------------------------------------------
+// pSegListIntercept config block
+
+ProcessConfig = pSegListIntercept
+{
+   AppTick   = 4
+   CommsTick = 4
+
+   vname = $(VNAME)
+}
+

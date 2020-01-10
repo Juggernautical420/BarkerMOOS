@@ -1,0 +1,11 @@
+//------------------------------------------------
+// pSegPassing config block
+
+ProcessConfig = pSegPassing
+{
+   AppTick   = 4
+   CommsTick = 4
+
+   vname = $(VNAME)  
+}
+

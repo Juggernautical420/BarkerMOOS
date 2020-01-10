@@ -5,7 +5,7 @@ Simulator  = true
 // Community name IS the vehicle name
 Community  = dana
 
-MOOSTimeWarp = 20
+MOOSTimeWarp = 5
 LatOrigin  = 43.825300 
 LongOrigin = -70.330400 
 
@@ -27,7 +27,10 @@ Processconfig = ANTLER
   Run = pHostInfo        @ NewConsole = false
   Run = uFldNodeBroker   @ NewConsole = false
   Run = uFldMessageHandler  @ NewConsole = false
-  Run = uTimerScript     @ NewConsole = false
+//  Run = uTimerScript     @ NewConsole = false
+  Run = pSegListIntercept @ NewConsole = false
+  Run = pSegPassing @ NewConsole = false
+  Run = uXMS         @ NewConsole = true 
 }
 
 //--------------------------------------------------
@@ -47,6 +50,7 @@ ProcessConfig = uFldNodeBroker
   BRIDGE = src=APPCAST
   BRIDGE = src=NODE_REPORT_LOCAL,  alias=NODE_REPORT
   bridge = src=NODE_MESSAGE_LOCAL,  alias=NODE_MESSAGE
+  
 }
 
 //---------------------------------------------------------
@@ -103,7 +107,7 @@ ProcessConfig = uSimMarine
   AppTick   = 10
   CommsTick = 10
 
-  START_POS = 25,0, 180, 0
+  START_POS = 10,-180, 180, 0
   PREFIX    = NAV
 
   //rotate_speed = 0.012
@@ -221,12 +225,8 @@ ProcessConfig = uProcessWatch
    AppTick    = 2
    CommsTick  = 2
 
-   condition  = DEPLOY=true
-   randvar    = varname=YPOS, min=-125, max=0, key=at_reset
 
-
-   event      = var=NODE_MESSAGE_LOCAL, val="src_node=dana,dest_node=all,var_name=UP_LOITER,string_val=ycenter_assign=$[YPOS]", time=60:90 
-   event      = var=NODE_MESSAGE_LOCAL, val="src_node=dana,dest_node=all,var_name=MSG_RECD,string_val=true", time=60:90 
+   event      = var=NODE_MESSAGE_LOCAL, val="src_node=dana,dest_node=all,var_name=NAME=dana,X=$[XPOS], Y=$[YPOS]", time=0:10 
 
    reset_max = nolimit
    reset_time = all-posted
@@ -239,4 +239,41 @@ ProcessConfig = uProcessWatch
     CommsTick  = 2
 
     strict_addressing = false
+
   }
+//------------------------------------------------
+// pSegListIntercept config block
+
+ProcessConfig = pSegListIntercept
+{
+   AppTick   = 4
+   CommsTick = 4
+
+   vname = dana
+}  
+//------------------------------------------
+// uXMS configuration block
+
+ProcessConfig = uXMS
+{
+   AppTick   = 4
+   CommsTick = 4
+ 
+ 
+   
+   VAR = TESTING
+   VAR = BITE_SEGLIST
+
+
+
+}
+//------------------------------------------------
+// pSegPassing config block
+
+ProcessConfig = pSegPassing
+{
+   AppTick   = 4
+   CommsTick = 4
+
+   vname = dana  
+}

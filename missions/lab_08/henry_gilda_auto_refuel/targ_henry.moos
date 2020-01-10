@@ -4,7 +4,7 @@ ServerPort = 9002
 // Community name IS the vehicle name
 Community  = henry
 
-MOOSTimeWarp = 20
+MOOSTimeWarp = 10
 LatOrigin  = 43.825300 
 LongOrigin = -70.330400 
 
@@ -25,6 +25,7 @@ Processconfig = ANTLER
   Run = pShare             @ NewConsole = false
   Run = pHostInfo          @ NewConsole = false
   Run = uFldNodeBroker     @ NewConsole = false
+  Run = uXMS               @ NewConsole = true   
 }
  
 //------------------------------------------------------
@@ -185,3 +186,15 @@ ProcessConfig = uFldNodeBroker
 }
 
 
+//------------------------------------------
+// uXMS configuration block
+
+ProcessConfig = uXMS
+{
+   AppTick   = 4
+   CommsTick = 4
+ 
+   VAR = NODE_REPORT
+
+
+}
