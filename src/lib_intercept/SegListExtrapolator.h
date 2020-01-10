@@ -16,6 +16,7 @@
 #include "XYObject.h"
 #include "XYSegList.h"
 #include "XYFormatUtilsSegl.h"
+#include "GeomUtils.h"
 #include "SegParts.h"
 
 
@@ -32,7 +33,8 @@ class SegListExtrapolator : public XYObject {
    double get_yt(unsigned int) const;
    double get_hdgt(unsigned int) const;
 
-   int get_t(double m_px, double m_py) const;
+   unsigned int get_t(double x, double y) const;
+ 
 
 
  protected:

@@ -89,16 +89,24 @@ double SegListExtrapolator::get_hdgt(unsigned int i) const
 //---------------------------------------------------------------
 // Procedure: get_t
 
-int SegListExtrapolator::get_t(double m_px, double m_py) const
-{
-	int i;
-	for(i=0; i<m_xt.size(); i++){
-		double Mx = m_xt[i];
-		double My = m_yt[i];
+unsigned int SegListExtrapolator::get_t(double x, double y) const
 
-		double distance = sqrt(pow((Mx - m_px), 2) + pow((My - m_py), 2));
-		if(distance <2)
-		  return(i);
-	}
+{
+  unsigned int vsize = m_xt.size();
+  if(vsize == 0)
+    return(0);
+
+  double dist = distPointToPoint(m_xt[0], m_yt[0], x, y);
+
+  unsigned int i, ix = 0;
+  for(i=1; i<vsize; i++) {
+    double idist = distPointToPoint(m_xt[i], m_yt[i], x, y);
+    if(idist < dist) {
+      dist = idist; 
+      ix = i;
+    }
+  }
+  return(ix);
 }
+
 
