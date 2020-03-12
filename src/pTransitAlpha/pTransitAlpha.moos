@@ -6,8 +6,8 @@ ProcessConfig = pTransitAlpha
    AppTick   = 4
    CommsTick = 4
 
-   southbound = pts={0,-30 : 150,-180 : 20,-30 : 170,-180}
+   inbound = pts={0,-30 : 150,-180 : 20,-30 : 170,-180}
 
-   northbound = pts={30,-30 : 180,-180 : 50,-30 : 200,-180}
+   outbound = pts={30,-30 : 180,-180 : 50,-30 : 200,-180}
 }
 

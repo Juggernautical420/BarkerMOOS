@@ -128,8 +128,8 @@ for(l=0; l<m_charlie_dana.size(); l++){
  Notify("VIEW_POINT", point_spec);
 
 //// Trials and Errors //////
- double ppx = m_charlie_dana.get_px(l);
- double ppy = m_charlie_dana.get_py(l);
+ppx = m_charlie_dana.get_px(l);
+ppy = m_charlie_dana.get_py(l);
 // string pcontact = m_charlie_dana.get_pname(l);
 
  os_remaining_seglist = biteSegListRight(os_seglist, ppx, ppy);
@@ -138,10 +138,24 @@ for(l=0; l<m_charlie_dana.size(); l++){
 
 /////// Need to Fix get_t ///////
 
- int int_time = os_extra_pts.get_t(ppx, ppy);
+int int_time = os_extra_pts.get_t(ppx, ppy);
+string time_test = intToString(int_time);
 
+double m_int_x = os_extra_pts.get_xt(int_time);
+string m_ix = doubleToString(m_int_x);
+double m_int_plusone = os_extra_pts.get_xt(int_time);
+string m_ix1 = doubleToString(m_int_plusone);
+Notify("TEST1", m_ix1);
+// double m_int_y = os_extra_pts.get_yt(int_time);
+// string m_iy = doubleToString(m_int_y);
+// string time_coords = m_ix + "," + m_iy;
 
- string time_test = intToString(int_time);
+// double dist = m_os_details.get_legLength(0);
+// double dist_limit = dist/m_nav_spd;
+// int limit_t = int(dist_limit);
+// string time_test = doubleToString(limit_t);
+
+ // Notify("TEST", m_ix);
  Notify("TESTING", time_test);
  
 }

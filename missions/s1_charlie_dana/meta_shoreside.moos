@@ -17,15 +17,13 @@ Processconfig = ANTLER
   Run = MOOSDB          @ NewConsole = false
   Run = pMarineViewer   @ NewConsole = false
   Run = pLogger         @ NewConsole = false
-  //Run = uXMS            @ NewConsole = false
+  Run = uXMS            @ NewConsole = true
   Run = uProcessWatch   @ NewConsole = false
   Run = pShare          @ NewConsole = false
   Run = pHostInfo       @ NewConsole = false
   Run = uFldShoreBroker @ NewConsole = false
   Run = uFldNodeComms   @ NewConsole = false
-
-  Run = pTransitAlpha   @ NewConsole = false ~ pTransitAlpha_PORT
-  Run = pTransitAlpha   @ NewConsole = false ~ pTransitAlpha_STARBOARD
+  Run = pTransitAlpha   @ NewConsole = false
 }
 
 #include plug_pShare.moos
@@ -53,6 +51,9 @@ ProcessConfig = uFldShoreBroker
 
   QBRIDGE  = DEPLOY, RETURN, STATION_KEEP, NODE_REPORT, NODE_MESSAGE
   QBRIDGE  = MOOS_MANUAL_OVERRIDE, APPCAST_REQ
+ 
+  BRIDGE = src=OUTBOUND_POLY
+  BRIDGE = src=INBOUND_POLY
 
 
   BRIDGE   = src=UP_LOITER_$N, alias=UP_LOITER
@@ -77,8 +78,8 @@ ProcessConfig = uXMS
   AppTick       = 1
   CommsTick     = 1
 
-  var = NODE_MESSAGE
-  var = NODE_MESSAGE_LOCAL
+  var = INBOUND_POLY
+  var = OUTBOUND_POLY
 }
 
 
@@ -109,7 +110,7 @@ ProcessConfig = pMarineViewer
   TIFF_FILE            = forrest19.tif
   set_pan_x            = -90
   set_pan_y            = -280
-  zoom                 = 0.65
+  zoom                 = 0.45
   vehicles_shape_scale = 1.5
   vehicles_name_viewable = names
 
@@ -165,27 +166,20 @@ ProcessConfig = uFldNodeComms
   view_node_rpt_pulses = true
 }
 
+
 //------------------------------------------------
 // pTransitAlpha config block
 
-ProcessConfig = pTransitAlpha_PORT
+ProcessConfig = pTransitAlpha
 {
-   AppTick   = 4
-   CommsTick = 4
+  AppTick   = 4
+  CommsTick = 4
 
-   port = 0,-30 : 150,-180 : 170,-180 : 20,-30 
+  inbound = pts={30,-60 : 150,-180 : 170,-180 : 50,-60} 
+  inbound = pts={150,60 : 30,-60 : 50,-60 : 170,60}
+  inbound = pts={150,-180 : 150,-300 : 170,-300 : 170,-180}
 
-//   starboard = 30,-30 : 180,-180 : 200,-180: 50,-30 
-}
-//------------------------------------------------
-// pTransitAlpha config block
-
-ProcessConfig = pTransitAlpha_STARBOARD
-{
-   AppTick   = 4
-   CommsTick = 4
-
-//   port = 0,-30 : 150,-180 : 170,-180 : 20,-30 
-
-   starboard = 30,-30 : 180,-180 : 200,-180: 50,-30 
+  outbound = pts={60,-60 : 180,-180 : 200,-180: 80,-60} 
+  outbound = pts={180,60 : 60,-60 : 80,-60 : 200,60}
+  outbound = pts={180,-180 : 180,-300 : 200,-300 : 200,-180}
 }

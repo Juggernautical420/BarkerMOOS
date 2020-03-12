@@ -70,6 +70,8 @@ class SegListIntercept : public AppCastingMOOSApp
    double m_nav_spd;
 ////////////////////////////
    SegListExtrapolator os_extra_pts;
+   double ppx;
+   double ppy;
 
  private: // Configuration variables
 

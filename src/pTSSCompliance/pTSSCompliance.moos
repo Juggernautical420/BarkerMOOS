@@ -1,0 +1,9 @@
+//------------------------------------------------
+// pTSSCompliance config block
+
+ProcessConfig = pTSSCompliance
+{
+   AppTick   = 4
+   CommsTick = 4
+}
+

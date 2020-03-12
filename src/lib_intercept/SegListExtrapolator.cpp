@@ -48,7 +48,7 @@ using namespace std;
   	m_xt.push_back(xt);
   	double yt = m_y1 + (m_navSpd * t);
   	m_yt.push_back(yt);	
-  	m_hdgt.push_back(hdg);
+  	// m_hdgt.push_back(hdg);
    } 
 
 
@@ -92,21 +92,22 @@ double SegListExtrapolator::get_hdgt(unsigned int i) const
 unsigned int SegListExtrapolator::get_t(double x, double y) const
 
 {
-  unsigned int vsize = m_xt.size();
+  int vsize = m_xt.size();
   if(vsize == 0)
     return(0);
 
   double dist = distPointToPoint(m_xt[0], m_yt[0], x, y);
-
-  unsigned int i, ix = 0;
+  
+ unsigned int i, ix = 0;
   for(i=1; i<vsize; i++) {
     double idist = distPointToPoint(m_xt[i], m_yt[i], x, y);
     if(idist < dist) {
       dist = idist; 
       ix = i;
     }
+
   }
-  return(ix);
+      return(ix);
 }
 
 

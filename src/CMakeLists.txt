@@ -25,11 +25,13 @@ ADD_SUBDIRECTORY(lib_intercept)
 #ADD_SUBDIRECTORY(pCommunicationAngle_jbbarker)
 #ADD_SUBDIRECTORY(pPointAssign)
 #ADD_SUBDIRECTORY(pGenPath)
-ADD_SUBDIRECTORY(pTempGenPath)
-ADD_SUBDIRECTORY(pTempPassing)
+#ADD_SUBDIRECTORY(pTempGenPath)
+#ADD_SUBDIRECTORY(pTempPassing)
 ADD_SUBDIRECTORY(pSegPassing)
 ADD_SUBDIRECTORY(pSegListIntercept)
 ADD_SUBDIRECTORY(pSegDetailing)
+ADD_SUBDIRECTORY(pTransitAlpha)
+ADD_SUBDIRECTORY(pTSSCompliance)
 
 
 ##############################################################################
