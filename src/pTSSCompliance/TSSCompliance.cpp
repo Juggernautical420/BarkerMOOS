@@ -9,9 +9,12 @@
 /************************************************************/
 
 #include <iterator>
+#include <math.h>
+#include <cstdlib>
 #include "MBUtils.h"
 #include "ACTable.h"
 #include "TSSCompliance.h"
+#include "XYFormatUtilsPoly.h"
 
 using namespace std;
 
@@ -40,6 +43,24 @@ bool TSSCompliance::OnNewMail(MOOSMSG_LIST &NewMail)
   for(p=NewMail.begin(); p!=NewMail.end(); p++) {
     CMOOSMsg &msg = *p;
     string key    = msg.GetKey();
+
+    if(key == "INBOUND_POLY"){
+      string in_sval  = msg.GetString();
+      m_InB_polygons = parseString(in_sval, ';');
+    }
+
+    if(key == "OUTBOUND_POLY"){
+      string out_sval  = msg.GetString();
+      m_OutB_polygons = parseString(out_sval, ';');    
+    }
+
+    if (key == "NAV_X")
+      m_nav_x = msg.GetDouble();
+    if (key == "NAV_Y")
+      m_nav_y = msg.GetDouble();
+    if (key == "NAV_HEADING")
+      m_nav_hdg = msg.GetDouble();
+
 
 #if 0 // Keep these around just for template
     string comm  = msg.GetCommunity();
@@ -78,6 +99,21 @@ bool TSSCompliance::Iterate()
 {
   AppCastingMOOSApp::Iterate();
   // Do your thing here!
+
+  for(int i=0; i<m_InB_polygons.size(); i++){
+    XYPolygon inbound = string2Poly(m_InB_polygons[i]);
+    if(inbound.contains(m_nav_x,m_nav_y))
+      Notify("COMPLIANCE", "inbound");
+  }
+
+  for(int i=0; i<m_OutB_polygons.size(); i++){
+    XYPolygon outbound = string2Poly(m_OutB_polygons[i]);
+    if(outbound.contains(m_nav_x,m_nav_y))
+      Notify("COMPLIANCE", "outbound");
+  }
+
+
+
   AppCastingMOOSApp::PostReport();
   return(true);
 }
@@ -109,6 +145,7 @@ bool TSSCompliance::OnStartUp()
     else if(param == "bar") {
       handled = true;
     }
+  
 
     if(!handled)
       reportUnhandledConfigWarning(orig);
@@ -126,6 +163,11 @@ void TSSCompliance::registerVariables()
 {
   AppCastingMOOSApp::RegisterVariables();
   // Register("FOOBAR", 0);
+  Register("INBOUND_POLY", 0);
+  Register("OUTBOUND_POLY", 0);
+  Register("NAV_X", 0);
+  Register("NAV_Y", 0);
+  Register("NAV_HEADING", 0);  
 }
 
 

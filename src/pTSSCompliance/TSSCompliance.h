@@ -34,7 +34,14 @@ class TSSCompliance : public AppCastingMOOSApp
    void registerVariables();
 
  private: // Configuration variables
+ double m_nav_x;
+ double m_nav_y;
+ double m_nav_hdg;
 
+ std::vector<std::string> m_InB_polygons;
+ std::vector<std::string> m_OutB_polygons;
+
+ 
  private: // State variables
 };
 

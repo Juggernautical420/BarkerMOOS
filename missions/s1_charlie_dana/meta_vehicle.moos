@@ -27,6 +27,7 @@ Processconfig = ANTLER
   Run = pSegPassing @ NewConsole = false
   Run = pBasicContactMgr @ NewConsole = false
   Run = uXMS         @ NewConsole = true 
+  Run = pTSSCompliance  @ NewConsole = false 
 }
 
 #include plug_uFldNodeBroker.moos
@@ -69,9 +70,9 @@ ProcessConfig = uXMS
  
  
    
-   VAR = INBOUND_POLY
+   VAR = COMPLIANCE
 
-   VAR = OUTBOUND_POLY
+//   VAR = OUTBOUND_POLY
 //   VAR = BITE_SEGLIST
 
 
@@ -111,4 +112,14 @@ ProcessConfig = pBasicContactMgr
   alert = id=avd, var=CONTACT_INFO, val="name=$[VNAME] # contact=$[VNAME]"
   alert = id=avd, alert_range=40, cpa_range=45, alert_range_color=green
  // alert = id=avd, cpa_range_color=invisible
+}
+//------------------------------------------------
+// pTSSCompliance config block
+
+ProcessConfig = pTSSCompliance
+{
+   AppTick   = 4
+   CommsTick = 4
+
+
 }

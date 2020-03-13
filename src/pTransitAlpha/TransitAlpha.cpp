@@ -123,7 +123,7 @@ bool TransitAlpha::OnStartUp()
       InB_size = uintToString(InB_pts.size());
       for (int pts=0; pts<InB_pts.size(); pts++){
         string InB_PolyMsg;
-        InB_PolyMsg = accumulate(begin(InB_pts), end(InB_pts), string(), [](string lhs, const string &rhs) { return lhs.empty() ? rhs : lhs + "; " + rhs; });
+        InB_PolyMsg = accumulate(begin(InB_pts), end(InB_pts), string(), [](string lhs, const string &rhs) { return lhs.empty() ? rhs : lhs + ";" + rhs; });
         Notify("INBOUND_POLY", InB_PolyMsg);
       }
   
@@ -151,7 +151,7 @@ bool TransitAlpha::OnStartUp()
       OutB_size = uintToString(OutB_pts.size());
       for (int pts=0; pts<OutB_pts.size(); pts++){
         string OutB_PolyMsg;
-        OutB_PolyMsg = accumulate(begin(OutB_pts), end(OutB_pts), string(), [](string lhs, const string &rhs) { return lhs.empty() ? rhs : lhs + "; " + rhs; });
+        OutB_PolyMsg = accumulate(begin(OutB_pts), end(OutB_pts), string(), [](string lhs, const string &rhs) { return lhs.empty() ? rhs : lhs + ";" + rhs; });
       Notify("OUTBOUND_POLY", OutB_PolyMsg);
     }
 

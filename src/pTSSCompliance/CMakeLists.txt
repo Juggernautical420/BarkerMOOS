@@ -16,5 +16,6 @@ TARGET_LINK_LIBRARIES(pTSSCompliance
    apputil
    mbutil
    m
+   geometry
    pthread)
 
