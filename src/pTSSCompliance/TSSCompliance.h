@@ -37,6 +37,8 @@ class TSSCompliance : public AppCastingMOOSApp
  double m_nav_x;
  double m_nav_y;
  double m_nav_hdg;
+ bool m_inbound_lane;
+ bool m_outbound_lane;
 
  std::vector<std::string> m_InB_polygons;
  std::vector<std::string> m_OutB_polygons;

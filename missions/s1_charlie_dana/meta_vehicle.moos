@@ -23,7 +23,7 @@ Processconfig = ANTLER
   Run = pHostInfo        @ NewConsole = false
   Run = uFldNodeBroker   @ NewConsole = false
   Run = uFldMessageHandler  @ NewConsole = false
-  Run = pSegListIntercept @ NewConsole = false
+//  Run = pSegListIntercept @ NewConsole = false
   Run = pSegPassing @ NewConsole = false
   Run = pBasicContactMgr @ NewConsole = false
   Run = uXMS         @ NewConsole = true 
@@ -70,9 +70,10 @@ ProcessConfig = uXMS
  
  
    
-   VAR = COMPLIANCE
-
-//   VAR = OUTBOUND_POLY
+   VAR = NODE_MESSAGE
+   VAR = SEGLIST_DANA
+   VAR = SEGLIST_CHARLIE
+   VAR = SEGLIST
 //   VAR = BITE_SEGLIST
 
 

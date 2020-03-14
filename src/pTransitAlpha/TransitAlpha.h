@@ -45,12 +45,15 @@ class TransitAlpha : public AppCastingMOOSApp
  
  std::string InB_size;
  std::string OutB_size;
- 
+
+
 
  std::vector<std::string> m_polygons;
  std::vector<std::string> InB_pts;
  std::vector<std::string> OutB_pts;
 
+ std::string InB_PolyMsg;
+ std::string OutB_PolyMsg;
  private: // State variables
 };
 

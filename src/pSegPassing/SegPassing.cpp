@@ -92,9 +92,9 @@ bool SegPassing::Iterate()
 
   m_source = "src_node=" + m_vname;
   m_dest = "dest_node=all";
-  m_var_name = "var_name=" + m_list_name;
+  m_var_name = "var_name=SEGLIST";
   //m_str_val = "string_val=vname=" + m_vname + "," + str_seglist;
-  m_str_val = "string_val=pts=" + str_seglist;
+  m_str_val = "string_val=vname=" + m_vname + ";pts=" + str_seglist;
   m_node_message = m_source + "," + m_dest + "," + m_var_name + "," + m_str_val;
   Notify("NODE_MESSAGE_LOCAL", m_node_message);
   AppCastingMOOSApp::PostReport();

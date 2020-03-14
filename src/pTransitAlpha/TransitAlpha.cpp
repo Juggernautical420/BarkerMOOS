@@ -45,6 +45,10 @@ bool TransitAlpha::OnNewMail(MOOSMSG_LIST &NewMail)
     CMOOSMsg &msg = *p;
     string key    = msg.GetKey();
 
+    if(key == "PMV_CONNECT"){
+      for (int i=0; i<m_polygons.size(); i++)
+      Notify ("VIEW_POLYGON", m_polygons[i]);  
+    }
 
 #if 0 // Keep these around just for template
     string comm  = msg.GetCommunity();
@@ -59,8 +63,8 @@ bool TransitAlpha::OnNewMail(MOOSMSG_LIST &NewMail)
      if(key == "FOO") 
        cout << "great!";
 
-     else if(key != "APPCAST_REQ") // handled by AppCastingMOOSApp
-       reportRunWarning("Unhandled Mail: " + key);
+     // else if(key != "APPCAST_REQ") // handled by AppCastingMOOSApp
+     //   reportRunWarning("Unhandled Mail: " + key);
    }
 	
    return(true);
@@ -122,7 +126,6 @@ bool TransitAlpha::OnStartUp()
       InB_pts.push_back(InB_poly);
       InB_size = uintToString(InB_pts.size());
       for (int pts=0; pts<InB_pts.size(); pts++){
-        string InB_PolyMsg;
         InB_PolyMsg = accumulate(begin(InB_pts), end(InB_pts), string(), [](string lhs, const string &rhs) { return lhs.empty() ? rhs : lhs + ";" + rhs; });
         Notify("INBOUND_POLY", InB_PolyMsg);
       }
@@ -140,8 +143,7 @@ bool TransitAlpha::OnStartUp()
       string poly_Inb_spec = poly_Inb.get_spec();
       //Notify("VIEW_POLYGON", poly_Inb_spec);
       m_polygons.push_back(poly_Inb_spec);
-      for (int i=0; i<m_polygons.size(); i++)
-      Notify ("VIEW_POLYGON", m_polygons[i]); 
+
                 
       handled = true;
     }
@@ -150,7 +152,6 @@ bool TransitAlpha::OnStartUp()
       OutB_pts.push_back(OutB_poly);
       OutB_size = uintToString(OutB_pts.size());
       for (int pts=0; pts<OutB_pts.size(); pts++){
-        string OutB_PolyMsg;
         OutB_PolyMsg = accumulate(begin(OutB_pts), end(OutB_pts), string(), [](string lhs, const string &rhs) { return lhs.empty() ? rhs : lhs + ";" + rhs; });
       Notify("OUTBOUND_POLY", OutB_PolyMsg);
     }
@@ -168,8 +169,8 @@ bool TransitAlpha::OnStartUp()
       string poly_Outb_spec = poly_Outb.get_spec();
      // Notify("VIEW_POLYGON", poly_Outb_spec);
       m_polygons.push_back(poly_Outb_spec);
-      for (int i=0; i<m_polygons.size(); i++)
-      Notify ("VIEW_POLYGON", m_polygons[i]); 
+      // for (int i=0; i<m_polygons.size(); i++)
+      // Notify ("VIEW_POLYGON", m_polygons[i]); 
        
       handled = true;
     }
@@ -190,6 +191,7 @@ void TransitAlpha::registerVariables()
 {
   AppCastingMOOSApp::RegisterVariables();
   // Register("FOOBAR", 0);
+  Register("PMV_CONNECT",0);
   // Register("NODE_MESSAGE_LOCAL", 0); //Register Node_Report to determine if vehicle nav x,y
   //                             // are contained within the polygon
 }

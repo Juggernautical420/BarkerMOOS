@@ -23,6 +23,8 @@ using namespace std;
 
 TSSCompliance::TSSCompliance()
 {
+  m_inbound_lane = false;
+  m_outbound_lane = false;
 }
 
 //---------------------------------------------------------
@@ -100,16 +102,21 @@ bool TSSCompliance::Iterate()
   AppCastingMOOSApp::Iterate();
   // Do your thing here!
 
+
   for(int i=0; i<m_InB_polygons.size(); i++){
     XYPolygon inbound = string2Poly(m_InB_polygons[i]);
-    if(inbound.contains(m_nav_x,m_nav_y))
+    if(inbound.contains(m_nav_x,m_nav_y)){
+      m_inbound_lane = true;
       Notify("COMPLIANCE", "inbound");
+    }
   }
 
   for(int i=0; i<m_OutB_polygons.size(); i++){
     XYPolygon outbound = string2Poly(m_OutB_polygons[i]);
-    if(outbound.contains(m_nav_x,m_nav_y))
+    if(outbound.contains(m_nav_x,m_nav_y)){
+      m_outbound_lane = true;
       Notify("COMPLIANCE", "outbound");
+    }  
   }
 
 
