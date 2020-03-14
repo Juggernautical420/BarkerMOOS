@@ -46,7 +46,8 @@ class SegListIntercept : public AppCastingMOOSApp
    std::string m_veh_name;
    std::string m_vname;
    std::string m_veh_handle;
-
+   std::string m_list_name;
+   std::string m_contact_name;
    std::string str_os_seglist;
    std::string str_contact_seglist;
 
@@ -63,7 +64,7 @@ class SegListIntercept : public AppCastingMOOSApp
  
    XYPoint point;
 
-   SegIntercept m_charlie_dana;
+   SegIntercept m_os_intercept;
 
  ///////////////////////////
    SegParts m_os_details;

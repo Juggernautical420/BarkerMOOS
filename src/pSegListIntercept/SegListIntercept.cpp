@@ -43,40 +43,32 @@ bool SegListIntercept::OnNewMail(MOOSMSG_LIST &NewMail)
     CMOOSMsg &msg = *p;
     string key    = msg.GetKey();
  
-
-  if(key == "SEGLIST_CHARLIE"){
-    if(m_veh_name != "CHARLIE"){
-      str_contact_seglist = msg.GetString();
-      contact_seglist = string2SegList(str_contact_seglist);
-      contact_seglist.set_label("charlie");
-      }
-    else{
-      str_os_seglist = msg.GetString();
-      os_seglist = string2SegList(str_os_seglist);
-      os_seglist.set_label(m_vname);        
-    }
-    m_charlie_dana.getIntercept(os_seglist, contact_seglist);
+  if(key == m_list_name){
+    str_os_seglist = msg.GetString();
+    os_seglist = string2SegList(str_os_seglist);
+    os_seglist.set_label(m_vname);
+    m_os_intercept.getIntercept(os_seglist, contact_seglist);      
   }
 
-  if(key == "SEGLIST_DANA"){
-    if(m_veh_name != "DANA"){
-      str_contact_seglist = msg.GetString();
+  if(key == "SEGLIST"){
+    str_contact_seglist  = msg.GetString();
+    m_contact_name = biteStringX(str_contact_seglist, ';');
+    string m_contact_nameparse = biteStringX(m_contact_name, '=');
+    if(m_contact_name!=m_vname){
       contact_seglist = string2SegList(str_contact_seglist);
-      contact_seglist.set_label("dana");
-    }
-    else{
-      str_os_seglist = msg.GetString();
-      os_seglist = string2SegList(str_os_seglist);
-      os_seglist.set_label(m_vname);       
-      } 
-    m_charlie_dana.getIntercept(os_seglist, contact_seglist);      
+      contact_seglist.set_label(m_contact_name);
+      m_os_intercept.getIntercept(os_seglist, contact_seglist); 
+    } 
   }
+
+
+
   
 /// Trials and Errors //////
-  if(key == "NAV_SPEED"){
-    m_nav_spd = msg.GetDouble();
+  // if(key == "NAV_SPEED"){
+  //   m_nav_spd = msg.GetDouble();
 
-  }
+  // }
 
 #if 0 // Keep these around just for template
     string comm  = msg.GetCommunity();
@@ -115,37 +107,47 @@ bool SegListIntercept::Iterate()
 {
   AppCastingMOOSApp::Iterate();
   // Do your thing here!
+//////////
+ // m_os_details.getParts(os_seglist, m_nav_spd);
+ // os_extra_pts.seglistExtrapolate(os_seglist, m_os_details, m_nav_spd);
+//////////
 
- m_os_details.getParts(os_seglist, m_nav_spd);
- os_extra_pts.seglistExtrapolate(os_seglist, m_os_details, m_nav_spd);
+// THIS PART WORKS ///////// 
+
+
 
 int l;//The following plots a visual point for each intersection
-for(l=0; l<m_charlie_dana.size(); l++){
- point.set_vertex(m_charlie_dana.get_px(l), m_charlie_dana.get_py(l)); 
+for(l=0; l<m_os_intercept.size(); l++){
+ point.set_vertex(m_os_intercept.get_px(l), m_os_intercept.get_py(l)); 
  point.set_color("vertex", "red");
  point.set_param("vertex_size", "5");  
  string point_spec = point.get_spec();
  Notify("VIEW_POINT", point_spec);
 
-//// Trials and Errors //////
-ppx = m_charlie_dana.get_px(l);
-ppy = m_charlie_dana.get_py(l);
-// string pcontact = m_charlie_dana.get_pname(l);
 
- os_remaining_seglist = biteSegListRight(os_seglist, ppx, ppy);
- Notify("BITE_SEGLIST", os_remaining_seglist);
+
+
+
+//////////////////////////////////////////////////
+//// Trials and Errors //////
+// ppx = m_charlie_dana.get_px(l);
+// ppy = m_charlie_dana.get_py(l);
+// // string pcontact = m_charlie_dana.get_pname(l);
+
+//  os_remaining_seglist = biteSegListRight(os_seglist, ppx, ppy);
+//  Notify("BITE_SEGLIST", os_remaining_seglist);
 
 
 /////// Need to Fix get_t ///////
 
-int int_time = os_extra_pts.get_t(ppx, ppy);
-string time_test = intToString(int_time);
+// int int_time = os_extra_pts.get_t(ppx, ppy);
+// string time_test = intToString(int_time);
 
-double m_int_x = os_extra_pts.get_xt(int_time);
-string m_ix = doubleToString(m_int_x);
-double m_int_plusone = os_extra_pts.get_xt(int_time);
-string m_ix1 = doubleToString(m_int_plusone);
-Notify("TEST1", m_ix1);
+// double m_int_x = os_extra_pts.get_xt(int_time);
+// string m_ix = doubleToString(m_int_x);
+// double m_int_plusone = os_extra_pts.get_xt(int_time);
+// string m_ix1 = doubleToString(m_int_plusone);
+// Notify("TEST1", m_ix1);
 // double m_int_y = os_extra_pts.get_yt(int_time);
 // string m_iy = doubleToString(m_int_y);
 // string time_coords = m_ix + "," + m_iy;
@@ -156,7 +158,7 @@ Notify("TEST1", m_ix1);
 // string time_test = doubleToString(limit_t);
 
  // Notify("TEST", m_ix);
- Notify("TESTING", time_test);
+ // Notify("TESTING", time_test);
  
 }
 
@@ -197,6 +199,7 @@ bool SegListIntercept::OnStartUp()
     if(param == "vname"){
       m_veh_name = toupper(value);
       m_vname = tolower(value);
+      m_list_name = "SEGLIST_" + m_veh_name;
       handled = true;
     }
 
@@ -216,11 +219,13 @@ void SegListIntercept::registerVariables()
 {
   AppCastingMOOSApp::RegisterVariables();
   // Register("FOOBAR", 0);
-  Register("SEGLIST_CHARLIE", 0);
-  Register("SEGLIST_DANA", 0);
+  Register("SEGLIST", 0); //each contact seglist as a node msg betweeen vessels
+ 
+
+  Register(m_list_name, 0); //ownship seglist
 
   /// Trials and Errors //////
-  Register("NAV_SPEED", 0);
+  // Register("NAV_SPEED", 0);
 
 
 }
@@ -238,8 +243,8 @@ bool SegListIntercept::buildReport()
   ACTable actab(3);
   actab << "Name | X POS | Y POS";
   actab.addHeaderLines();
-  for(unsigned int k=0; k<m_charlie_dana.size(); k++){
-    actab << m_charlie_dana.get_pname(k) << doubleToString(m_charlie_dana.get_px(k)) << doubleToString(m_charlie_dana.get_py(k));
+  for(unsigned int k=0; k<m_os_intercept.size(); k++){
+    actab << m_os_intercept.get_pname(k) << doubleToString(m_os_intercept.get_px(k)) << doubleToString(m_os_intercept.get_py(k));
   }
   m_msgs << actab.getFormattedString();
 
