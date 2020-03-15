@@ -26,8 +26,8 @@ done
 VNAME1="charlie"           # The first vehicle Community
 VNAME2="dana"           # The second vehicle Community
 VNAME3="echo"           # THe third vehicle Community
-START_POS1="70,-30"         
-START_POS2="10,-180"
+START_POS1="10,-180"         
+START_POS2="70,-30"
 START_POS3="190,-180"        
 
 SHORE_LISTEN="9300"

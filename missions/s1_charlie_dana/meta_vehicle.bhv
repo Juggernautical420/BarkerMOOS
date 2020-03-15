@@ -44,10 +44,10 @@ Behavior = BHV_Waypoint
 
           //   points = 10,-30 : 190, -180 
 #ifdef VNAME VNAME1
-  points = 70,-30 : 40,-60 : 160, -180 : 160,-300
+  points = 10, -180: 110, -100: 70,-60 : 190,60 
   speed = 2
 #elseifdef VNAME VNAME2
-  points = 10, -180: 110, -100: 70,-60 : 190,60 
+  points =  70,-30 : 40,-60 : 160, -180 : 160,-300
   speed = 2
 //#elseifdef VNAME VNAME3
 //  points = 190,-180: 40, -30
