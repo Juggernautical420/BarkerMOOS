@@ -52,7 +52,7 @@ nsplug meta_shoreside.moos targ_shoreside.moos -f WARP=$TIME_WARP \
 if [ "${RANDSTART}" = "true" ] ; then
     pickpos --poly="-10,-200:30,-200:20,-160:-10,-160"      \
             --poly="150,60 : 30,-60 : 50,-60 : 170,60"  \
-            --poly="180,-180 : 180,-350 : 200,-350 : 200,-180"  \
+            --poly="180,-180 : 180,-320 : 200,-320 : 200,-180"  \
         --amt=$AMT   > vpositions.txt  
     pickpos --amt=$AMT --spd=1:4 > vspeeds.txt
     pickpos --amt=$AMT --vnames  > vnames.txt
