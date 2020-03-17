@@ -42,7 +42,7 @@ Behavior = BHV_Waypoint
          slip_radius = 15.0
   efficiency_measure = all
  //     speed = $(SPEED)
-#ifdef GROUP UUV
+#ifdef GROUP USV
      points = 10, -180: 110, -100: 70,-60 : 190,60 
         speed = $(SPEED)
 #elseifdef  GROUP INBOUND

@@ -6,13 +6,15 @@ TIME_WARP=1
 JUST_MAKE="no"
 RANDSTART="true"
 ORDER="normal"
-AMT=1
+INAMT=1
+OUTAMT=1
 for ARGI; do
     if [ "${ARGI}" = "--help" -o "${ARGI}" = "-h" ] ; then
     printf "%s [SWITCHES] [time_warp]          \n" $0
     printf "  --just_make, -j                  \n" 
     printf "  --help, -h                       \n" 
-    printf "  --amt=N                          \n" 
+    printf "  --in=N                          \n" 
+    printf "  --out=N                          \n" 
     printf "  --norand                         \n" 
     exit 0;
     elif [ "${ARGI//[^0-9]/}" = "$ARGI" -a "$TIME_WARP" = 1 ]; then 
@@ -21,15 +23,22 @@ for ARGI; do
     JUST_MAKE="yes"
     elif [ "${ARGI}" = "--rand" -o "${ARGI}" = "-r" ] ; then
     RANDSTART="true"
-    elif [ "${ARGI:0:6}" = "--amt=" ] ; then
-        AMT="${ARGI#--amt=*}"
+    elif [ "${ARGI:0:5}" = "--in=" ] ; then
+        INAMT="${ARGI#--in=*}"
+    elif [ "${ARGI:0:6}" = "--out=" ] ; then
+        OUTAMT="${ARGI#--out=*}"    
     else 
     printf "Bad Argument: %s \n" $ARGI
     exit 0
     fi
 done
 
-if [ ! $AMT -ge 1 ] ; then
+if [ ! $INAMT -ge 1 ] ; then
+    echo "Vehicle amount must be >= 1. Exiting now."
+    exit 1
+fi
+
+if [ ! $OUTAMT -ge 1 ] ; then
     echo "Vehicle amount must be >= 1. Exiting now."
     exit 1
 fi
@@ -45,53 +54,101 @@ nsplug meta_shoreside.moos targ_shoreside.moos -f WARP=$TIME_WARP \
 
 #-------------------------------------------------------------
 # Part 3: Generate random starting positions, speeds and vnames
-#         NEAST Poly: 90,20 : 150,30 : 200,-25 : 160,-65, 90,-15
-#         WEST  Poly: -30,-30 : -30,-135 : 15,-135 : 10,-30
-#         SEAST Poly: 145,-120 : 170,-135 : 140,-175 : 125,-160
+
 #-------------------------------------------------------------
 if [ "${RANDSTART}" = "true" ] ; then
-    pickpos --poly="-10,-200:30,-200:20,-160:-10,-160"      \
-            --poly="150,60 : 30,-60 : 50,-60 : 170,60"  \
-            --poly="180,-180 : 180,-320 : 200,-320 : 200,-180"  \
-        --amt=$AMT   > vpositions.txt  
-    pickpos --amt=$AMT --spd=1:4 > vspeeds.txt
-    pickpos --amt=$AMT --vnames  > vnames.txt
-    pickpos --amt=$AMT --grps=UUV,INBOUND,OUTBOUND:alt  > vgroups.txt
+    pickpos --poly="150,60 : 30,-60 : 50,-60 : 170,60"   --amt=$INAMT   > vinpositions.txt  
+    pickpos --amt=$INAMT --spd=1:4 > vinspeeds.txt
+    pickpos --amt=$INAMT --vnames  > vinnames.txt
+    #pickpos --amt=$AMT --grps=INBOUND  > vgroups.txt
+fi    
+if [ "${RANDSTART}" = "true" ] ; then
+    pickpos --poly="180,-180 : 180,-320 : 200,-320 : 200,-180"   --amt=$OUTAMT   > voutpositions.txt  
+    pickpos --amt=$OUTAMT --spd=1:4 > voutspeeds.txt
+    pickpos --amt=$OUTAMT --vnames  > voutnames.txt
 fi
-VEHPOS=(`cat vpositions.txt`)
-SPEEDS=(`cat vspeeds.txt`)
-VNAMES=(`cat vnames.txt`)
-GROOPS=(`cat vgroups.txt`)
+VEHPOSIN=(`cat vinpositions.txt`)
+SPEEDSIN=(`cat vinspeeds.txt`)
+VNAMESIN=(`cat vinnames.txt`)
+#GROOPS=(`cat vgroups.txt`)
 
+VEHPOSOUT=(`cat voutpositions.txt`)
+SPEEDSOUT=(`cat voutspeeds.txt`)
+VNAMESOUT=(`cat voutnames.txt`)
 
 #-------------------------------------------------------------
 # Part 4: Generate the Vehicle mission files
 #-------------------------------------------------------------
-for INDEX in `seq 1 $AMT`;
-do
-    ARRAY_INDEX=`expr $INDEX - 1`
-    START_POS=${VEHPOS[$ARRAY_INDEX]}
-    VNAME=${VNAMES[$ARRAY_INDEX]}
-    SPEED=${SPEEDS[$ARRAY_INDEX]}
-    GROUP=${GROOPS[$ARRAY_INDEX]}
-    SPEED="${SPEED#speed=*}"
-    
-    VPORT=`expr $INDEX + 9000`
-    LPORT=`expr $INDEX + 9300`
-     
-    echo "Vehicle:" $VNAME "POS:" $START_POS "V:" $SPEED         \
-      "DB_PORT:" $VPORT "PS_PORT:" $LPORT
+VNAME1="usv"           # The first vehicle Community
+START_POS1="10,-180" 
+SHORE_LISTEN="9300"
 
-    nsplug meta_vehicle.moos targ_$VNAME.moos -f WARP=$TIME_WARP \
-       VNAME=$VNAME   START_POS=$START_POS   SHORE=$SHORE    \
-       VPORT=$VPORT   SHARE_LISTEN=$LPORT    GROUP=$GROUP                \
+nsplug meta_vehicle.moos targ_$VNAME1.moos -f WARP=$TIME_WARP \
+    VNAME=$VNAME1          SHARE_LISTEN="9301"              \
+    VPORT="9001"           SHORE=$SHORE       \
+    START_POS=$START_POS1 
+
+
+nsplug meta_vehicle.bhv targ_$VNAME1.bhv -f VNAME=$VNAME1     \
+    START_POS=$START_POS1 VNAME1=$VNAME1 GROUP=USV  \
+    SPEED=1.5
+#-------------------------------------------------------------
+# Part 4a: Generate the Inbound Vehicle mission files
+#-------------------------------------------------------------
+
+for INDEXIN in `seq 1 $INAMT`;
+do
+    ARRAY_INDEXIN=`expr $INDEXIN - 1`
+    START_POSIN=${VEHPOSIN[$ARRAY_INDEXIN]}
+    VNAMEIN=${VNAMESIN[$ARRAY_INDEXIN]}
+    SPEEDIN=${SPEEDSIN[$ARRAY_INDEXIN]}
+    #GROUP=${GROOPS[$ARRAY_INDEX]}
+    SPEED="${SPEEDIN#speed=*}"
+    
+    VPORTIN=`expr $INDEXIN + 9001`
+    LPORTIN=`expr $INDEXIN + 9301`
+     
+    echo "Vehicle:" $VNAMEIN "POS:" $START_POSIN "V:" $SPEEDIN         \
+      "DB_PORT:" $VPORTIN "PS_PORT:" $LPORTIN
+
+    nsplug meta_vehicle.moos targ_$VNAMEIN.moos -f WARP=$TIME_WARP \
+       VNAME=$VNAMEIN   START_POS=$START_POSIN   SHORE=$SHORE    \
+       VPORT=$VPORTIN   SHARE_LISTEN=$LPORTIN    GROUP=INBOUND                \
        VTYPE="kayak"  
     
-    nsplug meta_vehicle.bhv targ_$VNAME.bhv -f  VNAME=$VNAME     \
-       START_POS=$START_POS   ORDER=$ORDER   GROUP=$GROUP        \
+    nsplug meta_vehicle.bhv targ_$VNAMEIN.bhv -f  VNAME=$VNAMEIN     \
+       START_POS=$START_POSIN   ORDER=$ORDER   GROUP=INBOUND        \
            ORFER=$ORDER   SPEED=$SPEED      
 done
 
+#-------------------------------------------------------------
+# Part 4b: Generate the Outbound Vehicle mission files
+#-------------------------------------------------------------
+
+# for INDEXOUT in `seq 1 $OUTAMT`;
+# do
+#     ARRAY_INDEXOUT=`expr $INDEXOUT - 1`
+#     START_POSOUT=${VEHPOSOUT[$ARRAY_INDEXOUT]}
+#     VNAMEOUT=${VNAMESOUT[$ARRAY_INDEXOUT]}
+#     SPEEDOUT=${SPEEDSOUT[$ARRAY_INDEXOUT]}
+#     #GROUP=${GROOPS[$ARRAY_INDEX]}
+#     SPEED="${SPEEDOUT#speed=*}"
+    
+#     VPORTOUT=`expr $INDEXOUT + 9007`
+#     LPORTOUT=`expr $INDEXOUT + 9307`
+     
+#     echo "Vehicle:" $VNAMEOUT "POS:" $START_POSOUT "V:" $SPEEDOUT         \
+#       "DB_PORT:" $VPORTOUT "PS_PORT:" $LPORTOUT
+
+#     nsplug meta_vehicle.moos targ_$VNAMEOUT.moos -f WARP=$TIME_WARP \
+#        VNAME=$VNAMEOUT   START_POS=$START_POSOUT   SHORE=$SHORE    \
+#        VPORT=$VPORTOUT   SHARE_LISTEN=$LPORTOUT    GROUP=OUTBOUND                \
+#        VTYPE="kayak"  
+    
+#     nsplug meta_vehicle.bhv targ_$VNAMEOUT.bhv -f  VNAME=$VNAMEOUT     \
+#        START_POS=$START_POSOUT   ORDER=$ORDER   GROUP=OUTBOUND        \
+#            ORFER=$ORDER   SPEED=$SPEED      
+# done
 
 #-------------------------------------------------------------
 # Part 5: Allow to exit now if just want to examine the mission
@@ -111,14 +168,26 @@ sleep 0.1
 #-------------------------------------------------------------
 # Part 7: Launch the Vehicle communities
 #-------------------------------------------------------------
-for INDEX in `seq 1 $AMT`;
+printf "Launching $VNAME1 MOOS Community (WARP=%s) \n" $TIME_WARP
+pAntler targ_$VNAME1.moos >& /dev/null &
+
+for INDEXIN in `seq 1 $INAMT`;
 do 
-    ARRAY_INDEX=`expr $INDEX - 1`
-    VNAME=${VNAMES[$ARRAY_INDEX]}
-    printf "Launching $VNAME MOOS Community (WARP=%s) \n" $TIME_WARP
-    pAntler targ_$VNAME.moos >& /dev/null &
+    ARRAY_INDEXIN=`expr $INDEXIN - 1`
+    VNAMEIN=${VNAMESIN[$ARRAY_INDEXIN]}
+    printf "Launching $VNAMEIN MOOS Community (WARP=%s) \n" $TIME_WARP
+    pAntler targ_$VNAMEIN.moos >& /dev/null &
     sleep 0.1
 done
+
+# for INDEXOUT in `seq 1 $OUTAMT`;
+# do 
+#     ARRAY_INDEXOUT=`expr $INDEXOUT - 1`
+#     VNAMEOUT=${VNAMESOUT[$ARRAY_INDEXOUT]}
+#     printf "Launching $VNAMEOUT MOOS Community (WARP=%s) \n" $TIME_WARP
+#     pAntler targ_$VNAMEOUT.moos >& /dev/null &
+#     sleep 0.1
+# done
 
 #-------------------------------------------------------------
 # Part 8: Launch uMac until the mission is quit
@@ -129,5 +198,4 @@ uMAC targ_shoreside.moos
 printf "Killing all processes ... \n"
 mykill
 printf "Done killing processes.   \n"
-
 
