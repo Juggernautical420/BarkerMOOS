@@ -4,82 +4,130 @@
 #-------------------------------------------------------
 TIME_WARP=1
 JUST_MAKE="no"
+RANDSTART="true"
+ORDER="normal"
+AMT=1
 for ARGI; do
     if [ "${ARGI}" = "--help" -o "${ARGI}" = "-h" ] ; then
-	printf "%s [SWITCHES] [time_warp]   \n" $0
-	printf "  --just_make, -j    \n" 
-	printf "  --help, -h         \n" 
-	exit 0;
+    printf "%s [SWITCHES] [time_warp]          \n" $0
+    printf "  --just_make, -j                  \n" 
+    printf "  --help, -h                       \n" 
+    printf "  --amt=N                          \n" 
+    printf "  --norand                         \n" 
+    exit 0;
     elif [ "${ARGI//[^0-9]/}" = "$ARGI" -a "$TIME_WARP" = 1 ]; then 
         TIME_WARP=$ARGI
     elif [ "${ARGI}" = "--just_build" -o "${ARGI}" = "-j" ] ; then
-	JUST_MAKE="yes"
+    JUST_MAKE="yes"
+    elif [ "${ARGI}" = "--rand" -o "${ARGI}" = "-r" ] ; then
+    RANDSTART="true"
+    elif [ "${ARGI:0:6}" = "--amt=" ] ; then
+        AMT="${ARGI#--amt=*}"
     else 
-	printf "Bad Argument: %s \n" $ARGI
-	exit 0
+    printf "Bad Argument: %s \n" $ARGI
+    exit 0
     fi
 done
 
-#-------------------------------------------------------
-#  Part 2: Create the .moos and .bhv files. 
-#-------------------------------------------------------
-VNAME1="charlie"           # The first vehicle Community
-VNAME2="dana"           # The second vehicle Community
-VNAME3="echo"           # THe third vehicle Community
-START_POS1="10,-180"         
-START_POS2="70,-30"
-START_POS3="190,-180"        
+if [ ! $AMT -ge 1 ] ; then
+    echo "Vehicle amount must be >= 1. Exiting now."
+    exit 1
+fi
 
-SHORE_LISTEN="9300"
-
-nsplug meta_vehicle.moos targ_$VNAME1.moos -f WARP=$TIME_WARP \
-    VNAME=$VNAME1          SHARE_LISTEN="9301"              \
-    VPORT="9001"           SHORE_LISTEN=$SHORE_LISTEN       \
-    START_POS=$START_POS1  
-
-nsplug meta_vehicle.moos targ_$VNAME2.moos -f WARP=$TIME_WARP \
-    VNAME=$VNAME2          SHARE_LISTEN="9302"              \
-    VPORT="9002"           SHORE_LISTEN=$SHORE_LISTEN       \
-    START_POS=$START_POS2  
-
-#nsplug meta_vehicle.moos targ_$VNAME3.moos -f WARP=$TIME_WARP \
-#    VNAME=$VNAME3          SHARE_LISTEN="9303"              \
-#    VPORT="9003"           SHORE_LISTEN=$SHORE_LISTEN       \
-#    START_POS=$START_POS3 
-
-
+#-------------------------------------------------------------
+# Part 2: Build the Shoreside mission file
+#-------------------------------------------------------------
+SHORE=localhost:9300
 nsplug meta_shoreside.moos targ_shoreside.moos -f WARP=$TIME_WARP \
-    SNAME="shoreside"  SHARE_LISTEN=$SHORE_LISTEN                 \
-    SPORT="9000"       
+   VNAME="shoreside" 
 
 
-nsplug meta_vehicle.bhv targ_$VNAME1.bhv -f VNAME=$VNAME1     \
-    START_POS=$START_POS1 VNAME1=$VNAME1 VNAME2=$VNAME2 VNAME3=$VNAME3      
 
-nsplug meta_vehicle.bhv targ_$VNAME2.bhv -f VNAME=$VNAME2     \
-    START_POS=$START_POS2 VNAME1=$VNAME1 VNAME2=$VNAME2 VNAME3=$VNAME3      
+#-------------------------------------------------------------
+# Part 3: Generate random starting positions, speeds and vnames
+#         NEAST Poly: 90,20 : 150,30 : 200,-25 : 160,-65, 90,-15
+#         WEST  Poly: -30,-30 : -30,-135 : 15,-135 : 10,-30
+#         SEAST Poly: 145,-120 : 170,-135 : 140,-175 : 125,-160
+#-------------------------------------------------------------
+if [ "${RANDSTART}" = "true" ] ; then
+    pickpos --poly="-10,-200:30,-200:20,-160:-10,-160"      \
+            --poly="150,60 : 30,-60 : 50,-60 : 170,60"  \
+            --poly="180,-180 : 180,-350 : 200,-350 : 200,-180"  \
+        --amt=$AMT   > vpositions.txt  
+    pickpos --amt=$AMT --spd=1:4 > vspeeds.txt
+    pickpos --amt=$AMT --vnames  > vnames.txt
+    pickpos --amt=$AMT --grps=UUV,INBOUND,OUTBOUND:alt  > vgroups.txt
+fi
+VEHPOS=(`cat vpositions.txt`)
+SPEEDS=(`cat vspeeds.txt`)
+VNAMES=(`cat vnames.txt`)
+GROOPS=(`cat vgroups.txt`)
 
-#nsplug meta_vehicle.bhv targ_$VNAME3.bhv -f VNAME=$VNAME3     \
-#    START_POS=$START_POS3 VNAME1=$VNAME1 VNAME2=$VNAME2 VNAME3=$VNAME3  
+
+#-------------------------------------------------------------
+# Part 4: Generate the Vehicle mission files
+#-------------------------------------------------------------
+for INDEX in `seq 1 $AMT`;
+do
+    ARRAY_INDEX=`expr $INDEX - 1`
+    START_POS=${VEHPOS[$ARRAY_INDEX]}
+    VNAME=${VNAMES[$ARRAY_INDEX]}
+    SPEED=${SPEEDS[$ARRAY_INDEX]}
+    GROUP=${GROOPS[$ARRAY_INDEX]}
+    SPEED="${SPEED#speed=*}"
+    
+    VPORT=`expr $INDEX + 9000`
+    LPORT=`expr $INDEX + 9300`
+     
+    echo "Vehicle:" $VNAME "POS:" $START_POS "V:" $SPEED         \
+      "DB_PORT:" $VPORT "PS_PORT:" $LPORT
+
+    nsplug meta_vehicle.moos targ_$VNAME.moos -f WARP=$TIME_WARP \
+       VNAME=$VNAME   START_POS=$START_POS   SHORE=$SHORE    \
+       VPORT=$VPORT   SHARE_LISTEN=$LPORT    GROUP=$GROUP                \
+       VTYPE="kayak"  
+    
+    nsplug meta_vehicle.bhv targ_$VNAME.bhv -f  VNAME=$VNAME     \
+       START_POS=$START_POS   ORDER=$ORDER   GROUP=$GROUP        \
+           ORFER=$ORDER   SPEED=$SPEED      
+done
+
+
+#-------------------------------------------------------------
+# Part 5: Allow to exit now if just want to examine the mission
+#         files without launching.
+#-------------------------------------------------------------
 if [ ${JUST_MAKE} = "yes" ] ; then
     exit 0
 fi
 
-#-------------------------------------------------------
-#  Part 3: Launch the processes
-#-------------------------------------------------------
-printf "Launching $SNAME MOOS Community (WARP=%s) \n"  $TIME_WARP
+#-------------------------------------------------------------
+# Part 6: Launch the Shoreside community
+#-------------------------------------------------------------
+printf "Launching Shoreside MOOS Community (WARP=%s) \n" $TIME_WARP
 pAntler targ_shoreside.moos >& /dev/null &
-printf "Launching $VNAME1 MOOS Community (WARP=%s) \n" $TIME_WARP
-pAntler targ_$VNAME1.moos >& /dev/null &
-printf "Launching $VNAME2 MOOS Community (WARP=%s) \n" $TIME_WARP
-pAntler targ_$VNAME2.moos >& /dev/null &
-#printf "Launching $VNAME3 MOOS Community (WARP=%s) \n" $TIME_WARP
-#pAntler targ_$VNAME3.moos >& /dev/null &
-printf "Done \n"
+sleep 0.1
+
+#-------------------------------------------------------------
+# Part 7: Launch the Vehicle communities
+#-------------------------------------------------------------
+for INDEX in `seq 1 $AMT`;
+do 
+    ARRAY_INDEX=`expr $INDEX - 1`
+    VNAME=${VNAMES[$ARRAY_INDEX]}
+    printf "Launching $VNAME MOOS Community (WARP=%s) \n" $TIME_WARP
+    pAntler targ_$VNAME.moos >& /dev/null &
+    sleep 0.1
+done
+
+#-------------------------------------------------------------
+# Part 8: Launch uMac until the mission is quit
+#-------------------------------------------------------------
 
 uMAC targ_shoreside.moos
 
 printf "Killing all processes ... \n"
-kill %1 %2 %3 #%4
+mykill
 printf "Done killing processes.   \n"
+
+

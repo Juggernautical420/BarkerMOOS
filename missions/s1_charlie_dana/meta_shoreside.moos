@@ -4,8 +4,10 @@
 //NAME: Jason Barker
 //FILE: s1_charlie_dana.moos (meta_shoreside)
 ServerHost = localhost
-ServerPort = $(SPORT)
-Community  = $(SNAME)
+ServerPort = 9000
+Community  = shoreside
+
+TERM_REPORTING = true
 
 #include plug_origin_warp.moos
   
@@ -26,7 +28,16 @@ Processconfig = ANTLER
   Run = pTransitAlpha   @ NewConsole = false
 }
 
-#include plug_pShare.moos
+//---------------------------------------------------------
+// pShare Config Block
+
+ProcessConfig = pShare
+{
+  AppTick    = 2
+  CommsTick  = 2
+
+  input = route = localhost:9300
+}
 
 //--------------------------------------------------
 // uMAC Configuration Block
@@ -111,7 +122,7 @@ ProcessConfig = pMarineViewer
   TIFF_FILE            = forrest19.tif
   set_pan_x            = -90
   set_pan_y            = -280
-  zoom                 = 0.45
+  zoom                 = 0.65
   vehicles_shape_scale = 1.5
   vehicles_name_viewable = names
 
@@ -178,9 +189,9 @@ ProcessConfig = pTransitAlpha
 
   inbound = pts={30,-60 : 150,-180 : 170,-180 : 50,-60} 
   inbound = pts={150,60 : 30,-60 : 50,-60 : 170,60}
-  inbound = pts={150,-180 : 150,-300 : 170,-300 : 170,-180}
+  inbound = pts={150,-180 : 150,-350 : 170,-350 : 170,-180}
 
   outbound = pts={60,-60 : 180,-180 : 200,-180: 80,-60} 
   outbound = pts={180,60 : 60,-60 : 80,-60 : 200,60}
-  outbound = pts={180,-180 : 180,-300 : 200,-300 : 200,-180}
+  outbound = pts={180,-180 : 180,-350 : 200,-350 : 200,-180}
 }
