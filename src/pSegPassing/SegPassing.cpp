@@ -43,7 +43,14 @@ bool SegPassing::OnNewMail(MOOSMSG_LIST &NewMail)
     m_str_name = biteStringX(str_seglist, '=');
     seglist_report = str_seglist;
     
-  }  
+  } 
+  m_source = "src_node=" + m_vname;
+  m_dest = "dest_node=all";
+  m_var_name = "var_name=SEGLIST";
+  //m_str_val = "string_val=vname=" + m_vname + "," + str_seglist;
+  m_str_val = "string_val=vname=" + m_vname + ";pts=" + str_seglist;
+  m_node_message = m_source + "," + m_dest + "," + m_var_name + "," + m_str_val;
+  Notify("NODE_MESSAGE_LOCAL", m_node_message); 
 
 #if 0 // Keep these around just for template
     string comm  = msg.GetCommunity();
@@ -83,20 +90,15 @@ bool SegPassing::Iterate()
   AppCastingMOOSApp::Iterate();
   // Do your thing here!
 
-  // NodeMessage seglist_message;
-  // seglist_message.setSourceNode(m_vname);
-  // seglist_message.setDestNode("all");
-  // seglist_message.setVarName(m_list_name);
-  // seglist_message.setStringVal(seglist_report);
-  // m_node_message = seglist_message.getSpec();
+  // moved to on new mail to prevent overloading
 
-  m_source = "src_node=" + m_vname;
-  m_dest = "dest_node=all";
-  m_var_name = "var_name=SEGLIST";
-  //m_str_val = "string_val=vname=" + m_vname + "," + str_seglist;
-  m_str_val = "string_val=vname=" + m_vname + ";pts=" + str_seglist;
-  m_node_message = m_source + "," + m_dest + "," + m_var_name + "," + m_str_val;
-  Notify("NODE_MESSAGE_LOCAL", m_node_message);
+  // m_source = "src_node=" + m_vname;
+  // m_dest = "dest_node=all";
+  // m_var_name = "var_name=SEGLIST";
+  // //m_str_val = "string_val=vname=" + m_vname + "," + str_seglist;
+  // m_str_val = "string_val=vname=" + m_vname + ";pts=" + str_seglist;
+  // m_node_message = m_source + "," + m_dest + "," + m_var_name + "," + m_str_val;
+  // Notify("NODE_MESSAGE_LOCAL", m_node_message);
   AppCastingMOOSApp::PostReport();
   return(true);
 }
