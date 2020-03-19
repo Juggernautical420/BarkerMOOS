@@ -141,7 +141,7 @@ bool TransitLanes::OnStartUp()
       for (int r=0; r<InB_pts.size(); r++){
         XYSegList Inbound = string2SegList(InB_pts[r]); //turns each polygon into a seglist
         double x1 = Inbound.get_vx(0);//assumption: polygons only have four points (weakness)
-        double y1 = Inbound.get_vy(0);
+        double y1 = Inbound.get_vy(0);//not rubust to more polygons
 
         double x2 = Inbound.get_vx(1);
         double y2 = Inbound.get_vy(1);
