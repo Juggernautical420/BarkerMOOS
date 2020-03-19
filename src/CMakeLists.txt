@@ -31,6 +31,7 @@ ADD_SUBDIRECTORY(pSegPassing)
 ADD_SUBDIRECTORY(pSegListIntercept)
 ADD_SUBDIRECTORY(pSegDetailing)
 ADD_SUBDIRECTORY(pTransitAlpha)
+ADD_SUBDIRECTORY(pTransitLanes)
 ADD_SUBDIRECTORY(pTSSCompliance)
 
 

@@ -19,13 +19,13 @@ Processconfig = ANTLER
   Run = MOOSDB          @ NewConsole = false
   Run = pMarineViewer   @ NewConsole = false
   Run = pLogger         @ NewConsole = false
-  // Run = uXMS            @ NewConsole = true
+  Run = uXMS            @ NewConsole = true
   Run = uProcessWatch   @ NewConsole = false
   Run = pShare          @ NewConsole = false
   Run = pHostInfo       @ NewConsole = false
   Run = uFldShoreBroker @ NewConsole = false
   Run = uFldNodeComms   @ NewConsole = false
-  Run = pTransitAlpha   @ NewConsole = false
+  Run = pTransitLanes   @ NewConsole = false
 }
 
 //---------------------------------------------------------
@@ -90,8 +90,8 @@ ProcessConfig = uXMS
   AppTick       = 1
   CommsTick     = 1
 
-  var = INBOUND_POLY
-  var = OUTBOUND_POLY
+  var = INBOUND_POLY_HDG
+//  var = OUTBOUND_POLY_HDG
 }
 
 
@@ -180,9 +180,9 @@ ProcessConfig = uFldNodeComms
 
 
 //------------------------------------------------
-// pTransitAlpha config block
+// pTransitLanes config block
 
-ProcessConfig = pTransitAlpha
+ProcessConfig = pTransitLanes
 {
   AppTick   = 4
   CommsTick = 4
