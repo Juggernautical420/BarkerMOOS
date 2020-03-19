@@ -43,8 +43,6 @@ class TransitLanes : public AppCastingMOOSApp
  std::string InB_size;
  std::string OutB_size;
 
-
-
  std::vector<std::string> m_polygons;
  std::vector<std::string> InB_pts;
  std::vector<std::string> OutB_pts;
