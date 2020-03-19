@@ -91,7 +91,7 @@ ProcessConfig = uXMS
   CommsTick     = 1
 
   var = INBOUND_POLY_HDG
-//  var = OUTBOUND_POLY_HDG
+  var = INBOUND_POLY
 }
 
 

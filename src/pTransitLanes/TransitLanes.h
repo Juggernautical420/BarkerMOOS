@@ -57,6 +57,7 @@ class TransitLanes : public AppCastingMOOSApp
  std::string InB_HdgMsg;
  std::string OutB_HdgMsg;
 
+
  private: // State variables
 };
 

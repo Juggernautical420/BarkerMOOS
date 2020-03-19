@@ -139,7 +139,7 @@ bool TransitLanes::OnStartUp()
       
       // for generating lines through the midsection of polygons and determining heading  
       for (int r=0; r<InB_pts.size(); r++){
-        XYSegList Inbound = string2SegList(InB_pts[r]); //turns each polygon into a seglist
+        XYPolygon Inbound = string2Poly(InB_pts[r]); //turns each string into a polygon
         double x1 = Inbound.get_vx(0);//assumption: polygons only have four points (weakness)
         double y1 = Inbound.get_vy(0);//not rubust to more polygons
 
@@ -167,10 +167,10 @@ bool TransitLanes::OnStartUp()
 
           string bisectspec = Bisect.get_spec_pts();
           InB_midpoints.push_back(bisectspec);//creates a vector of seglists to make viewable
-          // //////////////// HEADING ///////////////////////
-          // double polybrg = relAng(x_mid1, y_mid1, x_mid2, y_mid2);
-          // string polyhdg = doubleToString(polybrg);
-          // InB_hdgs.push_back(polyhdg);           
+          //////////////// HEADING ///////////////////////
+          double polybrg = relAng(x_mid1, y_mid1, x_mid2, y_mid2);
+          string polyhdg = doubleToString(polybrg);
+          InB_hdgs.push_back(polyhdg);           
         }
         else{
           XYSegList Bisect;
@@ -192,12 +192,12 @@ bool TransitLanes::OnStartUp()
 
       }
 
-      //for (int m=0; m<InB_midpoints.size(); m++){
-        //InB_HdgMsg = accumulate(begin(InB_midpoints), end(InB_midpoints), string(), [](string lhs, const string &rhs) { return lhs.empty() ? rhs : lhs + "," + rhs; });
-        InB_HdgMsg = uintToString(InB_midpoints.size());
+      for (int m=0; m<InB_hdgs.size(); m++){
+        InB_HdgMsg = accumulate(begin(InB_hdgs), end(InB_hdgs), string(), [](string lhs, const string &rhs) { return lhs.empty() ? rhs : lhs + "," + rhs; });
+        //InB_HdgMsg = uintToString(InB_midpoints.size());
         Notify("INBOUND_POLY_HDG", InB_HdgMsg);
 
-      //}
+      }
   
       XYPolygon poly_Inb = string2Poly(value);
       //poly_Inb.set_label("Inbound");
@@ -228,7 +228,7 @@ bool TransitLanes::OnStartUp()
       }
 
       for (int r=0; r<OutB_pts.size(); r++){
-        XYSegList Outbound = string2SegList(OutB_poly);
+        XYPolygon Outbound = string2Poly(OutB_poly);
         double x1 = Outbound.get_vx(0);
         double y1 = Outbound.get_vy(0);
 
