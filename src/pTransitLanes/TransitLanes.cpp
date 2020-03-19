@@ -192,8 +192,8 @@ bool TransitLanes::OnStartUp()
 
       }
 
-      for (int m=0; m<InB_hdgs.size(); m++){
-        InB_HdgMsg = accumulate(begin(InB_hdgs), end(InB_hdgs), string(), [](string lhs, const string &rhs) { return lhs.empty() ? rhs : lhs + "," + rhs; });
+      for (int m=0; m<InB_midpoints.size(); m++){
+        InB_HdgMsg = accumulate(begin(InB_midpoints), end(InB_midpoints), string(), [](string lhs, const string &rhs) { return lhs.empty() ? rhs : lhs + "," + rhs; });
         //InB_HdgMsg = uintToString(InB_midpoints.size());
         Notify("INBOUND_POLY_HDG", InB_HdgMsg);
 
