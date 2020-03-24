@@ -88,6 +88,7 @@ VNAME1="usv"           # The first vehicle Community
 START_POS1="10,-180" 
 SHORE_LISTEN="9300"
 
+
 nsplug meta_vehicle.moos targ_$VNAME1.moos -f WARP=$TIME_WARP \
     VNAME=$VNAME1          SHARE_LISTEN="9301"              \
     VPORT="9001"           SHORE=$SHORE       \
@@ -96,7 +97,7 @@ nsplug meta_vehicle.moos targ_$VNAME1.moos -f WARP=$TIME_WARP \
 
 nsplug meta_vehicle.bhv targ_$VNAME1.bhv -f VNAME=$VNAME1     \
     START_POS=$START_POS1 VNAME1=$VNAME1 GROUP=USV  \
-    SPEED=1.5
+    SPEED=2.0
 #-------------------------------------------------------------
 # Part 4a: Generate the Inbound Vehicle mission files
 #-------------------------------------------------------------

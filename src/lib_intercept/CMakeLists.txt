@@ -7,6 +7,8 @@ SET(SRC
   SegIntercept.cpp
   SegParts.cpp
   SegListExtrapolator.cpp
+  XYTransitLane.cpp
+  XYTrafficScheme.cpp
  
 )
 
@@ -15,6 +17,8 @@ SET(HEADERS
   SegListEdit.h
   SegParts.h
   SegListExtrapolator.h
+  XYTransitLane.h
+  XYTrafficScheme.h
 )
 
 # Build Library

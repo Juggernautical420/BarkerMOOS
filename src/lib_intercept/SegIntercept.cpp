@@ -3,7 +3,7 @@
 /*    ORGN: MIT                                             */
 /*    FILE: SegIntercept.cpp                                        */
 /*    DATE: October 30, 2019                                                */
-/*    This file reads the node message SEGLIST_$V and compares seglists */
+/*    This file looks at two seglists and compares seglists */
 /*    for intercept point using the fast seglist intercept method */
 /************************************************************/
 
