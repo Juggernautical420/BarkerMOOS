@@ -33,6 +33,8 @@ ADD_SUBDIRECTORY(pSegDetailing)
 ADD_SUBDIRECTORY(pTransitAlpha)
 ADD_SUBDIRECTORY(pTransitLanes)
 ADD_SUBDIRECTORY(pTSSCompliance)
+ADD_SUBDIRECTORY(pTrafficScheme)
+
 
 
 ##############################################################################

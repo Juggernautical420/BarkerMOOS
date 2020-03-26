@@ -13,37 +13,29 @@
 #include <vector>
 #include <string>
 #include <cstdlib>
-#include "XYObject.h"
-#include "XYSegList.h"
-#include "XYFormatUtilsSegl.h"
 #include "MBUtils.h"
-#include "XYPolygon.h"
-#include "XYFormatUtilsPoly.h"
-#include "AngleUtils.h"
 #include "GeomUtils.h"
-#include <numeric>
-#include <iostream>
-#include <algorithm> 
+#include "XYPolygon.h"
+#include "XYTrafficObject.h"
 
-class XYTrafficScheme : public XYObject {
+
+
+class XYTrafficScheme   
+{
  public:
    XYTrafficScheme() {}
    virtual ~XYTrafficScheme() {}
 
- public: 
- void addTrafficLane(std::string);	
- unsigned int size() const  {return(m_polyspec.size());}   
- std::string get_lanepolyspec(unsigned int) const;
- std::string get_lanebisect(unsigned int) const;
- std::string get_lanedesignation(unsigned int) const;
- double get_laneheading(unsigned int) const;
+ public:  
+ void addTrafficObject(const XYTrafficObject trafficobj);
 
+ XYTrafficObject getTrafficObject(unsigned int) const;	
+
+ unsigned int size() const 		{return(m_traffic_scheme.size());}
 
  protected: 
- std::vector<std::string> m_polyspec;
- std::vector<std::string> m_polybisect;
- std::vector<std::string> m_designation;
- std::vector<double> m_heading;
+ std::vector<XYTrafficObject> m_traffic_scheme;
+ 
 
 
  };	

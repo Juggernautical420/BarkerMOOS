@@ -1,0 +1,9 @@
+//------------------------------------------------
+// pTrafficScheme config block
+
+ProcessConfig = pTrafficScheme
+{
+   AppTick   = 4
+   CommsTick = 4
+}
+

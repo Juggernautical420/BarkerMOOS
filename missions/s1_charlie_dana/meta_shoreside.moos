@@ -26,6 +26,7 @@ Processconfig = ANTLER
   Run = uFldShoreBroker @ NewConsole = false
   Run = uFldNodeComms   @ NewConsole = false
   Run = pTransitLanes   @ NewConsole = false
+  Run = pTrafficScheme  @ NewConsole = false
 }
 
 //---------------------------------------------------------
@@ -90,8 +91,8 @@ ProcessConfig = uXMS
   AppTick       = 1
   CommsTick     = 1
 
-  var = INBOUND_POLY_HDG
-  var = INBOUND_POLY
+  var = POLY_TYPE
+  var = POLY_SPEC
 }
 
 
@@ -194,4 +195,16 @@ ProcessConfig = pTransitLanes
   outbound = pts={60,-60 : 180,-180 : 200,-180: 80,-60} 
   outbound = pts={180,60 : 60,-60 : 80,-60 : 200,60}
   outbound = pts={180,-180 : 180,-350 : 200,-350 : 200,-180}
+}
+
+//------------------------------------------------
+// pTrafficScheme config block
+
+ProcessConfig = pTrafficScheme
+{
+   AppTick   = 4
+   CommsTick = 4
+
+   tss_file = tss_a.txt
+
 }

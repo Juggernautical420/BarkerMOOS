@@ -9,36 +9,41 @@
 #define XY_TRANSIT_LANE_HEADER
 
 #include <string>
+#include <vector>
 #include "XYPolygon.h"
 #include "XYSegList.h"
+#include "XYPoint.h"
+#include "XYFormatUtilsPoly.h"
+#include "XYFormatUtilsSegl.h"
 
-class XYTransitLane
-{
- public:
-  XYTransitLane();
-  virtual ~XYTransitLane() {}
+class XYTransitLane : public XYPolygon{
+public:
+ XYTransitLane();
+ virtual ~XYTransitLane() {}
+
+void setLanePoly(XYPolygon poly);
 
 public:
-// Setters
-void setLanePoly(XYPolygon poly)	{m_transitlane=poly;}
-void setLaneMidPts(XYPolygon poly);
-void setLaneDirection(std::string str);
-void setLaneHeading(std::string str);
 
 
-// Getters
-XYPolygon getLanePoly() const		{return(m_transitlane);}
-std::string getLanePolySpecs() const {return(m_transitlane.get_spec());}
-XYSegList getLaneMidPts() const		{return(m_bisect);}
-std::string getLaneMidPtsSpec() const  {return(m_bisect.get_spec_pts());}
-double getLaneHeading() const		{return(m_heading);}
+
 
 
 protected: // Key properties
-XYPolygon m_transitlane;
-XYSegList m_bisect;
-std::string m_direction;
-double m_heading;
+XYPolygon m_poly;
+std::string m_label;
+
+XYSegList m_enter;
+XYSegList m_exit;
+
+XYPoint m_enter_midpt;
+XYPoint m_exit_midt;
+
+double m_poly_heading;
+double m_poly_radius;
+
+private:
+
 
 
 };

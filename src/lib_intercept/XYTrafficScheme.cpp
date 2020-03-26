@@ -9,57 +9,24 @@
 
 using namespace std;
 
-//---------------------------------------------------------------
-// Procedure: addTrafficLane
-// Format of lane= pts={10,-10: 15,-10: 15,30: 10,30}; designation=inbound; hdg=180
-
-void XYTrafficScheme::addTrafficLane(std::string)
-{
-
-}
-
-
 
 //---------------------------------------------------------------
-// Procedure: get_lanepolyspec
+// Procedure: addTrafficObject
 
-string XYTrafficScheme::get_lanepolyspec(unsigned int i) const
+void XYTrafficScheme::addTrafficObject(const XYTrafficObject trafficobj)
 {
-  if(i<m_polyspec.size())
-    return(m_polyspec[i]);
-  else
-    return("");
+  m_traffic_scheme.push_back(trafficobj);
 }
 
 //---------------------------------------------------------------
-// Procedure: get_lanebisect
+// Procedure: get_TrafficObject
 
-string XYTrafficScheme::get_lanebisect(unsigned int i) const
+XYTrafficObject XYTrafficScheme::getTrafficObject(unsigned int index) const
 {
-  if(i<m_polybisect.size())
-    return(m_polybisect[i]);
-  else
-    return("");
-}
-
-//---------------------------------------------------------------
-// Procedure: get_lanedesignation
-
-string XYTrafficScheme::get_lanedesignation(unsigned int i) const
-{
-  if(i<m_designation.size())
-    return(m_designation[i]);
-  else
-    return("");
-}
-
-//---------------------------------------------------------------
-// Procedure: get_laneheading
-
-double XYTrafficScheme::get_laneheading(unsigned int i) const
-{
-  if(i<m_heading.size())
-     return(m_heading[i]);
-  else
-    return(0);
+  if(index>=m_traffic_scheme.size()){
+    XYTrafficObject null_object;
+     return(null_object);
+  }
+  
+    return(m_traffic_scheme[index]);
 }
