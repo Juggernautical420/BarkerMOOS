@@ -1,0 +1,215 @@
+//*******************************************************
+// ShoreSide Configuration File
+//
+//NAME: Jason Barker
+//FILE: s1_charlie_dana.moos (meta_shoreside)
+ServerHost = localhost
+ServerPort = 9000
+Community  = shoreside
+
+TERM_REPORTING = true
+
+MOOSTimeWarp = 5
+LatOrigin  = 43.825300 
+LongOrigin = -70.330400 
+
+
+  
+//--------------------------------------------------------
+Processconfig = ANTLER
+{
+  MSBetweenLaunches = 100
+
+  Run = MOOSDB          @ NewConsole = false
+  Run = pMarineViewer   @ NewConsole = false
+  Run = pLogger         @ NewConsole = false
+  Run = uXMS            @ NewConsole = true
+  Run = uProcessWatch   @ NewConsole = false
+  Run = pShare          @ NewConsole = false
+  Run = pHostInfo       @ NewConsole = false
+  Run = uFldShoreBroker @ NewConsole = false
+  Run = uFldNodeComms   @ NewConsole = false
+  Run = pTransitLanes   @ NewConsole = false
+  Run = pTrafficScheme  @ NewConsole = false
+}
+
+//---------------------------------------------------------
+// pShare Config Block
+
+ProcessConfig = pShare
+{
+  AppTick    = 2
+  CommsTick  = 2
+
+  input = route = localhost:9300
+}
+
+//--------------------------------------------------
+// uMAC Configuration Block
+
+ProcessConfig = uMAC
+{
+  AppTick       = 1
+  CommsTick     = 1
+}
+
+//--------------------------------------------------
+// uFldShoreBroker Configuration Block
+
+ProcessConfig = uFldShoreBroker
+{
+  AppTick       = 1
+  CommsTick     = 1
+
+  // Note: [QBRIDGE = FOO]  is shorthand for                    
+  //       [BRIDGE = src=FOO_$V,  alias=FOO] and                
+  //       [BRIDGE = src=FOO_ALL, alias=FOO]
+
+  QBRIDGE  = DEPLOY, RETURN, STATION_KEEP, NODE_REPORT, NODE_MESSAGE
+  QBRIDGE  = MOOS_MANUAL_OVERRIDE, APPCAST_REQ
+
+ 
+  BRIDGE = src=OUTBOUND_POLY
+  BRIDGE = src=INBOUND_POLY
+
+
+  BRIDGE   = src=UP_LOITER_$N, alias=UP_LOITER
+  BRIDGE   = src=HELM_MAP_CLEAR, alias=HELM_MAP_CLEAR
+ 
+}
+
+//--------------------------------------------------
+// pHostInfo configuration block from plugin
+
+ProcessConfig = pHostInfo
+{
+  AppTick 	= 1
+  CommsTick 	= 1
+}
+
+//--------------------------------------------------
+// uXMS Configuration Block
+
+ProcessConfig = uXMS
+{
+  AppTick       = 1
+  CommsTick     = 1
+
+  var = POLY_TYPE
+  var = POLY_SPEC
+}
+
+
+//--------------------------------------------------
+// pLogger Configuration Block
+
+ProcessConfig = pLogger
+{
+  AppTick       = 10
+  CommsTick     = 10
+  
+  File          = LOG_SHORESIDE
+  PATH          = ./
+  AsyncLog      = true
+  FileTimeStamp = true
+
+  // Log it all!!!!!
+  WildCardLogging = true 
+}
+
+
+//--------------------------------------------------------
+ProcessConfig = pMarineViewer
+{
+  AppTick    = 4
+  CommsTick  = 4
+
+  TIFF_FILE            = forrest19.tif
+  set_pan_x            = -90
+  set_pan_y            = -280
+  zoom                 = 0.65
+  vehicles_shape_scale = 1.5
+  vehicles_name_viewable = names
+
+  circle_viewable_all = false
+  
+  appcast_viewable = true
+  appcast_color_scheme = indigo
+
+  SCOPE = NODE_MESSAGE
+  SCOPE = DEPLOY_ALL
+
+
+  BUTTON_ONE   = DEPLOY  # DEPLOY_ALL=true 
+  BUTTON_ONE   = MOOS_MANUAL_OVERRIDE_ALL=false 
+  BUTTON_ONE   = RETURN_ALL=false
+  BUTTON_ONE   = STATION_KEEP_ALL=false
+
+  BUTTON_TWO   = RETURN  # RETURN_ALL=true
+  BUTTON_TWO   = STATION_KEEP_ALL=false
+  BUTTON_THREE = STATION # STATION_KEEP_ALL=true
+}
+
+//--------------------------------------------------------
+// uProcessWatch Configuration Block
+
+ProcessConfig = uProcessWatch
+{
+  AppTick   = 1
+  CommsTick = 1
+
+  ALLOW_RETRACTIONS = true
+  
+  WATCH_ALL = true      // default is true
+
+  NOWATCH = uXMS*
+  NOWATCH = uPokeDB*
+
+  SUMMARY_WAIT = 12
+}
+
+//-----------------------------------------------------------------
+//uFldNodeComms Configuration Block
+
+ProcessConfig = uFldNodeComms
+{
+  AppTick    = 2
+  CommsTick  = 2
+
+  comms_range      = 1000
+  min_msg_interval = 10
+  max_msg_length   = 0 
+
+  view_node_rpt_pulses = true
+}
+
+
+//------------------------------------------------
+// pTransitLanes config block
+
+ProcessConfig = pTransitLanes
+{
+  AppTick   = 4
+  CommsTick = 4
+
+  inbound = pts={30,-60 : 150,-180 : 170,-180 : 50,-60} 
+  inbound = pts={150,60 : 30,-60 : 50,-60 : 170,60}
+  inbound = pts={150,-180 : 150,-350 : 170,-350 : 170,-180}
+
+  outbound = pts={60,-60 : 180,-180 : 200,-180: 80,-60} 
+  outbound = pts={180,60 : 60,-60 : 80,-60 : 200,60}
+  outbound = pts={180,-180 : 180,-350 : 200,-350 : 200,-180}
+}
+
+//------------------------------------------------
+// pTrafficScheme config block
+
+ProcessConfig = pTrafficScheme
+{
+   AppTick   = 4
+   CommsTick = 4
+
+   tss_file = tss_a.txt
+
+}
+
