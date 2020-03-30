@@ -8,7 +8,10 @@ SET(SRC
   ManifestSet.cpp
   Populator_ManifestSet.cpp
   TrafficObject.cpp
-  TrafficScheme.cpp)
+  TrafficScheme.cpp
+  PopulatorTest.cpp
+  MBUtils.cpp
+  FileBuffer.cpp)
 
 ADD_LIBRARY(traffic ${SRC})
 
