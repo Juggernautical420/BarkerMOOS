@@ -178,7 +178,7 @@ ProcessConfig = uFldNodeComms
   min_msg_interval = 10
   max_msg_length   = 0 
 
-  view_node_rpt_pulses = false
+  view_node_rpt_pulses = true
 }
 
 
