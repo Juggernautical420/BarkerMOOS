@@ -4,6 +4,7 @@
 initialize   DEPLOY  = false
 initialize   RETURN  = false
 initialize   STATION_KEEP = false
+initialize   SCENARIO_FINISH = false
 
 
 set MODE = ACTIVE {
@@ -20,7 +21,52 @@ set MODE = RETURNING {
   RETURN = true
 } 
 
+#ifdef GROUP USV
+//----------------------------------------------
+Behavior = BHV_Waypoint
+{ 
+  name      = waypt_transit
+  pwt       = 100
+  condition = RETURN = false
+  condition = DEPLOY = true
+  endflag   = RETURN = true
+  endflag   = SCENARIO_FINISH = true
 
+  updates    = WPT_UPDATE
+  perpetual  = true
+
+                lead = 8
+         lead_damper = 1
+       lead_to_start = true
+             //  speed = 2   // meters per second
+        capture_line = true
+      capture_radius = 5.0
+         slip_radius = 15.0
+  efficiency_measure = all
+ //     speed = $(SPEED)
+// #ifdef GROUP USV
+     points = 10, -180: 110, -100: 70,-60 
+        speed = $(SPEED)
+// #elseifdef  GROUP INBOUND
+//     points =  40,-60 : 160, -180 : 160,-300
+//         speed = $(SPEED)
+// #elseifdef GROUP OUTBOUND
+//     points =  190, -180: 70, -60: 190,60
+//         speed = $(SPEED)     
+// #endif
+
+
+
+               order = normal
+             //repeat  = 1
+
+    visual_hints = nextpt_color=yellow
+    visual_hints = nextpt_vertex_size=8
+    visual_hints = nextpt_lcolor=gray70
+    visual_hints = vertex_color=dodger_blue, edge_color=white
+    visual_hints = vertex_size=5, edge_size=1
+}
+#elseifdef  GROUP INBOUND
 //----------------------------------------------
 Behavior = BHV_Waypoint
 { 
@@ -42,26 +88,16 @@ Behavior = BHV_Waypoint
          slip_radius = 15.0
   efficiency_measure = all
  //     speed = $(SPEED)
-#ifdef GROUP USV
-     points = 10, -180: 110, -100: 70,-60 : 190,60 
-        speed = $(SPEED)
-#elseifdef  GROUP INBOUND
+// #ifdef GROUP USV
+//      points = 10, -180: 110, -100: 70,-60 : 190,60 
+//         speed = $(SPEED)
+// #ifdef  GROUP INBOUND
     points =  40,-60 : 160, -180 : 160,-300
         speed = $(SPEED)
-#elseifdef GROUP OUTBOUND
-    points =  190, -180: 70, -60: 190,60
-        speed = $(SPEED)     
-          //   points = 10,-30 : 190, -180 
-//#ifdef VNAME VNAME1
-//  points = 10, -180: 110, -100: 70,-60 : 190,60 
-//  speed = 2
-//#elseifdef VNAME VNAME2
-//  points =  70,-30 : 40,-60 : 160, -180 : 160,-300
-//  speed = 2
-//#elseifdef VNAME VNAME3
-//  points = 190,-180: 40, -30
-//  speed = 1.7  
-#endif
+// #ifdef GROUP OUTBOUND
+//     points =  190, -180: 70, -60: 190,60
+//         speed = $(SPEED)     
+// #endif
 
 
 
@@ -74,6 +110,54 @@ Behavior = BHV_Waypoint
     visual_hints = vertex_color=dodger_blue, edge_color=white
     visual_hints = vertex_size=5, edge_size=1
 }
+
+#elseifdef  GROUP OUTBOUND
+//----------------------------------------------
+Behavior = BHV_Waypoint
+{ 
+  name      = waypt_transit
+  pwt       = 100
+  condition = RETURN = false
+  condition = DEPLOY = true
+  endflag   = RETURN = true
+
+  updates    = WPT_UPDATE
+  perpetual  = true
+
+                lead = 8
+         lead_damper = 1
+       lead_to_start = true
+             //  speed = 2   // meters per second
+        capture_line = true
+      capture_radius = 5.0
+         slip_radius = 15.0
+  efficiency_measure = all
+ //     speed = $(SPEED)
+// #ifdef GROUP USV
+//      points = 10, -180: 110, -100: 70,-60 : 190,60 
+//         speed = $(SPEED)
+// #ifdef  GROUP INBOUND
+    // points =  40,-60 : 160, -180 : 160,-300
+    //     speed = $(SPEED)
+// #ifdef GROUP OUTBOUND
+    points =  190, -180: 70, -60: 190,60
+        speed = $(SPEED)     
+// #endif
+
+
+
+               order = normal
+             //repeat  = 1
+
+    visual_hints = nextpt_color=yellow
+    visual_hints = nextpt_vertex_size=8
+    visual_hints = nextpt_lcolor=gray70
+    visual_hints = vertex_color=dodger_blue, edge_color=white
+    visual_hints = vertex_size=5, edge_size=1
+}
+#endif
+
+
 
 //----------------------------------------------
 Behavior = BHV_Waypoint

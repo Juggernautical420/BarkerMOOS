@@ -97,7 +97,7 @@ nsplug meta_vehicle.moos targ_$VNAME1.moos -f WARP=$TIME_WARP \
 
 nsplug meta_vehicle.bhv targ_$VNAME1.bhv -f VNAME=$VNAME1     \
     START_POS=$START_POS1 VNAME1=$VNAME1 GROUP=USV  \
-    SPEED=2.0
+    SPEED=3.0
 #-------------------------------------------------------------
 # Part 4a: Generate the Inbound Vehicle mission files
 #-------------------------------------------------------------

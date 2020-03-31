@@ -19,7 +19,7 @@ Processconfig = ANTLER
   Run = MOOSDB          @ NewConsole = false
   Run = pMarineViewer   @ NewConsole = false
   Run = pLogger         @ NewConsole = false
-  Run = uXMS            @ NewConsole = true
+ // Run = uXMS            @ NewConsole = true
   Run = uProcessWatch   @ NewConsole = false
   Run = pShare          @ NewConsole = false
   Run = pHostInfo       @ NewConsole = false
@@ -27,6 +27,7 @@ Processconfig = ANTLER
   Run = uFldNodeComms   @ NewConsole = false
   Run = pTransitLanes   @ NewConsole = false
   Run = pTrafficScheme  @ NewConsole = false
+  Run = uFldCollisionDetect @ New Console = false
 }
 
 //---------------------------------------------------------
@@ -205,6 +206,28 @@ ProcessConfig = pTrafficScheme
    AppTick   = 4
    CommsTick = 4
 
-   tss_file = tss_a.txt
-
 }
+
+
+//------------------------------------------------
+// uFldCollisionDetect config block
+
+ProcessConfig = uFldCollisionDetect                             
+ {                                                               
+   AppTick   = 4                                                 
+   CommsTick = 4                                                 
+
+   condition = DEPLOY_ALL = true                                 
+
+   encounter_flag = ENCOUNTER = $CPA                             
+   collision_flag = COLLISION = $CPA                             
+   near_miss_flag = NEAR_MISS = vname1=$V1,vname2=$V2,cpa=$CPA   
+
+   encounter_range = 16        // (the default) in meters        
+   near_miss_range = 6         // (the default) in meters        
+   collision_range = 3         // (the default) in meters        
+
+   pulse_render   = true       // (the default)                  
+   pulse_range    = 20         // (the default) in meters        
+   pulse_duration = 10         // (the default) in seconds       
+ } 
