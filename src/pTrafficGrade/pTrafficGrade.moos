@@ -1,0 +1,9 @@
+//------------------------------------------------
+// pTrafficGrade config block
+
+ProcessConfig = pTrafficGrade
+{
+   AppTick   = 4
+   CommsTick = 4
+}
+

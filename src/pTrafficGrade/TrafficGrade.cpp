@@ -1,0 +1,201 @@
+/************************************************************/
+/*    NAME: Jason Barker                                              */
+/*    ORGN: MIT                                             */
+/*    FILE: TrafficGrade.cpp                                        */
+/*    DATE:                                                 */
+/************************************************************/
+
+#include <iterator>
+#include "MBUtils.h"
+#include "ACTable.h"
+#include "TrafficGrade.h"
+
+using namespace std;
+
+//---------------------------------------------------------
+// Constructor
+
+TrafficGrade::TrafficGrade()
+{
+  m_coll_count = 0;
+  m_nm_count = 0;
+}
+
+//---------------------------------------------------------
+// Destructor
+
+TrafficGrade::~TrafficGrade()
+{
+}
+
+//---------------------------------------------------------
+// Procedure: OnNewMail
+
+bool TrafficGrade::OnNewMail(MOOSMSG_LIST &NewMail)
+{
+  AppCastingMOOSApp::OnNewMail(NewMail);
+
+  MOOSMSG_LIST::iterator p;
+  for(p=NewMail.begin(); p!=NewMail.end(); p++) {
+    CMOOSMsg &msg = *p;
+    string key    = msg.GetKey();
+
+    if(key == "COLLISION_DETECT_PARAMS"){
+      string sval  = msg.GetString();
+      processParameters(sval);
+    }
+
+    if(key == "NEAR_MISS"){
+      string sval  = msg.GetString();
+      processNearMiss(sval);
+      ++m_nm_count;      
+    }
+
+    if(key == "COLLISION"){
+
+    }
+
+
+
+
+#if 0 // Keep these around just for template
+    string comm  = msg.GetCommunity();
+    double dval  = msg.GetDouble();
+    string sval  = msg.GetString(); 
+    string msrc  = msg.GetSource();
+    double mtime = msg.GetTime();
+    bool   mdbl  = msg.IsDouble();
+    bool   mstr  = msg.IsString();
+#endif
+
+     if(key == "FOO") 
+       cout << "great!";
+
+     // else if(key != "APPCAST_REQ") // handled by AppCastingMOOSApp
+     //   reportRunWarning("Unhandled Mail: " + key);
+   }
+	
+   return(true);
+}
+
+//---------------------------------------------------------
+// Procedure: OnConnectToServer
+
+bool TrafficGrade::OnConnectToServer()
+{
+   registerVariables();
+   return(true);
+}
+
+//---------------------------------------------------------
+// Procedure: Iterate()
+//            happens AppTick times per second
+
+bool TrafficGrade::Iterate()
+{
+  AppCastingMOOSApp::Iterate();
+  // Do your thing here!
+  AppCastingMOOSApp::PostReport();
+  return(true);
+}
+
+//---------------------------------------------------------
+// Procedure: OnStartUp()
+//            happens before connection is open
+
+bool TrafficGrade::OnStartUp()
+{
+  AppCastingMOOSApp::OnStartUp();
+
+  STRING_LIST sParams;
+  m_MissionReader.EnableVerbatimQuoting(false);
+  if(!m_MissionReader.GetConfiguration(GetAppName(), sParams))
+    reportConfigWarning("No config block found for " + GetAppName());
+
+  STRING_LIST::iterator p;
+  for(p=sParams.begin(); p!=sParams.end(); p++) {
+    string orig  = *p;
+    string line  = *p;
+    string param = tolower(biteStringX(line, '='));
+    string value = line;
+
+    bool handled = false;
+    if(param == "foo") {
+      handled = true;
+    }
+    else if(param == "bar") {
+      handled = true;
+    }
+
+    if(!handled)
+      reportUnhandledConfigWarning(orig);
+
+  }
+  
+  registerVariables();	
+  return(true);
+}
+
+//---------------------------------------------------------
+// Procedure: registerVariables
+
+void TrafficGrade::registerVariables()
+{
+  AppCastingMOOSApp::RegisterVariables();
+  // Register("FOOBAR", 0);
+  Register("COLLISION", 0);
+  Register("NEAR_MISS", 0);
+  Register("COLLISION_DETECT_PARAMS", 0);
+}
+
+
+//------------------------------------------------------------
+// Procedure: buildReport()
+
+bool TrafficGrade::buildReport() 
+{
+  m_msgs << "============================================" << endl;
+  m_msgs << "File:                                       " << endl;
+  m_msgs << "============================================" << endl;
+
+  ACTable actab(4);
+  actab << "Alpha | Bravo | Charlie | Delta";
+  actab.addHeaderLines();
+  actab << "one" << "two" << "three" << "four";
+  m_msgs << actab.getFormattedString();
+
+  return(true);
+}
+
+//------------------------------------------------------------
+// Procedure: processParameters
+
+void TrafficGrade::processParameters(string s)
+{
+  string collrng = tokStringParse(s, "collision_range", ',', '=');
+  m_coll_range = stod(collrng);
+  string nmrng = tokStringParse(s, "near_miss_range", ',', '=');
+  m_nm_range = stod(nmrng);
+
+}
+
+//------------------------------------------------------------
+// Procedure: processNearMiss
+
+void TrafficGrade::processNearMiss(string s)
+{
+  string vname1 = tokStringParse(s, "vname1", ',', '=');
+  string vname2 = tokStringParse(s, "vname2", ',', '=');
+  string en_cpa = tokStringParse(s, "cpa", ',', '=');
+  double enc_cpa = stod(en_cpa); 
+
+  if(vname1 == "usv"){
+    m_nm_cpa.push_back(enc_cpa);
+    m_contact_name.push_back(vname2);
+  } 
+
+  if(vname2 == "usv"){
+    m_nm_cpa.push_back(enc_cpa);
+    m_contact_name.push_back(vname1);
+  } 
+}

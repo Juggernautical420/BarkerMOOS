@@ -220,7 +220,7 @@ ProcessConfig = uFldCollisionDetect
    condition = DEPLOY_ALL = true                                 
 
    encounter_flag = ENCOUNTER = $CPA                             
-   collision_flag = COLLISION = $CPA                             
+   collision_flag = COLLISION = vname1=$V1,vname2=$V2,cpa=$CPA                             
    near_miss_flag = NEAR_MISS = vname1=$V1,vname2=$V2,cpa=$CPA   
 
    encounter_range = 16        // (the default) in meters        
