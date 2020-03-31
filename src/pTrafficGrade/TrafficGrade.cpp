@@ -187,9 +187,9 @@ bool TrafficGrade::buildReport()
   m_msgs << "============================================" << endl;
 
   ACTable actab(3);
-  actab << "" << "Traffic Score" << "";
+  actab << "" << "Traffic Scheme Conditions" << "";
   actab.addHeaderLines();
-  actab << "" << traffic_score << "";
+  actab << "Overall Traffic Score" << traffic_score << "";
   actab.addHeaderLines();
   actab << "Number of Collisions" << coll_cnt << "";
   actab << "Collision Range" << doubleToString(m_coll_range) << "";
@@ -197,10 +197,15 @@ bool TrafficGrade::buildReport()
     actab << "" << "COLLISION RESULTS IN FAILURE" << "";
   }
   actab.addHeaderLines();
+  actab.addHeaderLines();
   actab << "Number of Near Misses" << nm_cnt << "";
   actab << "Near Miss Range" << doubleToString(m_nm_range) << "";
+  actab.addHeaderLines();
+  actab.addHeaderLines();
   actab << "Interactions" << "" << "";
+  actab.addHeaderLines();
   actab << "Contact Name" << "CPA" << "Penalty";
+  actab.addHeaderLines();
   for(int i=0; i<m_nm_cpa.size(); i++){
     actab << m_contact_name[i] << doubleToString(m_nm_cpa[i]) << m_interaction[i];
   }
