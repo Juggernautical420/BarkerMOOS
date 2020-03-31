@@ -26,8 +26,9 @@ Processconfig = ANTLER
   Run = uFldShoreBroker @ NewConsole = false
   Run = uFldNodeComms   @ NewConsole = false
   Run = pTransitLanes   @ NewConsole = false
-  Run = pTrafficScheme  @ NewConsole = false
+// Run = pTrafficScheme  @ NewConsole = false
   Run = uFldCollisionDetect @ New Console = false
+  Run = pTrafficGrade   @ NewConsole = false
 }
 
 //---------------------------------------------------------
@@ -177,7 +178,7 @@ ProcessConfig = uFldNodeComms
   min_msg_interval = 10
   max_msg_length   = 0 
 
-  view_node_rpt_pulses = true
+  view_node_rpt_pulses = false
 }
 
 
@@ -223,7 +224,7 @@ ProcessConfig = uFldCollisionDetect
    collision_flag = COLLISION = vname1=$V1,vname2=$V2,cpa=$CPA                             
    near_miss_flag = NEAR_MISS = vname1=$V1,vname2=$V2,cpa=$CPA   
 
-   encounter_range = 16        // (the default) in meters        
+   encounter_range = 15        // (the default) in meters        
    near_miss_range = 6         // (the default) in meters        
    collision_range = 3         // (the default) in meters        
 
@@ -231,3 +232,13 @@ ProcessConfig = uFldCollisionDetect
    pulse_range    = 20         // (the default) in meters        
    pulse_duration = 10         // (the default) in seconds       
  } 
+
+
+ //------------------------------------------------
+// pTrafficGrade config block
+
+ProcessConfig = pTrafficGrade
+{
+   AppTick   = 4
+   CommsTick = 4
+}

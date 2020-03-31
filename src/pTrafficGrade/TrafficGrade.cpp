@@ -2,7 +2,7 @@
 /*    NAME: Jason Barker                                              */
 /*    ORGN: MIT                                             */
 /*    FILE: TrafficGrade.cpp                                        */
-/*    DATE:                                                 */
+/*    DATE: Mar 31, 2020                                                */
 /************************************************************/
 
 #include <iterator>
@@ -19,6 +19,9 @@ TrafficGrade::TrafficGrade()
 {
   m_coll_count = 0;
   m_nm_count = 0;
+  collision = false;
+  m_traffic_slope = 0;
+
 }
 
 //---------------------------------------------------------
@@ -47,11 +50,14 @@ bool TrafficGrade::OnNewMail(MOOSMSG_LIST &NewMail)
 
     if(key == "NEAR_MISS"){
       string sval  = msg.GetString();
-      processNearMiss(sval);
-      ++m_nm_count;      
+      processNearMiss(sval);     
     }
 
     if(key == "COLLISION"){
+      string sval  = msg.GetString();
+      collision = processCollision(sval);
+      if(collision){
+      } 
 
     }
 
@@ -95,6 +101,28 @@ bool TrafficGrade::Iterate()
 {
   AppCastingMOOSApp::Iterate();
   // Do your thing here!
+
+  for(int i=0; i<m_nm_cpa.size(); i++){
+    double slope = 0;
+    slope = (m_nm_range - m_nm_cpa[i])/(m_nm_range - m_coll_range);
+    string m_slope_interaction = doubleToString(slope);
+    m_interaction.push_back(m_slope_interaction);
+    m_traffic_slope += slope;
+  }
+
+  if((m_nm_count == 0) && (m_coll_count == 0))
+    m_traffic_grade = 1.00;
+  else if((m_nm_count != 0) && (m_coll_count == 0))
+  m_traffic_grade = 1-(m_traffic_slope/m_nm_count);
+  else if (m_coll_count != 0)
+    m_traffic_grade = 0;
+
+  // if(collision)
+  //   m_traffic_grade = 0;
+
+
+  traffic_score = doubleToString(m_traffic_grade);
+
   AppCastingMOOSApp::PostReport();
   return(true);
 }
@@ -155,13 +183,28 @@ void TrafficGrade::registerVariables()
 bool TrafficGrade::buildReport() 
 {
   m_msgs << "============================================" << endl;
-  m_msgs << "File:                                       " << endl;
+  m_msgs << "Traffic Scheme Grader                                       " << endl;
   m_msgs << "============================================" << endl;
 
-  ACTable actab(4);
-  actab << "Alpha | Bravo | Charlie | Delta";
+  ACTable actab(3);
+  actab << "" << "Traffic Score" << "";
   actab.addHeaderLines();
-  actab << "one" << "two" << "three" << "four";
+  actab << "" << traffic_score << "";
+  actab.addHeaderLines();
+  actab << "Number of Collisions" << coll_cnt << "";
+  actab << "Collision Range" << doubleToString(m_coll_range) << "";
+  if(m_coll_count != 0){
+    actab << "" << "COLLISION RESULTS IN FAILURE" << "";
+  }
+  actab.addHeaderLines();
+  actab << "Number of Near Misses" << nm_cnt << "";
+  actab << "Near Miss Range" << doubleToString(m_nm_range) << "";
+  actab << "Interactions" << "" << "";
+  actab << "Contact Name" << "CPA" << "Penalty";
+  for(int i=0; i<m_nm_cpa.size(); i++){
+    actab << m_contact_name[i] << doubleToString(m_nm_cpa[i]) << m_interaction[i];
+  }
+
   m_msgs << actab.getFormattedString();
 
   return(true);
@@ -197,5 +240,24 @@ void TrafficGrade::processNearMiss(string s)
   if(vname2 == "usv"){
     m_nm_cpa.push_back(enc_cpa);
     m_contact_name.push_back(vname1);
-  } 
+  }
+
+  ++m_nm_count;
+  nm_cnt = doubleToString(m_nm_count);  
+}
+
+//------------------------------------------------------------
+// Procedure: processCollision
+
+bool TrafficGrade::processCollision(string s)
+{
+  string vname1 = tokStringParse(s, "vname1", ',', '=');
+  string vname2 = tokStringParse(s, "vname2", ',', '=');
+  if((vname1 == "usv")||(vname2 == "usv")){
+    ++m_coll_count;
+    coll_cnt = doubleToString(m_coll_count);    
+    return(true);
+  }   
+  else
+    return(false);
 }

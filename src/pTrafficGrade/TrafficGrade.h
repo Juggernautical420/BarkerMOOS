@@ -2,7 +2,7 @@
 /*    NAME: Jason Barker                                              */
 /*    ORGN: MIT                                             */
 /*    FILE: TrafficGrade.h                                          */
-/*    DATE: December 29th, 1963                             */
+/*    DATE: Mar 31, 2020                            */
 /************************************************************/
 
 #ifndef TrafficGrade_HEADER
@@ -37,9 +37,17 @@ class TrafficGrade : public AppCastingMOOSApp
    double m_nm_count;
    double m_coll_count;
    double m_traffic_grade;
+   bool collision;
+ 
 
    std::vector<double> m_nm_cpa;
+   double m_traffic_slope;
    std::vector<std::string> m_contact_name;
+   std::vector<std::string> m_interaction;
+
+   std::string traffic_score;
+   std::string coll_cnt;
+   std::string nm_cnt;
 
  private: // Configuration variables
 

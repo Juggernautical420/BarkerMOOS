@@ -10,3 +10,5 @@ scripts/*
 *MOOSLog*
 *LOG_*
 *._moos
+*targ_*
+*.txt

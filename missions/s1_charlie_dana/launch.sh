@@ -85,7 +85,7 @@ VNAMESOUT=(`cat voutnames.txt`)
 # Part 4: Generate the Vehicle mission files
 #-------------------------------------------------------------
 VNAME1="usv"           # The first vehicle Community
-START_POS1="10,-180" 
+START_POS1="0,-190" 
 SHORE_LISTEN="9300"
 
 
@@ -97,7 +97,7 @@ nsplug meta_vehicle.moos targ_$VNAME1.moos -f WARP=$TIME_WARP \
 
 nsplug meta_vehicle.bhv targ_$VNAME1.bhv -f VNAME=$VNAME1     \
     START_POS=$START_POS1 VNAME1=$VNAME1 GROUP=USV  \
-    SPEED=3.0
+    SPEED=2.5
 #-------------------------------------------------------------
 # Part 4a: Generate the Inbound Vehicle mission files
 #-------------------------------------------------------------
