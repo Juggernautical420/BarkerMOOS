@@ -13,7 +13,9 @@
 #include <vector>
 #include <iostream>
 #include "MBUtils.h"
+#include "FileBuffer.h"
 #include "TrafficScheme.h"
+#include "TrafficObject.h"
 
 using namespace std; 
    
@@ -32,15 +34,43 @@ int main(int argc, char *argv[])
     bool handled = true;
     if((argi == "-h") || (argi == "--help"))
       showHelpAndExit();
-     
+
+    vector<string> lines = fileBuffer(argi);
+  	if(lines.size() == 0){
+     cout << "buildtss: Empty File: " << argi << endl; 		
+   	 exit(1); 
+  	}
+  	TrafficObject new_object;
+  	for(unsigned int i=0; i<lines.size(); i++){
+  	string str = stripBlankEnds(lines[i]);
+    if(strBegins(str, "//"))
+      continue;
+    if(str == "")
+      continue;
+  		string param = biteStringX(str, '=');
+		if(param == "type")
+			new_object.setTrafficType(str);
+		if(param == "poly")
+			new_object.setPolyType(str);
+		if(param == "points")
+			new_object.setPolyPts(str);
+		if(param == "label")
+			new_object.setPolyName(str);
+		if(param == "start")
+			new_object.setStartPt(str);	
+  	}
+  	//new_object.print();
+  	my_tss.addTrafficObject(new_object);
+
 
     if(!handled) {
-      cout << "voiview: Bad Arg: " << argi << endl;
+      cout << "buildtss: Bad Arg: " << argi << endl;
       exit(1);
-    }      
-  }
+    } 
 
-  cout << "Hello World" << endl;
+         
+  }
+  my_tss.print();
   return (0);
 }
 
