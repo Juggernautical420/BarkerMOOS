@@ -1,5 +1,3 @@
-
-CMakeFiles/*
 clean.sh
 scripts/*
 !.gitignore
