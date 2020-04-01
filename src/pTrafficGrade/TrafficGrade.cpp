@@ -101,6 +101,8 @@ bool TrafficGrade::Iterate()
 {
   AppCastingMOOSApp::Iterate();
   // Do your thing here!
+  nm_cnt = doubleToString(m_nm_count); 
+  coll_cnt = doubleToString(m_coll_count);  
 
   for(int i=0; i<m_nm_cpa.size(); i++){
     double slope = 0;
@@ -186,21 +188,25 @@ bool TrafficGrade::buildReport()
   m_msgs << "Traffic Scheme Grader                                       " << endl;
   m_msgs << "============================================" << endl;
 
-  ACTable actab(3);
-  actab << "" << "Traffic Score" << "";
+  ACTable actab(4);
+  actab << "" << "Traffic Scheme Conditions" << "" << "";
   actab.addHeaderLines();
-  actab << "" << traffic_score << "";
+  actab << "" << "Overall Traffic Score" << traffic_score << "";
   actab.addHeaderLines();
-  actab << "Number of Collisions" << coll_cnt << "";
-  actab << "Collision Range" << doubleToString(m_coll_range) << "";
+  actab.addHeaderLines();
+  actab << "Collision Range" << doubleToString(m_coll_range) <<"Number of Collisions" << coll_cnt ;
   if(m_coll_count != 0){
     actab << "" << "COLLISION RESULTS IN FAILURE" << "";
   }
   actab.addHeaderLines();
-  actab << "Number of Near Misses" << nm_cnt << "";
-  actab << "Near Miss Range" << doubleToString(m_nm_range) << "";
-  actab << "Interactions" << "" << "";
-  actab << "Contact Name" << "CPA" << "Penalty";
+  actab.addHeaderLines();
+  actab << "Near Miss Range" << doubleToString(m_nm_range) << "Number of Near Misses" << nm_cnt;
+  actab.addHeaderLines();
+  actab.addHeaderLines();
+  actab << "Interactions" << "" << "" << "";
+  actab.addHeaderLines();
+  actab << "" <<"Contact Name" << "CPA" << "Penalty";
+  actab.addHeaderLines();
   for(int i=0; i<m_nm_cpa.size(); i++){
     actab << m_contact_name[i] << doubleToString(m_nm_cpa[i]) << m_interaction[i];
   }
@@ -242,8 +248,7 @@ void TrafficGrade::processNearMiss(string s)
     m_contact_name.push_back(vname1);
   }
 
-  ++m_nm_count;
-  nm_cnt = doubleToString(m_nm_count);  
+  ++m_nm_count; 
 }
 
 //------------------------------------------------------------
@@ -254,8 +259,7 @@ bool TrafficGrade::processCollision(string s)
   string vname1 = tokStringParse(s, "vname1", ',', '=');
   string vname2 = tokStringParse(s, "vname2", ',', '=');
   if((vname1 == "usv")||(vname2 == "usv")){
-    ++m_coll_count;
-    coll_cnt = doubleToString(m_coll_count);    
+    ++m_coll_count;  
     return(true);
   }   
   else
