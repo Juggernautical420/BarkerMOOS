@@ -82,26 +82,34 @@ int main(int argc, char *argv[])
 void showHelpAndExit()
 {
   cout << "Usage                                               " << endl;
-  cout << "  voiview [OPTIONS] image.tif                      " << endl;
+  cout << "  buildtss [OPTIONS] filename.tss                      " << endl;
   cout << "                                                    " << endl;
   cout << "Synopsis:                                           " << endl;
-  cout << "  The voiview utility renders                       " << endl;
+  cout << "  The buildtss utility populates a traffic scheme class " << endl;
   cout << "                                                    " << endl;
   cout << "Options:                                            " << endl;
   cout << "  -h,--help      Displays this help message         " << endl;
   cout << "                                                    " << endl;
-  cout << "  --osx=<num>    Ownship X-position                 " << endl;
-  cout << "  --osy=<num>    Ownship Y-position                 " << endl;
-  cout << "  --osh=<num>    Ownship Heading                    " << endl;
-  cout << "  --osv=<num>    Ownship Velocity/Speed             " << endl;
+  cout << "  <type>  Traffic Separation Scheme Object Type     " << endl;
+  cout << "   Examples: separation zone or separation          " << endl;
+  cout << "             precaution area or precaution          " << endl;
+  cout << "             inbound lane or inbound                " << endl;
+  cout << "             outbound lane or outbound              " << endl;
   cout << "                                                    " << endl;
-  cout << "  --poly<Polygon> The obstacle                      " << endl;
   cout << "                                                    " << endl;
-  cout << "  --noimg        Do not open with a background image" << endl;
+  cout << "  <points> XY Polygon or SegList Coordinates        " << endl;
+  cout << "   Examples: 250,-50:275,-50:275,-25:250,-25        " << endl;
+  cout << "             x=50, y=50, radius=60                  " << endl;
   cout << "                                                    " << endl;
-  cout << "Examples:                                           " << endl;
-  cout << "  voiview --poly=250,-50:275,-50:275,-25:250,-25   " << endl;
-  cout << "         --x1=20 --y1=30 --x2=50 --y2=80            " << endl;
+  cout << "  <start>  XY Starting Point for Inbound/Outbound Lane " << endl;
+  cout << "   Example:  x=90, y=80                             " << endl;
+ cout << "                                                    " << endl;
+  cout << " !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!    " << endl;
+  cout << " !  NOTE: If start point is not explicit on the !     " << endl;
+  cout << " !        inbound/outbound lane points, it will !     " << endl;
+  cout << " !        not populate!!!                       !     " << endl;
+  cout << " !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!     " << endl;
+  cout << "                                                    " << endl;  
   exit(0);  
 }
   
