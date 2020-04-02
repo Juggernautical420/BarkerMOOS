@@ -39,12 +39,12 @@ void printviewable();
 
 protected:	
 std::vector<TrafficObject> m_traffic_scheme;
-std::string type;
-std::string polytype;
-std::string points;
-std::string name;
-std::string startpt;
-XYPoint given_starting_point;
+std::string m_type;
+std::string m_polytype;
+std::string m_points;
+std::string m_name;
+std::string m_startpt;
+XYPoint m_given_starting_point;
 
 
 // Viewable Objects //
@@ -52,22 +52,22 @@ std::vector<std::string> m_tss_polygons;
 std::vector<std::string> m_tss_seglists;
 
 // Concatenate Objects//
-double init_dist1;
-double init_dist2;
-double curr_dist1;
-double curr_dist2;
-double x1;
-double y1;
-double x2;
-double y2;
-double curr_x4;
-double curr_y4;
-double curr_x3;
-double curr_y3;
-double final_x4;
-double final_y4;
-double final_x3;
-double final_y3;
+double m_init_dist1;
+double m_init_dist2;
+double m_curr_dist1;
+double m_curr_dist2;
+double m_x1;
+double m_y1;
+double m_x2;
+double m_y2;
+double m_curr_x4;
+double m_curr_y4;
+double m_curr_x3;
+double m_curr_y3;
+double m_final_x4;
+double m_final_y4;
+double m_final_x3;
+double m_final_y3;
 
 std::vector<XYPolygon> m_sep_zones;
 std::vector<std::string> m_poly_headings;

@@ -185,7 +185,7 @@ void TrafficGrade::registerVariables()
 bool TrafficGrade::buildReport() 
 {
   m_msgs << "============================================" << endl;
-  m_msgs << "Traffic Scheme Grader                                       " << endl;
+  m_msgs << "Traffic Scheme Grader                        " << endl;
   m_msgs << "============================================" << endl;
 
   ACTable actab(4);
