@@ -36,7 +36,8 @@ bool TrafficScheme::addTrafficObject(TrafficObject new_traf_obj)
 
   if((type == "precaution area")||(type == "precaution")){
   	  XYPolygon m_poly;
-  	  m_poly = string2Poly(points);
+  	  string radial = "format=radial, " + stripBlankEnds(points) + ", pts=12, snap=1";
+  	  m_poly = string2Poly(radial);
 	  m_poly.set_color("label", "purle");
       m_poly.set_color("vertex", "purple");
       m_poly.set_color("edge", "purple");
