@@ -24,7 +24,7 @@ using namespace std;
 void XYTrafficObject::setTrafficPolyType(std::string str)
 {
 	if((str == "inbound")||(str == "inbound lane")){
-	  m_poly.set_color("label", "red");
+	m_poly.set_color("label", "red");
       m_poly.set_color("vertex", "red");
       m_poly.set_color("edge", "red");
       m_poly.set_color("fill", "red");
@@ -48,7 +48,7 @@ void XYTrafficObject::setTrafficPolyType(std::string str)
 	}
 
 	if((str == "precaution")||(str == "precaution area")){
-	  m_poly.set_color("label", "purple");
+	m_poly.set_color("label", "purple");
       m_poly.set_color("vertex", "purple");
       m_poly.set_color("edge", "purle");
       m_poly.set_color("fill", "purle");
@@ -60,7 +60,7 @@ void XYTrafficObject::setTrafficPolyType(std::string str)
 	}
 
 	if((str == "separation")||(str == "separation zone")){
-	  m_poly.set_color("label", "purle");
+	m_poly.set_color("label", "purle");
       m_poly.set_color("vertex", "purple");
       m_poly.set_color("edge", "purple");
       m_poly.set_color("fill", "purple");

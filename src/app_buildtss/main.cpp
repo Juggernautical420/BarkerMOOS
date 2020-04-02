@@ -71,6 +71,7 @@ int main(int argc, char *argv[])
          
   }
   my_tss.print();
+  my_tss.printviewable();
   return (0);
 }
 

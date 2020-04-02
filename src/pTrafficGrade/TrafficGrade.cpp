@@ -61,7 +61,26 @@ bool TrafficGrade::OnNewMail(MOOSMSG_LIST &NewMail)
 
     }
 
+  for(int i=0; i<m_nm_cpa.size(); i++){
+    double slope = 0;
+    slope = (m_nm_range - m_nm_cpa[i])/(m_nm_range - m_coll_range);
+    string m_slope_interaction = doubleToString(slope);
+    m_interaction.push_back(m_slope_interaction);
+    m_traffic_slope += slope;
+  }
 
+  if((m_nm_count == 0) && (m_coll_count == 0))
+    m_traffic_grade = 1.00;
+  else if((m_nm_count != 0) && (m_coll_count == 0))
+  m_traffic_grade = 1-(m_traffic_slope/m_nm_count);
+  else if (m_coll_count != 0)
+    m_traffic_grade = 0;
+
+  // if(collision)
+  //   m_traffic_grade = 0;
+
+
+  traffic_score = doubleToString(m_traffic_grade);
 
 
 #if 0 // Keep these around just for template
@@ -101,29 +120,10 @@ bool TrafficGrade::Iterate()
 {
   AppCastingMOOSApp::Iterate();
   // Do your thing here!
-  nm_cnt = doubleToString(m_nm_count); 
-  coll_cnt = doubleToString(m_coll_count);  
-
-  for(int i=0; i<m_nm_cpa.size(); i++){
-    double slope = 0;
-    slope = (m_nm_range - m_nm_cpa[i])/(m_nm_range - m_coll_range);
-    string m_slope_interaction = doubleToString(slope);
-    m_interaction.push_back(m_slope_interaction);
-    m_traffic_slope += slope;
-  }
-
-  if((m_nm_count == 0) && (m_coll_count == 0))
-    m_traffic_grade = 1.00;
-  else if((m_nm_count != 0) && (m_coll_count == 0))
-  m_traffic_grade = 1-(m_traffic_slope/m_nm_count);
-  else if (m_coll_count != 0)
-    m_traffic_grade = 0;
-
-  // if(collision)
-  //   m_traffic_grade = 0;
+  nm_cnt = intToString(m_nm_count); 
+  coll_cnt = intToString(m_coll_count);  
 
 
-  traffic_score = doubleToString(m_traffic_grade);
 
   AppCastingMOOSApp::PostReport();
   return(true);
@@ -194,21 +194,24 @@ bool TrafficGrade::buildReport()
   actab << "" << "Overall Traffic Score" << traffic_score << "";
   actab.addHeaderLines();
   actab.addHeaderLines();
-  actab << "Collision Range" << doubleToString(m_coll_range) <<"Number of Collisions" << coll_cnt ;
+  actab << "Number of Collisions" << coll_cnt << "" << "";
+  actab << "Collision Range" << doubleToString(m_coll_range) << "" << "";
+
   if(m_coll_count != 0){
-    actab << "" << "COLLISION RESULTS IN FAILURE" << "";
+    actab << "" << "COLLISION RESULTS IN FAILURE" << "" << "";
   }
   actab.addHeaderLines();
   actab.addHeaderLines();
-  actab << "Near Miss Range" << doubleToString(m_nm_range) << "Number of Near Misses" << nm_cnt;
+  actab << "Number of Near Misses" << nm_cnt << "" << "";
+  actab << "Near Miss Range" << doubleToString(m_nm_range) << "" << "" ;
   actab.addHeaderLines();
   actab.addHeaderLines();
   actab << "Interactions" << "" << "" << "";
   actab.addHeaderLines();
-  actab << "" <<"Contact Name" << "CPA" << "Penalty";
+  actab  <<"Contact Name" << "CPA" << "Penalty" << "";
   actab.addHeaderLines();
   for(int i=0; i<m_nm_cpa.size(); i++){
-    actab << m_contact_name[i] << doubleToString(m_nm_cpa[i]) << m_interaction[i];
+    actab << m_contact_name[i] << doubleToString(m_nm_cpa[i]) << m_interaction[i] << "";
   }
 
   m_msgs << actab.getFormattedString();
@@ -241,14 +244,16 @@ void TrafficGrade::processNearMiss(string s)
   if(vname1 == "usv"){
     m_nm_cpa.push_back(enc_cpa);
     m_contact_name.push_back(vname2);
+    ++m_nm_count; 
   } 
 
   if(vname2 == "usv"){
     m_nm_cpa.push_back(enc_cpa);
     m_contact_name.push_back(vname1);
+    ++m_nm_count;
   }
 
-  ++m_nm_count; 
+
 }
 
 //------------------------------------------------------------

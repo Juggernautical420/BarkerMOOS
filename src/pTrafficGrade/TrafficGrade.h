@@ -34,8 +34,8 @@ class TrafficGrade : public AppCastingMOOSApp
    void registerVariables();
    double m_coll_range;
    double m_nm_range;
-   double m_nm_count;
-   double m_coll_count;
+   int m_nm_count;
+   int m_coll_count;
    double m_traffic_grade;
    bool collision;
  

@@ -15,6 +15,7 @@ ADD_EXECUTABLE(buildtss ${SRC})
 TARGET_LINK_LIBRARIES(buildtss 
   mbutil
   traffic
+  geometry
   ${SYSTEM_LIBS}
 )
   

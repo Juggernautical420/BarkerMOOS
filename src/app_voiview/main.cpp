@@ -25,7 +25,7 @@ void showHelpAndExit();
   
 int main(int argc, char *argv[])
 {
-  TrafficScheme my_tss;
+  // TrafficScheme my_tss;
   for(int i=1; i<argc; i++) { 
     string argi  = argv[i];
 
