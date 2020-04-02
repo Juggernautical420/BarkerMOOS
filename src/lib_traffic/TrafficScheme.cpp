@@ -38,7 +38,6 @@ bool TrafficScheme::addTrafficObject(TrafficObject new_traf_obj)
   	  XYPolygon m_poly;
   	  string radial = "format=radial, " + stripBlankEnds(points) + ", pts=12, snap=1";
   	  m_poly = string2Poly(radial);
-	  m_poly.set_color("label", "purle");
       m_poly.set_color("vertex", "purple");
       m_poly.set_color("edge", "purple");
       m_poly.set_color("fill", "purple");
@@ -55,7 +54,6 @@ bool TrafficScheme::addTrafficObject(TrafficObject new_traf_obj)
   if((type == "separation zone")||(type == "separation")){
   	  XYPolygon m_poly;
   	  m_poly = string2Poly(points);
-	  m_poly.set_color("label", "purle");
       m_poly.set_color("vertex", "purple");
       m_poly.set_color("edge", "purple");
       m_poly.set_color("fill", "purple");
@@ -210,7 +208,6 @@ void TrafficScheme::Concatenate(XYSegList seglist, string tss_type)
 		m_lane_polys.push_back(new_poly_pts);
 
 		if((tss_type == "inbound lane")||(tss_type == "inbound")){
-			new_poly.set_color("label", "red");
       		new_poly.set_color("vertex", "red");
      		new_poly.set_color("edge", "red");
       		new_poly.set_color("fill", "red");
@@ -220,7 +217,6 @@ void TrafficScheme::Concatenate(XYSegList seglist, string tss_type)
 		}
 
 		if((tss_type == "outbound lane")||(tss_type == "outbound")){
-		    new_poly.set_color("label", "green");
       	    new_poly.set_color("vertex", "green");
      	    new_poly.set_color("edge", "green");
      	    new_poly.set_color("fill", "green");
