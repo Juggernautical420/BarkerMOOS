@@ -1,0 +1,9 @@
+//------------------------------------------------
+// pTrafficPopulate config block
+
+ProcessConfig = pTrafficPopulate
+{
+   AppTick   = 4
+   CommsTick = 4
+}
+

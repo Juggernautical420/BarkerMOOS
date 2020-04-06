@@ -82,6 +82,48 @@ bool TrafficScheme::addTrafficObject(TrafficObject new_traf_obj)
 	
 }
 
+//-----------------------------------------------------------
+// Procedure: getAllViewableObjectSpecs()
+
+vector<string> TrafficScheme::getAllViewableObjectSpecs() const
+{
+	vector<string> rvector;
+	for(int i=0; i<m_tss_polygons.size(); i++){
+		string tss_poly = m_tss_polygons[i];
+		rvector.push_back(tss_poly);
+	}
+
+	return(rvector);
+}
+
+//-----------------------------------------------------------
+// Procedure: getAllGeneratedPolyPts()
+
+vector<string> TrafficScheme::getAllGeneratedPolyPts() const
+{
+	vector<string> rvector;
+	for(int i=0; i<m_lane_polys.size(); i++){
+		string tss_poly = m_lane_polys[i];
+		rvector.push_back(tss_poly);
+	}
+
+	return(rvector);
+}
+
+//-----------------------------------------------------------
+// Procedure: getAllGeneratedPolyHdgs()
+
+vector<string> TrafficScheme::getAllGeneratedPolyHdgs() const
+{
+	vector<string> rvector;
+	for(int i=0; i<m_poly_headings.size(); i++){
+		string tss_poly = m_poly_headings[i];
+		rvector.push_back(tss_poly);
+	}
+
+	return(rvector);
+}
+
 
 //-----------------------------------------------------------
 // Procedure: print()

@@ -38,7 +38,7 @@ ADD_SUBDIRECTORY(pTransitLanes)
 ADD_SUBDIRECTORY(pTSSCompliance)
 ADD_SUBDIRECTORY(pTrafficScheme)
 ADD_SUBDIRECTORY(pTrafficGrade)
-
+ADD_SUBDIRECTORY(pTrafficPopulate)
 
 
 ##############################################################################

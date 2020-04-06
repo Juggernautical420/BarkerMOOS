@@ -32,6 +32,9 @@ void Concatenate(XYSegList seglist, std::string tss_type);
 
 // Getters
 unsigned int size() const {return(m_traffic_scheme.size());}
+std::vector<std::string> getAllViewableObjectSpecs() const;
+std::vector<std::string> getAllGeneratedPolyPts() const;
+std::vector<std::string> getAllGeneratedPolyHdgs() const;
 
 void print() const;
 void printviewable();

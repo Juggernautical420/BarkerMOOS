@@ -30,11 +30,8 @@ ProcessConfig = ANTLER
   Run = pMarineViewer	  @ NewConsole = false
   Run = uProcessWatch	  @ NewConsole = false
   Run = pNodeReporter	  @ NewConsole = false
-
-
-  Run = pTransitAlpha   @ NewConsole = false ~ pTransitAlpha_PORT
-  Run = pTransitAlpha   @ NewConsole = false ~ pTransitAlpha_STARBOARD
- // Run = uXMS         @ NewConsole = true 
+  Run = pTrafficPopulate @ NewConsole = false
+ // Run = uXMS         @ NewConsole = false 
 }
 
 //------------------------------------------
@@ -247,30 +244,7 @@ ProcessConfig = pNodeReporter
   platform_color  = yellow
   platform_length = 4
 }
-//------------------------------------------------
-// pTransitAlpha config block
 
-ProcessConfig = pTransitAlpha_PORT
-{
-   AppTick   = 4
-   CommsTick = 4
-
-   port = 0,-30 : 150,-180 : 170,-180 : 20,-30 
-
-//   starboard = 30,-30 : 180,-180 : 200,-180: 50,-30 
-}
-//------------------------------------------------
-// pTransitAlpha config block
-
-ProcessConfig = pTransitAlpha_STARBOARD
-{
-   AppTick   = 4
-   CommsTick = 4
-
-//   port = 0,-30 : 150,-180 : 170,-180 : 20,-30 
-
-   starboard = 30,-30 : 180,-180 : 200,-180: 50,-30 
-}
 
 //------------------------------------------
 // uXMS configuration block
@@ -280,9 +254,23 @@ ProcessConfig = uXMS
    AppTick   = 4
    CommsTick = 4
  
-   VAR = NODE_MESSAGE
+   VAR = SIZE
 
 
+}
+
+//------------------------------------------------
+// pTrafficPopulate config block
+
+ProcessConfig = pTrafficPopulate
+{
+   AppTick   = 4
+   CommsTick = 4
+
+   traffic_file = test1.tss
+   traffic_file = test2.tss
+   traffic_file = test4.tss
+ 
 }
 
 
