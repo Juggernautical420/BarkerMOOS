@@ -27,6 +27,8 @@ class TrafficScheme
 
 // Setters 
 bool addTrafficObject(TrafficObject trafficobject);
+void setupPreCautionAreas();
+void setupSeparationZones();
 void setupTrafficLanes();
 void Concatenate(XYSegList seglist, std::string tss_type);
 
@@ -35,6 +37,7 @@ unsigned int size() const {return(m_traffic_scheme.size());}
 std::vector<std::string> getAllViewableObjectSpecs() const;
 std::vector<std::string> getAllGeneratedPolyPts() const;
 std::vector<std::string> getAllGeneratedPolyHdgs() const;
+std::vector<std::string> getLaneBoundaries() const;
 
 void print() const;
 void printviewable();

@@ -150,6 +150,11 @@ bool TrafficPopulate::buildReport()
 
   ACTable actab(2);
   actab.addHeaderLines();
+  actab << "Lane Boundaries" << "";
+    for(int i=0; i<m_lane_boundaries.size(); i++){
+    actab << m_lane_boundaries[i] << "";
+  }
+  actab.addHeaderLines();
   actab << "Number of Polygons" << intToString(m_polygons.size());
   actab.addHeaderLines();  
   for(int i=0; i<m_polygons.size(); i++){
@@ -195,6 +200,7 @@ void TrafficPopulate::handleTrafficFile(vector<string> svector)
     m_tss.addTrafficObject(new_object);
   }
   m_polygons = m_tss.getAllViewableObjectSpecs();
+  m_lane_boundaries = m_tss.getLaneBoundaries();
   return;
 }
 

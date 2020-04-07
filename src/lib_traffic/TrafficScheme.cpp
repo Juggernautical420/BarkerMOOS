@@ -33,48 +33,17 @@ bool TrafficScheme::addTrafficObject(TrafficObject new_traf_obj)
   m_name = new_traf_obj.getPolyName();
   m_startpt = new_traf_obj.getPolyStartPts();
 
-  if((m_type == "precaution area")||(m_type == "precaution")){
-  	  XYPolygon poly;
-  	  string radial = "format=radial, " + stripBlankEnds(m_points) + ", pts=12, snap=1";
-  	  poly = string2Poly(radial);
-      poly.set_color("vertex", "purple");
-      poly.set_color("edge", "purple");
-      poly.set_color("fill", "purple");
-      poly.set_transparency(0.025);
-      poly.set_edge_size(1);
-      poly.set_vertex_size(2);
+  if((m_type == "precaution area")||(m_type == "precaution"))
+  	setupPreCautionAreas();
 
-      if(m_name != "")
-      poly.set_label(m_name);
-  	  string poly_specs = poly.get_spec();
-      m_tss_polygons.push_back(poly_specs);	
-  }
-
-  if((m_type == "separation zone")||(m_type == "separation")){
-  	  XYPolygon poly;
-  	  poly = string2Poly(m_points);
-      poly.set_color("vertex", "purple");
-      poly.set_color("edge", "purple");
-      poly.set_color("fill", "purple");
-      poly.set_transparency(0.025);
-      poly.set_edge_size(1);
-      poly.set_vertex_size(2);
-
-      if(m_name != "")
-      poly.set_label(m_name);
-  	  m_sep_zones.push_back(poly);
-  	  string poly_specs = poly.get_spec();
-      m_tss_polygons.push_back(poly_specs);	
-  }
-
+  if((m_type == "separation zone")||(m_type == "separation"))
+  	setupSeparationZones();
 
   if((m_type == "inbound lane")||(m_type == "inbound"))
 	setupTrafficLanes();
 
   if((m_type == "outbound lane")||(m_type == "outbound"))
 	setupTrafficLanes();
-
-
 
   m_traffic_scheme.push_back(new_traf_obj);
   return(true);
@@ -123,6 +92,19 @@ vector<string> TrafficScheme::getAllGeneratedPolyHdgs() const
 	return(rvector);
 }
 
+//-----------------------------------------------------------
+// Procedure: getLaneBoundaries()
+
+vector<string> TrafficScheme::getLaneBoundaries() const
+{
+	vector<string> rvector;
+	for(int i=0; i<m_tss_seglists.size(); i++){
+		string tss_segs = m_tss_seglists[i];
+		rvector.push_back(tss_segs);
+	}
+
+	return(rvector);	
+}
 
 //-----------------------------------------------------------
 // Procedure: print()
@@ -158,6 +140,47 @@ void TrafficScheme::printviewable()
      cout <<	m_lane_polys[i] << ",  Heading= " << m_poly_headings[i] << endl;
     }    
 }
+
+//-----------------------------------------------------------
+// Procedure: setupPreCautionAreas()
+void TrafficScheme::setupPreCautionAreas()
+{
+  	XYPolygon poly;
+  	string radial = "format=radial, " + stripBlankEnds(m_points) + ", pts=12, snap=1";
+  	poly = string2Poly(radial);
+    poly.set_color("vertex", "purple");
+    poly.set_color("edge", "purple");
+    poly.set_color("fill", "purple");
+    poly.set_transparency(0.025);
+    poly.set_edge_size(1);
+    poly.set_vertex_size(2);
+
+    if(m_name != "")
+    poly.set_label(m_name);
+  	string poly_specs = poly.get_spec();
+    m_tss_polygons.push_back(poly_specs);	
+}
+
+//-----------------------------------------------------------
+// Procedure: setupSeparationZones
+void TrafficScheme::setupSeparationZones()
+{
+  	XYPolygon poly;
+  	poly = string2Poly(m_points);
+    poly.set_color("vertex", "purple");
+    poly.set_color("edge", "purple");
+    poly.set_color("fill", "purple");
+    poly.set_transparency(0.025);
+    poly.set_edge_size(1);
+    poly.set_vertex_size(2);
+
+    if(m_name != "")
+    poly.set_label(m_name);
+  	m_sep_zones.push_back(poly);
+  	string poly_specs = poly.get_spec();
+    m_tss_polygons.push_back(poly_specs);		
+}
+
 
 
 //-----------------------------------------------------------
