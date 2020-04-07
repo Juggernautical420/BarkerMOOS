@@ -6,7 +6,9 @@
 ServerHost   = localhost
 ServerPort   = 9000
 Community    = alpha
-MOOSTimeWarp = 1
+//----  Next Line was commented and replaced with a command line overload ---- //
+//MOOSTimeWarp = 1    (default)
+MOOSTimeWarp = 5
 
 // Forest Lake
 LatOrigin  = 43.825300 
@@ -273,5 +275,6 @@ ProcessConfig = pTrafficPopulate
    // traffic_file = test5.tss
  
 }
+
 
 
