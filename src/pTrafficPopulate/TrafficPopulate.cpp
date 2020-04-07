@@ -81,6 +81,7 @@ bool TrafficPopulate::Iterate()
 {
   AppCastingMOOSApp::Iterate();
   // Do your thing here!
+
   AppCastingMOOSApp::PostReport();
   return(true);
 }
@@ -114,15 +115,15 @@ bool TrafficPopulate::OnStartUp()
     }
 
     if(param == "traffic_file"){
-      handled = handleTrafficFile(value);
-      m_polygons = m_tss.getAllViewableObjectSpecs();
+      m_files.push_back(value);
+      handled = true;
     }
 
     if(!handled)
       reportUnhandledConfigWarning(orig);
 
   }
-  
+  handleTrafficFile(m_files);
   registerVariables();	
   return(true);
 }
@@ -162,11 +163,15 @@ bool TrafficPopulate::buildReport()
 //------------------------------------------------------------
 // Procedure: handleTrafficFile()
 
-bool TrafficPopulate::handleTrafficFile(string s)
+void TrafficPopulate::handleTrafficFile(vector<string> svector)
 {
-  vector<string> lines = fileBuffer(s);
+ TrafficScheme m_tss;
+ for(int j=0; j<svector.size(); j++){ 
+  string filename = svector[j];
+
+  vector<string> lines = fileBuffer(filename);
     if(lines.size() == 0)
-      return(false);
+      return;
 
     TrafficObject new_object;
       for(unsigned int i=0; i<lines.size(); i++){
@@ -189,7 +194,8 @@ bool TrafficPopulate::handleTrafficFile(string s)
     }
 
     m_tss.addTrafficObject(new_object);
-
-    return(true);
+  }
+  m_polygons = m_tss.getAllViewableObjectSpecs();
+  return;
 }
 

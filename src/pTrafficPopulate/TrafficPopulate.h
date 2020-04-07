@@ -27,7 +27,7 @@ class TrafficPopulate : public AppCastingMOOSApp
    bool Iterate();
    bool OnConnectToServer();
    bool OnStartUp();
-   bool handleTrafficFile(std::string s);
+   void handleTrafficFile(std::vector<std::string> svector);
 
  protected: // Standard AppCastingMOOSApp function to overload 
    bool buildReport();
@@ -38,7 +38,8 @@ class TrafficPopulate : public AppCastingMOOSApp
  private: // Configuration variables
    TrafficScheme m_tss;
    std::vector<std::string> m_polygons;
- 
+   std::vector<std::string> m_files;
+
 
  private: // State variables
 };
