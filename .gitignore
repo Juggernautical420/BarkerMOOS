@@ -9,4 +9,5 @@ scripts/*
 *LOG_*
 *._moos
 *targ_*
-
+*.moos++
+*.bhv++
