@@ -165,7 +165,6 @@ bool TrafficPopulate::buildReport()
 
 void TrafficPopulate::handleTrafficFile(vector<string> svector)
 {
- TrafficScheme m_tss;
  for(int j=0; j<svector.size(); j++){ 
   string filename = svector[j];
 
@@ -183,13 +182,13 @@ void TrafficPopulate::handleTrafficFile(vector<string> svector)
        string param = biteStringX(str, '=');
       if(param == "type")
        new_object.setTrafficType(str);
-     if(param == "poly")
+      if(param == "poly")
        new_object.setPolyType(str);
-     if(param == "points")
+      if(param == "points")
        new_object.setPolyPts(str);
-     if(param == "label")
+      if(param == "label")
        new_object.setPolyName(str);
-     if(param == "start")
+       if(param == "start")
        new_object.setStartPt(str); 
     }
 
