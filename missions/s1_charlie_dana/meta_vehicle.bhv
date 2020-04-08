@@ -23,7 +23,7 @@ set MODE = RETURNING {
 
 #ifdef GROUP USV
 //----------------------------------------------
-Behavior = BHV_Waypoint
+Behavior = BHV_WaypointX
 { 
   name      = waypt_transit
   pwt       = 100
@@ -68,7 +68,7 @@ Behavior = BHV_Waypoint
 }
 #elseifdef  GROUP INBOUND
 //----------------------------------------------
-Behavior = BHV_Waypoint
+Behavior = BHV_WaypointX
 { 
   name      = waypt_transit
   pwt       = 100
@@ -113,7 +113,7 @@ Behavior = BHV_Waypoint
 
 #elseifdef  GROUP OUTBOUND
 //----------------------------------------------
-Behavior = BHV_Waypoint
+Behavior = BHV_WaypointX
 { 
   name      = waypt_transit
   pwt       = 100
