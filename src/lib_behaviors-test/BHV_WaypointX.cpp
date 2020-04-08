@@ -819,6 +819,15 @@ void BHV_WaypointX::postViewableSegList()
 {
   XYSegList seglist = m_waypoint_engine.getSegList();
   seglist.set_label(m_us_name + "_" + m_descriptor);
+
+// Changes made by Jason Barker 10/28/2019
+// Changes made to post a variable of vehicle waypoints for decision making
+  string m_os_points = "SEGLIST_" + toupper(m_us_name); //Creates the MOOSDB Variable string
+//  string segpoints = "vname=" + m_us_name + "," + seglist.get_spec_pts(); // Original pts={x1,y1:x2,y2:etc} format
+  string segpoints = seglist.get_spec_pts();
+  postMessage(m_os_points, segpoints); 
+// End Changes 
+  
   if(m_hint_vertex_color != "")
     seglist.set_color("vertex", m_hint_vertex_color);
   if(m_hint_edge_color != "")
