@@ -319,6 +319,8 @@ void TrafficScheme::Concatenate(XYSegList seglist, string tss_type)
 
 void TrafficScheme::ForceConcatenate(vector<string> polys, vector<string> seglists)
 {
+	if((polys.size() == 0)||(seglists.size() == 0))
+		return;
 	for(int s=0; s<seglists.size(); s++){
 		XYSegList current_seglist = string2SegList(seglists[s]);
 		int lane_objs = current_seglist.size()-1;
