@@ -31,7 +31,7 @@ bool addTrafficObject(TrafficObject trafficobject);
 void setupPreCautionAreas();
 void setupSeparationZones();
 void setupTrafficLanes();
-void Concatenate(XYSegList seglist, std::string tss_type);
+void Concatenate(XYSegList seglist);
 void ForceConcatenate(std::vector<std::string>polys, std::vector<std::string> seglists);
 
 

@@ -1,0 +1,6 @@
+//====================================================================
+type	= precaution area
+poly    = polygon
+points	= x=175, y=60, radius=25
+label	= SB
+start	=

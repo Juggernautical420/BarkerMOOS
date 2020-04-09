@@ -226,7 +226,7 @@ void TrafficScheme::setupTrafficLanes()
 	
 
 	if((x == x_first)&&(y == y_first)){
-		Concatenate(seglist, m_type);
+		Concatenate(seglist);
 		string segl_spec = seglist.get_spec();
 		m_tss_seglists.push_back(segl_spec);
   	}
@@ -234,7 +234,7 @@ void TrafficScheme::setupTrafficLanes()
   	if((x == x_last)&&(y == y_last)){
 		seglist.reverse();
 		XYSegList new_segl = seglist;
-		Concatenate(new_segl, m_type);
+		Concatenate(new_segl);
 		string segl_spec = new_segl.get_spec();
 		m_tss_seglists.push_back(segl_spec);	
   	}
@@ -242,7 +242,7 @@ void TrafficScheme::setupTrafficLanes()
 
 //-----------------------------------------------------------
 // Procedure: Concatenate
-void TrafficScheme::Concatenate(XYSegList seglist, string tss_type)
+void TrafficScheme::Concatenate(XYSegList seglist)
 {
 	if(m_sep_zones.size() == 0)
 		return;
@@ -290,6 +290,7 @@ void TrafficScheme::Concatenate(XYSegList seglist, string tss_type)
 		string new_poly_pts = new_poly.get_spec();
 		m_lane_polys.push_back(new_poly_pts);
 
+		string tss_type = seglist.get_label();
 		if((tss_type == "inbound lane")||(tss_type == "inbound")){
       		new_poly.set_color("vertex", "red");
      		new_poly.set_color("edge", "red");

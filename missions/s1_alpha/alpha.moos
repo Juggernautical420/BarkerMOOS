@@ -272,6 +272,8 @@ ProcessConfig = pTrafficPopulate
    traffic_file = test3.tss
    traffic_file = test4.tss
    traffic_file = test5.tss
+   traffic_file = test7.tss
+   traffic_file = test8.tss
  
 }
 
