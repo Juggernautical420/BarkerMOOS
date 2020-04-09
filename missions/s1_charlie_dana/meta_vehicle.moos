@@ -28,7 +28,7 @@ Processconfig = ANTLER
   Run = pSegListIntercept @ NewConsole = false
   Run = pSegPassing @ NewConsole = false
   Run = pBasicContactMgr @ NewConsole = false
- // Run = uXMS         @ NewConsole = true 
+//  Run = uXMS         @ NewConsole = false
   Run = pTSSCompliance  @ NewConsole = false 
 }
 
@@ -73,7 +73,7 @@ ProcessConfig = uXMS
  
    
 
-//   VAR = BITE_SEGLIST
+//   VAR = TEST
 
 
 

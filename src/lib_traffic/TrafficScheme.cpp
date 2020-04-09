@@ -65,9 +65,9 @@ vector<string> TrafficScheme::getAllViewableObjectSpecs() const
 }
 
 //-----------------------------------------------------------
-// Procedure: getAllGeneratedPolyPts()
+// Procedure: getGeneratedPolyPts()
 
-vector<string> TrafficScheme::getAllGeneratedPolyPts() const
+vector<string> TrafficScheme::getGeneratedPolyPts() const
 {
 	vector<string> rvector;
 	for(int i=0; i<m_lane_polys.size(); i++){
@@ -79,9 +79,9 @@ vector<string> TrafficScheme::getAllGeneratedPolyPts() const
 }
 
 //-----------------------------------------------------------
-// Procedure: getAllGeneratedPolyHdgs()
+// Procedure: getGeneratedPolyHdgs()
 
-vector<string> TrafficScheme::getAllGeneratedPolyHdgs() const
+vector<string> TrafficScheme::getGeneratedPolyHdgs() const
 {
 	vector<string> rvector;
 	for(int i=0; i<m_poly_headings.size(); i++){
@@ -105,6 +105,23 @@ vector<string> TrafficScheme::getLaneBoundaries() const
 
 	return(rvector);	
 }
+
+//-----------------------------------------------------------
+// Procedure: getSepZonePolys()
+
+vector<string> TrafficScheme::getSepZonePolys() const
+{
+	vector<string> rvector;
+	for(int i=0; i<m_sep_zones.size(); i++){
+		string tss_sepz = m_sep_zones[i].get_spec();
+		rvector.push_back(tss_sepz);
+	}
+
+	return(rvector);
+}
+
+
+
 
 //-----------------------------------------------------------
 // Procedure: print()
@@ -146,7 +163,7 @@ void TrafficScheme::printviewable()
 void TrafficScheme::setupPreCautionAreas()
 {
   	XYPolygon poly;
-  	string radial = "format=radial, " + stripBlankEnds(m_points) + ", pts=12, snap=1";
+  	string radial = "format=radial, " + stripBlankEnds(m_points) + ", pts=20, snap=1";
   	poly = string2Poly(radial);
     poly.set_color("vertex", "purple");
     poly.set_color("edge", "purple");
@@ -170,7 +187,7 @@ void TrafficScheme::setupSeparationZones()
     poly.set_color("vertex", "purple");
     poly.set_color("edge", "purple");
     poly.set_color("fill", "purple");
-    poly.set_transparency(0.025);
+    // poly.set_transparency(0.025);
     poly.set_edge_size(1);
     poly.set_vertex_size(2);
 
@@ -227,6 +244,8 @@ void TrafficScheme::setupTrafficLanes()
 // Procedure: Concatenate
 void TrafficScheme::Concatenate(XYSegList seglist, string tss_type)
 {
+	if(m_sep_zones.size() == 0)
+		return;
 	int lane_objs = seglist.size()-1;
 	for(int i=0; i<lane_objs; i++){
 			m_init_dist1 = 1000;
@@ -292,5 +311,81 @@ void TrafficScheme::Concatenate(XYSegList seglist, string tss_type)
 		string new_specs = new_poly.get_spec();
 		m_tss_polygons.push_back(new_specs);
 
+	}
+}
+
+//-----------------------------------------------------------
+// Procedure: ForceConcatenate
+
+void TrafficScheme::ForceConcatenate(vector<string> polys, vector<string> seglists)
+{
+	for(int s=0; s<seglists.size(); s++){
+		XYSegList current_seglist = string2SegList(seglists[s]);
+		int lane_objs = current_seglist.size()-1;
+		for(int i=0; i<lane_objs; i++){
+			m_init_dist1 = 1000;
+			m_init_dist2 = 1000;
+			m_x1 = current_seglist.get_vx(i);
+			m_y1 = current_seglist.get_vy(i);
+
+			m_x2 = current_seglist.get_vx(i+1);
+			m_y2 = current_seglist.get_vy(i+1);
+			string heading = doubleToString(relAng(m_x1,m_y1,m_x2,m_y2));
+			m_poly_headings.push_back(heading);
+
+			for(int j=0; j<polys.size(); j++){
+			XYPolygon poly = string2Poly(polys[j]);	
+			XYSegList curr_poly1 = poly.exportSegList(m_x1,m_y1);
+			m_curr_x4 = curr_poly1.get_vx(0);
+			m_curr_y4 = curr_poly1.get_vy(0);
+			m_curr_dist1 = distPointToPoint(m_x1,m_y1,m_curr_x4,m_curr_y4);
+
+			XYSegList curr_poly2 = poly.exportSegList(m_x2,m_y2);
+			m_curr_x3 = curr_poly2.get_vx(0);
+			m_curr_y3 = curr_poly2.get_vy(0);
+			m_curr_dist2 = distPointToPoint(m_x2,m_y2,m_curr_x3,m_curr_y3);
+		
+			if(m_curr_dist1 < m_init_dist1){
+				m_final_x4 = m_curr_x4;
+				m_final_y4 = m_curr_y4;			
+				m_init_dist1 = m_curr_dist1;
+			}
+
+			if(m_curr_dist2 < m_init_dist2){
+				m_final_x3 = m_curr_x3;
+				m_final_y3 = m_curr_y3;				
+				m_init_dist2 = m_curr_dist2;
+			}
+		}
+
+		XYPolygon new_poly;
+		new_poly.add_vertex(m_x1,m_y1);
+		new_poly.add_vertex(m_x2,m_y2);		
+		new_poly.add_vertex(m_final_x3,m_final_y3);
+		new_poly.add_vertex(m_final_x4,m_final_y4);
+		string new_poly_pts = new_poly.get_spec();
+		m_lane_polys.push_back(new_poly_pts);
+
+		string tss_type = current_seglist.get_label();
+		if((tss_type == "inbound lane")||(tss_type == "inbound")){
+      		new_poly.set_color("vertex", "red");
+     		new_poly.set_color("edge", "red");
+      		new_poly.set_color("fill", "red");
+      		new_poly.set_transparency(0.05);
+      		new_poly.set_edge_size(1);
+      		new_poly.set_vertex_size(2);	
+		}
+
+		if((tss_type == "outbound lane")||(tss_type == "outbound")){
+      	    new_poly.set_color("vertex", "green");
+     	    new_poly.set_color("edge", "green");
+     	    new_poly.set_color("fill", "green");
+     	    new_poly.set_transparency(0.025);
+     	    new_poly.set_edge_size(1);
+    	    new_poly.set_vertex_size(2);
+		}
+		string new_specs = new_poly.get_spec();
+		m_tss_polygons.push_back(new_specs);
+	}
 	}
 }

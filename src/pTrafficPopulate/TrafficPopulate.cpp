@@ -81,7 +81,6 @@ bool TrafficPopulate::Iterate()
 {
   AppCastingMOOSApp::Iterate();
   // Do your thing here!
-
   AppCastingMOOSApp::PostReport();
   return(true);
 }
@@ -124,6 +123,10 @@ bool TrafficPopulate::OnStartUp()
 
   }
   handleTrafficFile(m_files);
+  m_tss.ForceConcatenate(m_sep_zones, m_lane_boundaries);
+  m_gen_poly_specs = m_tss.getGeneratedPolyPts();
+  m_gen_poly_hdgs = m_tss.getGeneratedPolyHdgs();
+  m_polygons = m_tss.getAllViewableObjectSpecs();
   registerVariables();	
   return(true);
 }
@@ -148,19 +151,36 @@ bool TrafficPopulate::buildReport()
   m_msgs << "Traffic Separation Scheme Built             " << endl;
   m_msgs << "============================================" << endl;
 
-  ACTable actab(2);
+  ACTable actab(1);
+  actab << "TSS Files" ;
   actab.addHeaderLines();
-  actab << "Lane Boundaries" << "";
-    for(int i=0; i<m_lane_boundaries.size(); i++){
-    actab << m_lane_boundaries[i] << "";
-  }
-  actab.addHeaderLines();
-  actab << "Number of Polygons" << intToString(m_polygons.size());
-  actab.addHeaderLines();  
-  for(int i=0; i<m_polygons.size(); i++){
-    actab << "Polygon" << m_polygons[i];
+  for(int i=0; i<m_files.size(); i++){
+    actab << m_files[i];
   }
   m_msgs << actab.getFormattedString();
+
+  ACTable actabl(2);
+  actabl << "" << "";
+  actabl << "" << "";
+  actabl << "Lane Boundaries" << "";
+  actabl.addHeaderLines();
+    for(int i=0; i<m_lane_boundaries.size(); i++){
+    actabl << m_lane_boundaries[i] << "";
+  }
+  actabl.addHeaderLines();
+  actabl << "Generated Polys: " << intToString(m_gen_poly_specs.size());
+  actabl.addHeaderLines();
+    for(int i=0; i<m_gen_poly_specs.size(); i++){
+      actabl << m_gen_poly_specs[i] << m_gen_poly_hdgs[i];
+    }
+  actabl.addHeaderLines();  
+  actabl << "Total of Polygons: " << intToString(m_polygons.size());
+  actabl.addHeaderLines();  
+  for(int i=0; i<m_polygons.size(); i++){
+    actabl << "Polygon Spec" << m_polygons[i];
+  }
+  m_msgs << actabl.getFormattedString();
+
 
   return(true);
 }
@@ -199,8 +219,10 @@ void TrafficPopulate::handleTrafficFile(vector<string> svector)
 
     m_tss.addTrafficObject(new_object);
   }
-  m_polygons = m_tss.getAllViewableObjectSpecs();
+
   m_lane_boundaries = m_tss.getLaneBoundaries();
+  m_sep_zones = m_tss.getSepZonePolys();
+
   return;
 }
 

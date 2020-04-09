@@ -44,31 +44,41 @@ bool SegListIntercept::OnNewMail(MOOSMSG_LIST &NewMail)
     string key    = msg.GetKey();
  
   if(key == m_list_name){
-    str_os_seglist = msg.GetString();
-    os_seglist = string2SegList(str_os_seglist);
-    os_seglist.set_label(m_vname);
-    m_os_intercept.getIntercept(os_seglist, contact_seglist);      
+    string str_os_seglist = msg.GetString();
+    m_os_seglist = string2SegList(str_os_seglist);
+    m_os_seglist.set_label(m_vname);  
   }
 
   if(key == "SEGLIST"){
-    str_contact_seglist  = msg.GetString();
-    m_contact_name = biteStringX(str_contact_seglist, ';');
-    string m_contact_nameparse = biteStringX(m_contact_name, '=');
-    if(m_contact_name!=m_vname){
+    string str_contact_seglist  = msg.GetString();
+    string contact_name = biteStringX(str_contact_seglist, ';');
+    string contact_nameparse = biteStringX(contact_name, '=');
+    if(contact_name!=m_vname){
+      XYSegList contact_seglist;
       contact_seglist = string2SegList(str_contact_seglist);
-      contact_seglist.set_label(m_contact_name);
-      m_os_intercept.getIntercept(os_seglist, contact_seglist); 
-    } 
+      contact_seglist.set_label(contact_name);
+      m_os_intercept.getIntercept(m_os_seglist, contact_seglist);
+    }
+      
   }
 
 
 
   
 /// Trials and Errors //////
-  // if(key == "NAV_SPEED"){
-  //   m_nav_spd = msg.GetDouble();
+  // if(key == "NAV_X")
+  //   m_navx = msg.GetDouble();
 
+  // if(key == "NAV_Y")
+  //   m_navy = msg.GetDouble();
+
+  // if(key == "WPT_INDEX"){
+  //   double index = msg.GetDouble();
+  //   m_next_wpt = int(index);
   // }
+  
+  // string os_remaining = biteSegListLeft(m_os_seglist, m_navx, m_navy, m_next_wpt);
+  // Notify("TEST", os_remaining);
 
 #if 0 // Keep these around just for template
     string comm  = msg.GetCommunity();
@@ -118,10 +128,10 @@ bool SegListIntercept::Iterate()
 
 int l;//The following plots a visual point for each intersection
 for(l=0; l<m_os_intercept.size(); l++){
- point.set_vertex(m_os_intercept.get_px(l), m_os_intercept.get_py(l)); 
- point.set_color("vertex", "red");
- point.set_param("vertex_size", "5");  
- string point_spec = point.get_spec();
+ m_point.set_vertex(m_os_intercept.get_px(l), m_os_intercept.get_py(l)); 
+ m_point.set_color("vertex", "red");
+ m_point.set_param("vertex_size", "8");  
+ string point_spec = m_point.get_spec();
  Notify("VIEW_POINT", point_spec);
 
 
@@ -225,7 +235,9 @@ void SegListIntercept::registerVariables()
   Register(m_list_name, 0); //ownship seglist
 
   /// Trials and Errors //////
-  // Register("NAV_SPEED", 0);
+  // Register("NAV_X", 0);
+  // Register("NAV_Y", 0);
+  // Register("WPT_INDEX", 0);
 
 
 }

@@ -14,6 +14,7 @@
 #include "XYPolygon.h"
 #include "XYPoint.h"
 #include "XYSegList.h"
+#include "XYObject.h"
 #include "XYFormatUtilsPoly.h"
 #include "XYFormatUtilsSegl.h"
 #include "XYFormatUtilsPoint.h"
@@ -31,13 +32,16 @@ void setupPreCautionAreas();
 void setupSeparationZones();
 void setupTrafficLanes();
 void Concatenate(XYSegList seglist, std::string tss_type);
+void ForceConcatenate(std::vector<std::string>polys, std::vector<std::string> seglists);
+
 
 // Getters
 unsigned int size() const {return(m_traffic_scheme.size());}
 std::vector<std::string> getAllViewableObjectSpecs() const;
-std::vector<std::string> getAllGeneratedPolyPts() const;
-std::vector<std::string> getAllGeneratedPolyHdgs() const;
+std::vector<std::string> getGeneratedPolyPts() const;
+std::vector<std::string> getGeneratedPolyHdgs() const;
 std::vector<std::string> getLaneBoundaries() const;
+std::vector<std::string> getSepZonePolys() const;
 
 void print() const;
 void printviewable();

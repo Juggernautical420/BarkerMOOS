@@ -30,15 +30,14 @@ void SegIntercept::getIntercept(XYSegList os_seglist, XYSegList contact_seglist)
             /      \
        x3,y3        x2,y2 
 */
- int i;
- int j; 
-for(i=1; i<os_seglist.size(); i++){ //Grabs the endpoints for each os segment
+
+for(int i=1; i<os_seglist.size(); i++){ //Grabs the endpoints for each os segment
   double m_x1 = os_seglist.get_vx(i-1);
   double m_y1 = os_seglist.get_vy(i-1);
   double m_x2 = os_seglist.get_vx(i);
   double m_y2 = os_seglist.get_vy(i);
   
-  for(j=1; j<contact_seglist.size(); j++){//Grabs the endpoints for each contact segment
+  for(int j=1; j<contact_seglist.size(); j++){//Grabs the endpoints for each contact segment
     double m_x3 = contact_seglist.get_vx(j-1);
     double m_y3 = contact_seglist.get_vy(j-1);
     double m_x4 = contact_seglist.get_vx(j);
@@ -115,29 +114,88 @@ for(i=1; i<os_seglist.size(); i++){ //Grabs the endpoints for each os segment
   x3,y3 *    
 
 */
-  int r;
-  int s;
-for(r=0; r<os_seglist.size(); r++){ 
-  double m_os_x1 = os_seglist.get_vx(r);
-  double m_os_y1 = os_seglist.get_vy(r);
+
+for(int r=0; r<os_seglist.size(); r++){ 
+  double os_x1 = os_seglist.get_vx(r);
+  double os_y1 = os_seglist.get_vy(r);
   
-  for(s=0; s<contact_seglist.size(); s++){
-    double m_con_x1 = contact_seglist.get_vx(s);
-    double m_con_y1 = contact_seglist.get_vy(s);
+  for(int s=0; s<contact_seglist.size(); s++){
+    double con_x1 = contact_seglist.get_vx(s);
+    double con_y1 = contact_seglist.get_vy(s);
 
     string con_pt_spec = contact_seglist.get_spec();
     string con_pt_short = biteStringX(con_pt_spec, '}');
     string con_pt_shorter = biteStringX(con_pt_spec, '=');
 
-  if((m_os_x1 == m_con_x1) && (m_os_y1 == m_con_y1)){
-    m_px.push_back(m_os_x1);
-    m_py.push_back(m_os_y1);
+  if((os_x1 == con_x1) && (os_y1 == con_y1)){
+    m_px.push_back(os_x1);
+    m_py.push_back(os_y1);
     m_con_name.push_back(con_pt_spec);
     }  
   }    
-}	
 }
 
+//Method #3a
+// Endpoint lies between two points (ownship ----> contact)
+
+for(int c=0; c<os_seglist.size(); c++){ 
+  double cx = os_seglist.get_vx(c);
+  double cy = os_seglist.get_vy(c);
+
+  for(int j=1; j<contact_seglist.size(); j++){//Grabs the endpoints for each contact segment
+    double ax = contact_seglist.get_vx(j-1);
+    double ay = contact_seglist.get_vy(j-1);
+    double bx = contact_seglist.get_vx(j);
+    double by = contact_seglist.get_vy(j);
+
+    string con_pt_spec = contact_seglist.get_spec();
+    string con_pt_short = biteStringX(con_pt_spec, '}');
+    string con_pt_shorter = biteStringX(con_pt_spec, '=');
+
+   double ac = distPointToPoint(ax,ay,cx,cy);
+   double cb = distPointToPoint(cx,cy,bx,by);
+   double ab = distPointToPoint(ax,ay,bx,by);
+
+   if(ac + cb == ab){
+    m_px.push_back(cx);
+    m_py.push_back(cy);
+    m_con_name.push_back(con_pt_spec);
+   } 
+  }
+}
+
+//Method #3b
+// Endpoint lies between two points (contact ----> ownship)
+
+for(int c=0; c<contact_seglist.size(); c++){ 
+  double cx = contact_seglist.get_vx(c);
+  double cy = contact_seglist.get_vy(c);
+
+  for(int j=1; j<os_seglist.size(); j++){//Grabs the endpoints for each contact segment
+    double ax = os_seglist.get_vx(j-1);
+    double ay = os_seglist.get_vy(j-1);
+    double bx = os_seglist.get_vx(j);
+    double by = os_seglist.get_vy(j);
+
+    string con_pt_spec = contact_seglist.get_spec();
+    string con_pt_short = biteStringX(con_pt_spec, '}');
+    string con_pt_shorter = biteStringX(con_pt_spec, '=');
+
+   double ac = distPointToPoint(ax,ay,cx,cy);
+   double cb = distPointToPoint(cx,cy,bx,by);
+   double ab = distPointToPoint(ax,ay,bx,by);
+
+   if(ac + cb == ab){
+    m_px.push_back(cx);
+    m_py.push_back(cy);
+    m_con_name.push_back(con_pt_spec);
+   } 
+  }
+}
+
+removeDuplicates();
+
+}
 //---------------------------------------------------------------
 // Procedure: get_px
 
@@ -171,8 +229,28 @@ string SegIntercept::get_pname(unsigned int i) const
     return("");
 }
 
+//---------------------------------------------------------------
+// Procedure: removeDuplicates
 
+void SegIntercept::removeDuplicates()
+{
+  for(int i=0; i<m_px.size(); i++){
+    double x = m_px[i];
+    double y = m_py[i];
+    string nm = m_con_name[i];
+    for(int j=1; j<m_px.size(); j++){
+      double xx = m_px[j];
+      double yy = m_py[j];
+      string nmnm = m_con_name[j];
 
+     if((x==xx)&&(y==yy)&&(nm==nmnm)){
+      m_px.erase(m_px.begin()+(j));
+      m_py.erase(m_py.begin()+(j));
+      m_con_name.erase(m_con_name.begin()+(j));
+     } 
+    }
+  }
+}
 
 
 

@@ -65,13 +65,13 @@ string biteSegListRight(const XYSegList os_seglist, const double m_px, const dou
 
 
 
-string biteSegListLeft(XYSegList os_seglist, double m_x, double m_y) 
+string biteSegListLeft(XYSegList os_seglist, double m_x, double m_y, int index) 
 {
- int index = os_seglist.closest_segment(m_x, m_y);
+ //int index = os_seglist.closest_segment(m_x, m_y);
  // os_seglist.insert_vertex(m_x, m_y);
  
  os_seglist.alter_vertex(m_x, m_y);
- // os_seglist.delete_vertex(index--);
+ os_seglist.delete_vertex(index);
  string remaining = os_seglist.get_spec();
  // double time = (os_remaining.length())/m_spd; 
  // string remaining = doubleToString(time) + "secs";

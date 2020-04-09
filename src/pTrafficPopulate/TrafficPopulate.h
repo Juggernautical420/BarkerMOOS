@@ -40,6 +40,11 @@ class TrafficPopulate : public AppCastingMOOSApp
    std::vector<std::string> m_polygons;
    std::vector<std::string> m_files;
    std::vector<std::string> m_lane_boundaries;
+   std::vector<std::string> m_sep_zones;
+   std::vector<std::string> m_gen_poly_specs;
+   std::vector<std::string> m_gen_poly_hdgs;
+
+
 
 
  private: // State variables
