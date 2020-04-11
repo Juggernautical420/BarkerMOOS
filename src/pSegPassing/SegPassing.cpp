@@ -17,6 +17,8 @@ using namespace std;
 
 SegPassing::SegPassing()
 {
+  m_got_x = false;
+  m_got_y = false;
 }
 
 //---------------------------------------------------------
@@ -38,17 +40,31 @@ bool SegPassing::OnNewMail(MOOSMSG_LIST &NewMail)
     CMOOSMsg &msg = *p;
     string key    = msg.GetKey();
 
+  if(key == "NAV_X"){
+    if(!m_got_x){
+    m_nav_x = msg.GetDouble();
+    m_got_x = true;
+    }
+  }
+
+  if(key == "NAV_Y"){
+    if(!m_got_y){
+    m_nav_y = msg.GetDouble();
+    m_got_y = true;
+    }
+  }    
+
   if(key == m_list_name){
-    str_seglist = msg.GetString();
-    m_str_name = biteStringX(str_seglist, '=');
-    seglist_report = str_seglist;
+    m_str_seglist = msg.GetString();
+    m_str_name = biteStringX(m_str_seglist, '=');
+    m_seglist_report = m_str_seglist;
     
   } 
   m_source = "src_node=" + m_vname;
   m_dest = "dest_node=all";
   m_var_name = "var_name=SEGLIST";
   //m_str_val = "string_val=vname=" + m_vname + "," + str_seglist;
-  m_str_val = "string_val=vname=" + m_vname + ";pts=" + str_seglist;
+  m_str_val = "string_val=vname=" + m_vname + ";pts=" + m_str_seglist;
   m_node_message = m_source + "," + m_dest + "," + m_var_name + "," + m_str_val;
   Notify("NODE_MESSAGE_LOCAL", m_node_message); 
 
@@ -155,6 +171,8 @@ void SegPassing::registerVariables()
   AppCastingMOOSApp::RegisterVariables();
   // Register("FOOBAR", 0);
   Register(m_list_name,0);
+  Register("NAV_X", 0);
+  Register("NAV_Y", 0);
 }
 
 
@@ -174,7 +192,7 @@ bool SegPassing::buildReport()
   // m_msgs << actab.getFormattedString();
 
   m_msgs << m_veh_name << endl;
-  m_msgs << seglist_report << endl;
+  m_msgs << m_seglist_report << endl;
   m_msgs << "============================================" << endl;
   m_msgs << "Message Passed: " << endl;
   m_msgs << m_source << endl;

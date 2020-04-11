@@ -15,6 +15,8 @@
 #include <cstdlib>
 #include <cstring>
 #include "NodeMessage.h"
+#include "XYSegList.h"
+#include "XYFormatUtilsSegl.h"
 
 class SegPassing : public AppCastingMOOSApp
 {
@@ -33,8 +35,8 @@ class SegPassing : public AppCastingMOOSApp
    std::string m_veh_name;
    std::string m_vname;
    std::string m_list_name;
-   std::string str_seglist;
-   std::string seglist_report;
+   std::string m_str_seglist;
+   std::string m_seglist_report;
    std::string m_node_message;
    std::string m_str_name;
 
@@ -42,6 +44,13 @@ class SegPassing : public AppCastingMOOSApp
    std::string m_dest;
    std::string m_var_name;
    std::string m_str_val;
+
+   bool m_got_x;
+   bool m_got_y;
+
+   XYSegList m_seglist;
+   double m_nav_x;
+   double m_nav_y;
 
    // NodeMessage seglist_message;
 

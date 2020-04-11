@@ -16,5 +16,6 @@ TARGET_LINK_LIBRARIES(pSegPassing
    apputil
    mbutil
    m
+   geometry
    pthread)
 
