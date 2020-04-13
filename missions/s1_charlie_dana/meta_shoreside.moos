@@ -222,13 +222,13 @@ ProcessConfig = pTrafficPopulate
    AppTick   = 4
    CommsTick = 4
 
-   traffic_file = inbound.tss
-   traffic_file = outbound.tss
-   traffic_file = sepz1.tss
-   traffic_file = sepz2.tss
-   traffic_file = sepz3.tss
-   traffic_file = precSC.tss
-   traffic_file = precSD.tss
+  traffic_file = inbound.tss
+  traffic_file = outbound.tss
+  traffic_file = sepz1.tss
+  traffic_file = sepz2.tss
+  traffic_file = sepz3.tss
+  traffic_file = precSC.tss
+  traffic_file = precSD.tss
 
 }
 
