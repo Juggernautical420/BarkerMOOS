@@ -14,6 +14,8 @@
 #include "FileBuffer.h"
 #include "TrafficScheme.h"
 #include "TrafficObject.h"
+#include "XYPolygon.h"
+#include "XYFormatUtilsPoly.h"
 
 
 class TrafficPopulate : public AppCastingMOOSApp
@@ -28,6 +30,8 @@ class TrafficPopulate : public AppCastingMOOSApp
    bool OnConnectToServer();
    bool OnStartUp();
    void handleTrafficFile(std::vector<std::string> svector);
+   void publishTrafficInfo(std::vector<std::string> svector, std::string varname);
+
 
  protected: // Standard AppCastingMOOSApp function to overload 
    bool buildReport();
@@ -43,6 +47,12 @@ class TrafficPopulate : public AppCastingMOOSApp
    std::vector<std::string> m_sep_zones;
    std::vector<std::string> m_gen_poly_specs;
    std::vector<std::string> m_gen_poly_hdgs;
+
+
+
+   std::string m_sepz_output_var;
+   std::string m_genpoly_output_var;
+   std::string m_genpolyhdg_output_var;
 
 
 

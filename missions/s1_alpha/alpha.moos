@@ -254,7 +254,8 @@ ProcessConfig = uXMS
    AppTick   = 4
    CommsTick = 4
  
-   VAR = SIZE
+   VAR = TSS_LANES
+   VAR = TSS_LANE_HDGS
 
 
 }

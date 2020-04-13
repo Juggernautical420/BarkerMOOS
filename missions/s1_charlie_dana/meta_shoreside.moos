@@ -25,8 +25,7 @@ Processconfig = ANTLER
   Run = pHostInfo       @ NewConsole = false
   Run = uFldShoreBroker @ NewConsole = false
   Run = uFldNodeComms   @ NewConsole = false
-  Run = pTransitLanes   @ NewConsole = false
-// Run = pTrafficScheme  @ NewConsole = false
+  Run = pTrafficPopulate @ NewConsole = false
   Run = uFldCollisionDetect @ New Console = false
   Run = pTrafficGrade   @ NewConsole = false
 }
@@ -183,34 +182,6 @@ ProcessConfig = uFldNodeComms
 
 
 //------------------------------------------------
-// pTransitLanes config block
-
-ProcessConfig = pTransitLanes
-{
-  AppTick   = 4
-  CommsTick = 4
-
-  inbound = pts={30,-60 : 150,-180 : 170,-180 : 50,-60} 
-  inbound = pts={150,60 : 30,-60 : 50,-60 : 170,60}
-  inbound = pts={150,-180 : 150,-350 : 170,-350 : 170,-180}
-
-  outbound = pts={60,-60 : 180,-180 : 200,-180: 80,-60} 
-  outbound = pts={180,60 : 60,-60 : 80,-60 : 200,60}
-  outbound = pts={180,-180 : 180,-350 : 200,-350 : 200,-180}
-}
-
-//------------------------------------------------
-// pTrafficScheme config block
-
-ProcessConfig = pTrafficScheme
-{
-   AppTick   = 4
-   CommsTick = 4
-
-}
-
-
-//------------------------------------------------
 // uFldCollisionDetect config block
 
 ProcessConfig = uFldCollisionDetect                             
@@ -242,3 +213,22 @@ ProcessConfig = pTrafficGrade
    AppTick   = 4
    CommsTick = 4
 }
+
+//------------------------------------------------
+// pTrafficPopulate config block
+
+ProcessConfig = pTrafficPopulate
+{
+   AppTick   = 4
+   CommsTick = 4
+
+   traffic_file = inbound.tss
+   traffic_file = outbound.tss
+   traffic_file = sepz1.tss
+   traffic_file = sepz2.tss
+   traffic_file = sepz3.tss
+   traffic_file = precSC.tss
+   traffic_file = precSD.tss
+
+}
+
