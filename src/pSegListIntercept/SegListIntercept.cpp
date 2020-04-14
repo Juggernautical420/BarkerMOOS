@@ -63,22 +63,8 @@ bool SegListIntercept::OnNewMail(MOOSMSG_LIST &NewMail)
   }
 
 
-
   
-/// Trials and Errors //////
-  // if(key == "NAV_X")
-  //   m_navx = msg.GetDouble();
 
-  // if(key == "NAV_Y")
-  //   m_navy = msg.GetDouble();
-
-  // if(key == "WPT_INDEX"){
-  //   double index = msg.GetDouble();
-  //   m_next_wpt = int(index);
-  // }
-  
-  // string os_remaining = biteSegListLeft(m_os_seglist, m_navx, m_navy, m_next_wpt);
-  // Notify("TEST", os_remaining);
 
 #if 0 // Keep these around just for template
     string comm  = msg.GetCommunity();
@@ -117,14 +103,6 @@ bool SegListIntercept::Iterate()
 {
   AppCastingMOOSApp::Iterate();
   // Do your thing here!
-//////////
- // m_os_details.getParts(os_seglist, m_nav_spd);
- // os_extra_pts.seglistExtrapolate(os_seglist, m_os_details, m_nav_spd);
-//////////
-
-// THIS PART WORKS ///////// 
-
-
 
 int l;//The following plots a visual point for each intersection
 for(l=0; l<m_os_intercept.size(); l++){
@@ -133,43 +111,6 @@ for(l=0; l<m_os_intercept.size(); l++){
  m_point.set_param("vertex_size", "8");  
  string point_spec = m_point.get_spec();
  Notify("VIEW_POINT", point_spec);
-
-
-
-
-
-//////////////////////////////////////////////////
-//// Trials and Errors //////
-// ppx = m_charlie_dana.get_px(l);
-// ppy = m_charlie_dana.get_py(l);
-// // string pcontact = m_charlie_dana.get_pname(l);
-
-//  os_remaining_seglist = biteSegListRight(os_seglist, ppx, ppy);
-//  Notify("BITE_SEGLIST", os_remaining_seglist);
-
-
-/////// Need to Fix get_t ///////
-
-// int int_time = os_extra_pts.get_t(ppx, ppy);
-// string time_test = intToString(int_time);
-
-// double m_int_x = os_extra_pts.get_xt(int_time);
-// string m_ix = doubleToString(m_int_x);
-// double m_int_plusone = os_extra_pts.get_xt(int_time);
-// string m_ix1 = doubleToString(m_int_plusone);
-// Notify("TEST1", m_ix1);
-// double m_int_y = os_extra_pts.get_yt(int_time);
-// string m_iy = doubleToString(m_int_y);
-// string time_coords = m_ix + "," + m_iy;
-
-// double dist = m_os_details.get_legLength(0);
-// double dist_limit = dist/m_nav_spd;
-// int limit_t = int(dist_limit);
-// string time_test = doubleToString(limit_t);
-
- // Notify("TEST", m_ix);
- // Notify("TESTING", time_test);
- 
 }
 
 
@@ -230,15 +171,7 @@ void SegListIntercept::registerVariables()
   AppCastingMOOSApp::RegisterVariables();
   // Register("FOOBAR", 0);
   Register("SEGLIST", 0); //each contact seglist as a node msg betweeen vessels
- 
-
   Register(m_list_name, 0); //ownship seglist
-
-  /// Trials and Errors //////
-  // Register("NAV_X", 0);
-  // Register("NAV_Y", 0);
-  // Register("WPT_INDEX", 0);
-
 
 }
 

@@ -47,18 +47,9 @@ class SegListIntercept : public AppCastingMOOSApp
    std::string m_vname;
    std::string m_veh_handle;
    std::string m_list_name;
-   // std::string m_contact_name;
-   // std::string str_os_seglist;
-   // std::string m_str_contact_seglist;
 
    XYSegList m_os_seglist;
-   // std::vector<XYSegList> m_contacts;
 
-   // std::string os_remaining_seglist;
-
-
-   // std::vector<double> m_px;
-   // std::vector<double> m_py;
    std::vector<std::string> m_con_name;
 
  
@@ -66,17 +57,7 @@ class SegListIntercept : public AppCastingMOOSApp
 
    SegIntercept m_os_intercept;
 
- ///////////////////////////
-//    SegParts m_os_details;
-//    double m_nav_spd;
-// ////////////////////////////
-//    SegListExtrapolator os_extra_pts;
-//    double ppx;
-//    double ppy;
 
-// double m_navx;
-// double m_navy;
-// int m_next_wpt;
  private: // Configuration variables
 
 

@@ -35,15 +35,12 @@ class SegPassing : public AppCastingMOOSApp
    std::string m_veh_name;
    std::string m_vname;
    std::string m_list_name;
-   std::string m_str_seglist;
-   std::string m_seglist_report;
-   std::string m_node_message;
-   std::string m_str_name;
 
    std::string m_source;
    std::string m_dest;
    std::string m_var_name;
    std::string m_str_val;
+   std::string m_node_message;
 
    bool m_got_x;
    bool m_got_y;
@@ -51,6 +48,8 @@ class SegPassing : public AppCastingMOOSApp
    XYSegList m_seglist;
    double m_nav_x;
    double m_nav_y;
+   std::string m_new_seglist;
+   std::string m_old_seglist;
 
    // NodeMessage seglist_message;
 
