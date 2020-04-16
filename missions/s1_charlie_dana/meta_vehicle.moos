@@ -73,7 +73,8 @@ ProcessConfig = uXMS
  
    
 
-   VAR = NAV_HEADING
+   VAR = SEGLIST
+   VAR = SEGLIST_USV
 
 
 

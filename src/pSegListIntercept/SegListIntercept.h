@@ -14,14 +14,11 @@
 #include <string>
 #include <cstdlib>
 #include <cstring>
-#include "GeomUtils.h"
-#include "AngleUtils.h"
 #include "XYSegList.h"
 #include "XYPoint.h"
 #include "XYFormatUtilsSegl.h"
 #include "XYFormatUtilsPoint.h"
 #include "SegIntercept.h"
-#include "SegParts.h"
 #include "SegListExtrapolator.h"
 
 
