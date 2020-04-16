@@ -1,6 +1,0 @@
-//====================================================================
-type	= precaution area
-poly    = polygon
-points	= x=55, y=-60, radius=15
-label	= SC
-start	=
