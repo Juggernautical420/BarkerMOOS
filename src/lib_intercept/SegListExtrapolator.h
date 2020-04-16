@@ -17,39 +17,48 @@
 #include "XYSegList.h"
 #include "XYFormatUtilsSegl.h"
 #include "GeomUtils.h"
-#include "SegParts.h"
+#include "AngleUtils.h"
+#include "XYPoint.h"
 
 
-class SegListExtrapolator : public XYObject {
+
+class SegListExtrapolator 
+{
  public:
-   SegListExtrapolator() {}
+   SegListExtrapolator();
    virtual ~SegListExtrapolator() {}
 
  public:
-   void seglistExtrapolate(XYSegList os_seglist, SegParts os_details, double m_navSpd);
+   void extrapolateSegList(XYSegList seglist);
+   void setContactName(std::string str);
+   void setContactSpd(double spd);              
+   void createTimeLimit();
+   void predict_point(double time);
+   void pointCalculate(XYSegList seglist, double heading);
 
-   unsigned int size() const  {return(m_xt.size());}
-   double get_xt(unsigned int) const;
-   double get_yt(unsigned int) const;
-   double get_hdgt(unsigned int) const;
 
-   unsigned int get_t(double x, double y) const;
- 
+/// Getters ///
+   void print();
+   XYPoint extrapolate_point(double time);
 
 
  protected:
+///Class Variables ///
+std::string m_vname;
+bool m_got_name;
 
-   SegParts os_details;
-   XYSegList os_seglist;
-   
-   double m_nav_spd;
-   double m_px;
-   double m_py;
+double m_nav_spd;
+bool m_got_spd;
 
+double m_time_limit;
+std::vector<XYSegList> m_leg_seglist;
+std::vector<double> m_leg_heading;
+std::vector<double> m_leg_length;
+std::vector<double> m_time_leg;
 
-   std::vector<double> m_xt;
-   std::vector<double> m_yt;
-   std::vector<double> m_hdgt;
+XYPoint m_locate;
+double m_time_remain;
+
    
 };
 

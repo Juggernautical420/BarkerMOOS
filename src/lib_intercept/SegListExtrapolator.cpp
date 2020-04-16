@@ -7,107 +7,154 @@
 
 #include "SegListExtrapolator.h"
 #include <math.h>
+#include <numeric>
 
 using namespace std;
 
+//-----------------------------------------------------------
+// Constructor
+SegListExtrapolator::SegListExtrapolator()
+{
+  m_got_name = false;
+  m_got_spd = false;
+  m_vname = "";
+  m_time_limit = 0;
+}
+
 //-----------------------------------------------------------------
-//Procedure: seglistExtrapolate
+//Procedure: extrapolateSegList
 
- void SegListExtrapolator::seglistExtrapolate(XYSegList os_seglist, SegParts os_details, double m_navSpd)
- {
+void SegListExtrapolator::extrapolateSegList(XYSegList seglist)
+{
+  if(m_got_spd){
+  for(int i=1; i<seglist.size(); i++){
+    double x1 = seglist.get_vx(i-1);
+    double y1 = seglist.get_vy(i-1);
 
- int i;
- for(i=0; i<os_seglist.size(); i++){
-  double m_x1 = os_seglist.get_vx(i);
-  double m_y1 = os_seglist.get_vy(i);
+    double x2 = seglist.get_vx(i);
+    double y2 = seglist.get_vy(i);
 
-  double lenleg = os_details.get_legLength(i);
-  double t_limit = lenleg/m_navSpd;
-  double hdg = os_details.get_legHeading(i);
-//  double hdg_radians = hdg * M_PI/180;
+    XYSegList current_seglist;
+    current_seglist.add_vertex(x1,y1);
+    current_seglist.add_vertex(x2,y2);
+    m_leg_seglist.push_back(current_seglist);
+    
+    double heading = relAng(x1,y1,x2,y2);
+    m_leg_heading.push_back(heading);
 
-// Going to start with int and then graduate to double to verify it works
-// Going to remove hdg at this time for a first principle approach
-  int time_limit = int(t_limit);
-  int t;
-
-//Real code that has hdg in it....is it really getting used though? Is it? 
-  // for(t=0; t<time_limit; t++){
-  // 	double xt = m_x1 + (cos(hdg) * m_navSpd * t);
-  // 	m_xt.push_back(xt);
-  // 	double yt = m_y1 + (sin(hdg) * m_navSpd * t);
-  // 	m_yt.push_back(yt);
-  // 	m_hdgt.push_back(hdg);
-  //  }
- 
-
-
-// First principle approach
-   for(t=0; t<time_limit; t++){
-  	double xt = m_x1 +  (m_navSpd * t);
-  	m_xt.push_back(xt);
-  	double yt = m_y1 + (m_navSpd * t);
-  	m_yt.push_back(yt);	
-  	// m_hdgt.push_back(hdg);
-   } 
-
-
+    double length = current_seglist.length();
+    m_leg_length.push_back(length);
   }
- }
 
- //---------------------------------------------------------------
-// Procedure: get_xt
-
-double SegListExtrapolator::get_xt(unsigned int i) const
-{
-  if(i<m_xt.size())
-     return(m_xt[i]);
-  else
-    return(0);
-}
-//---------------------------------------------------------------
-// Procedure: get_yt
-
-double SegListExtrapolator::get_yt(unsigned int i) const
-{
-  if(i<m_xt.size())
-     return(m_yt[i]);
-  else
-    return(0);
-}
-//---------------------------------------------------------------
-// Procedure: get_hdgt
-
-double SegListExtrapolator::get_hdgt(unsigned int i) const
-{
-  if(i<m_xt.size())
-     return(m_hdgt[i]);
-  else
-    return(0);
+  string veh_name = seglist.get_label();
+    if((!m_got_name)&&(veh_name != "")){
+      m_vname = veh_name;
+      m_got_name = true;
+    }
+  createTimeLimit();
+  }
 }
 
-//---------------------------------------------------------------
-// Procedure: get_t
+//-----------------------------------------------------------------
+//Procedure: setContactName
 
-unsigned int SegListExtrapolator::get_t(double x, double y) const
-
+void SegListExtrapolator::setContactName(string str)
 {
-  int vsize = m_xt.size();
-  if(vsize == 0)
-    return(0);
+  if(!m_got_name){
+  m_vname = str;
+  m_got_name = true;
+  }
+}
 
-  double dist = distPointToPoint(m_xt[0], m_yt[0], x, y);
-  
- unsigned int i, ix = 0;
-  for(i=1; i<vsize; i++) {
-    double idist = distPointToPoint(m_xt[i], m_yt[i], x, y);
-    if(idist < dist) {
-      dist = idist; 
-      ix = i;
+//-----------------------------------------------------------------
+//Procedure: setContactSpd
+void SegListExtrapolator::setContactSpd(double spd)
+{
+  if(!m_got_spd){
+    m_nav_spd = spd;
+    m_got_spd = true;
+  }
+}
+
+//-----------------------------------------------------------------
+//Procedure: createTimeLimit
+void SegListExtrapolator::createTimeLimit()
+{
+  for(int i=0; i<m_leg_seglist.size(); i++){
+    double leg_limit = m_leg_length[i]/m_nav_spd;
+    m_time_limit = (m_time_limit + leg_limit);
+    m_time_leg.push_back(m_time_limit);
+  }
+}
+
+
+
+
+//-----------------------------------------------------------------
+//Procedure: print
+void SegListExtrapolator::print() 
+{
+  cout << "Seglist " << endl;
+
+  if(m_vname != "")
+    cout << "veh name = " << m_vname << " , spd = " << m_nav_spd << endl;
+  for(int i=0; i<m_leg_seglist.size(); i++){
+    cout << m_leg_seglist[i].get_spec_pts() << " , heading = " << m_leg_heading[i] << ", leg length = " << m_leg_length[i] << " , time at leg end = " << m_time_leg[i] << endl;
+  }
+
+}
+
+
+//-----------------------------------------------------------------
+//Procedure: predict_point
+void SegListExtrapolator::predict_point(double time)
+{
+  if(m_got_spd){
+  for(int i=0; i<m_leg_seglist.size(); i++){
+    if(time <= m_time_leg[0]){
+      m_time_remain = time;
+      cout << " current seglist = " <<m_leg_seglist[0].get_spec_pts() << " , TOL = " << m_time_remain << endl;
+      m_locate.set_label("heading = " + doubleToString(m_leg_heading[0]));
+      pointCalculate(m_leg_seglist[0], m_leg_heading[0]);
+      return;
+    }
+    else if((time <= m_time_leg[i]) && (time > m_time_leg[i-1])){
+      m_time_remain = time - m_time_leg[i-1];
+      cout << "curren seglist = " << m_leg_seglist[i].get_spec_pts() << " , TOL = " << m_time_remain << endl;
+      m_locate.set_label("heading = " + doubleToString(m_leg_heading[i]));
+      pointCalculate(m_leg_seglist[i], m_leg_heading[i]);
+      return;
     }
 
   }
-      return(ix);
+  }
 }
+
+//-----------------------------------------------------------------
+//Procedure: pointCalculate
+void SegListExtrapolator::pointCalculate(XYSegList seglist, double heading)
+{
+    double x1 = seglist.get_vx(0);
+    double y1 = seglist.get_vy(0);
+    
+    double hdgconvert = angle180(90 - heading);
+    double radhdg = degToRadians(hdgconvert);
+
+    double x = x1 + ((cos(radhdg))* m_nav_spd * m_time_remain);
+    double y = y1 + ((sin(radhdg))* m_nav_spd * m_time_remain);
+
+    m_locate.set_vertex(x,y);
+    cout << m_locate.get_spec() << endl;
+}
+
+//-----------------------------------------------------------------
+//Procedure: extrapolate_point
+XYPoint SegListExtrapolator::extrapolate_point(double time)
+{
+  predict_point(time);
+  XYPoint predicted_point = m_locate;
+  return(predicted_point);
+}
+
 
 
