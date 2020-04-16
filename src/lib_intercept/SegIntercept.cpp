@@ -135,65 +135,65 @@ for(int r=0; r<os_seglist.size(); r++){
   }    
 }
 
-// //Method #3a
-// // Endpoint lies between two points (ownship ----> contact)
+//Method #3a
+// Endpoint lies between two points (ownship ----> contact)
 
-// for(int c=0; c<os_seglist.size(); c++){ 
-//   double cx = os_seglist.get_vx(c);
-//   double cy = os_seglist.get_vy(c);
+for(int c=0; c<os_seglist.size(); c++){ 
+  double cx = os_seglist.get_vx(c);
+  double cy = os_seglist.get_vy(c);
 
-//   for(int j=1; j<contact_seglist.size(); j++){//Grabs the endpoints for each contact segment
-//     double ax = contact_seglist.get_vx(j-1);
-//     double ay = contact_seglist.get_vy(j-1);
-//     double bx = contact_seglist.get_vx(j);
-//     double by = contact_seglist.get_vy(j);
+  for(int j=1; j<contact_seglist.size(); j++){//Grabs the endpoints for each contact segment
+    double ax = contact_seglist.get_vx(j-1);
+    double ay = contact_seglist.get_vy(j-1);
+    double bx = contact_seglist.get_vx(j);
+    double by = contact_seglist.get_vy(j);
 
-//     string con_pt_spec = contact_seglist.get_spec();
-//     string con_pt_short = biteStringX(con_pt_spec, '}');
-//     string con_pt_shorter = biteStringX(con_pt_spec, '=');
+    string con_pt_spec = contact_seglist.get_spec();
+    string con_pt_short = biteStringX(con_pt_spec, '}');
+    string con_pt_shorter = biteStringX(con_pt_spec, '=');
 
-//    double ac = distPointToPoint(ax,ay,cx,cy);
-//    double cb = distPointToPoint(cx,cy,bx,by);
-//    double ab = distPointToPoint(ax,ay,bx,by);
+   double ac = distPointToPoint(ax,ay,cx,cy);
+   double cb = distPointToPoint(cx,cy,bx,by);
+   double ab = distPointToPoint(ax,ay,bx,by);
 
-//    if(ac + cb == ab){
-//     m_px.push_back(cx);
-//     m_py.push_back(cy);
-//     m_con_name.push_back(con_pt_spec);
-//    } 
-//   }
-// }
+   if(ac + cb == ab){
+    m_px.push_back(cx);
+    m_py.push_back(cy);
+    m_con_name.push_back(con_pt_spec);
+   } 
+  }
+}
 
-// //Method #3b
-// // Endpoint lies between two points (contact ----> ownship)
+//Method #3b
+// Endpoint lies between two points (contact ----> ownship)
 
-// for(int c=0; c<contact_seglist.size(); c++){ 
-//   double cx = contact_seglist.get_vx(c);
-//   double cy = contact_seglist.get_vy(c);
+for(int c=0; c<contact_seglist.size(); c++){ 
+  double cx = contact_seglist.get_vx(c);
+  double cy = contact_seglist.get_vy(c);
 
-//   for(int j=1; j<os_seglist.size(); j++){//Grabs the endpoints for each contact segment
-//     double ax = os_seglist.get_vx(j-1);
-//     double ay = os_seglist.get_vy(j-1);
-//     double bx = os_seglist.get_vx(j);
-//     double by = os_seglist.get_vy(j);
+  for(int j=1; j<os_seglist.size(); j++){//Grabs the endpoints for each contact segment
+    double ax = os_seglist.get_vx(j-1);
+    double ay = os_seglist.get_vy(j-1);
+    double bx = os_seglist.get_vx(j);
+    double by = os_seglist.get_vy(j);
 
-//     string con_pt_spec = contact_seglist.get_spec();
-//     string con_pt_short = biteStringX(con_pt_spec, '}');
-//     string con_pt_shorter = biteStringX(con_pt_spec, '=');
+    string con_pt_spec = contact_seglist.get_spec();
+    string con_pt_short = biteStringX(con_pt_spec, '}');
+    string con_pt_shorter = biteStringX(con_pt_spec, '=');
 
-//    double ac = distPointToPoint(ax,ay,cx,cy);
-//    double cb = distPointToPoint(cx,cy,bx,by);
-//    double ab = distPointToPoint(ax,ay,bx,by);
+   double ac = distPointToPoint(ax,ay,cx,cy);
+   double cb = distPointToPoint(cx,cy,bx,by);
+   double ab = distPointToPoint(ax,ay,bx,by);
 
-//    if(ac + cb == ab){
-//     m_px.push_back(cx);
-//     m_py.push_back(cy);
-//     m_con_name.push_back(con_pt_spec);
-//    } 
-//   }
-// }
+   if(ac + cb == ab){
+    m_px.push_back(cx);
+    m_py.push_back(cy);
+    m_con_name.push_back(con_pt_spec);
+   } 
+  }
+}
 
-// removeDuplicates();
+removeDuplicates();
 
 }
 //---------------------------------------------------------------
@@ -229,28 +229,28 @@ string SegIntercept::get_pname(unsigned int i) const
     return("");
 }
 
-// //---------------------------------------------------------------
-// // Procedure: removeDuplicates
+//---------------------------------------------------------------
+// Procedure: removeDuplicates
 
-// void SegIntercept::removeDuplicates()
-// {
-//   for(int i=0; i<m_px.size(); i++){
-//     double x = m_px[i];
-//     double y = m_py[i];
-//     string nm = m_con_name[i];
-//     for(int j=1; j<m_px.size(); j++){
-//       double xx = m_px[j];
-//       double yy = m_py[j];
-//       string nmnm = m_con_name[j];
+void SegIntercept::removeDuplicates()
+{
+  for(int i=0; i<m_px.size(); i++){
+    double x = m_px[i];
+    double y = m_py[i];
+    string nm = m_con_name[i];
+    for(int j=1; j<m_px.size(); j++){
+      double xx = m_px[j];
+      double yy = m_py[j];
+      string nmnm = m_con_name[j];
 
-//      if((x==xx)&&(y==yy)&&(nm==nmnm)){
-//       m_px.erase(m_px.begin()+(j));
-//       m_py.erase(m_py.begin()+(j));
-//       m_con_name.erase(m_con_name.begin()+(j));
-//      } 
-//     }
-//   }
-// }
+     if((x==xx)&&(y==yy)&&(nm==nmnm)){
+      m_px.erase(m_px.begin()+(j));
+      m_py.erase(m_py.begin()+(j));
+      m_con_name.erase(m_con_name.begin()+(j));
+     } 
+    }
+  }
+}
 
 
 

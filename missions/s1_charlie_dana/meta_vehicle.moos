@@ -28,7 +28,7 @@ Processconfig = ANTLER
   Run = pSegListIntercept @ NewConsole = false
   Run = pSegPassing @ NewConsole = false
   Run = pBasicContactMgr @ NewConsole = false
-  Run = uXMS         @ NewConsole = false
+  //Run = uXMS         @ NewConsole = false
   Run = pTSSCompliance  @ NewConsole = false 
 }
 

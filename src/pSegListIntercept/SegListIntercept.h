@@ -46,6 +46,7 @@ class SegListIntercept : public AppCastingMOOSApp
    std::string m_list_name;
 
    XYSegList m_os_seglist;
+   std::vector<XYSegList> m_remaining_seglist;
 
    std::vector<std::string> m_con_name;
 

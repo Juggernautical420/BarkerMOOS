@@ -27,7 +27,7 @@ class SegIntercept : public XYObject {
  //void SegIntercept create and edit functions
  public:
    void getIntercept(XYSegList os_seglist, XYSegList contact_seglist);
-   // void removeDuplicates();
+   void removeDuplicates();
 
    unsigned int size() const  {return(m_px.size());}
    double get_px(unsigned int) const;

@@ -63,8 +63,6 @@ bool SegListIntercept::OnNewMail(MOOSMSG_LIST &NewMail)
   }
 
 
-  
-
 
 #if 0 // Keep these around just for template
     string comm  = msg.GetCommunity();
@@ -111,6 +109,8 @@ for(l=0; l<m_os_intercept.size(); l++){
  m_point.set_param("vertex_size", "8");  
  string point_spec = m_point.get_spec();
  Notify("VIEW_POINT", point_spec);
+ XYSegList remaining = biteSegList(m_os_seglist, m_os_intercept.get_px(l), m_os_intercept.get_py(l));
+ m_remaining_seglist.push_back(remaining);
 }
 
 
@@ -185,11 +185,11 @@ bool SegListIntercept::buildReport()
   m_msgs << "Predicted Intercept Point(s)                " << endl;
   m_msgs << "============================================" << endl;
 
-  ACTable actab(3);
-  actab << "Name | X POS | Y POS";
+  ACTable actab(4);
+  actab << "Name | X POS | Y POS | Remaining Seglist" ;
   actab.addHeaderLines();
   for(unsigned int k=0; k<m_os_intercept.size(); k++){
-    actab << m_os_intercept.get_pname(k) << doubleToString(m_os_intercept.get_px(k)) << doubleToString(m_os_intercept.get_py(k));
+    actab << m_os_intercept.get_pname(k) << doubleToString(m_os_intercept.get_px(k)) << doubleToString(m_os_intercept.get_py(k)) << m_remaining_seglist[k].get_spec();
   }
   m_msgs << actab.getFormattedString();
 

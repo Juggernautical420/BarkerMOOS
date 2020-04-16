@@ -56,20 +56,22 @@ bool SegPassing::OnNewMail(MOOSMSG_LIST &NewMail)
   }    
 
   if(key == m_list_name){
+    if((m_got_x)&&(m_got_y)){
     string str_seglist = msg.GetString();
     XYSegList org_seglist = string2SegList(str_seglist);
     m_old_seglist = org_seglist.get_spec();
     m_seglist = add_origin(org_seglist, m_nav_x, m_nav_y);
     m_new_seglist = m_seglist.get_spec(); 
-  } 
-
+//   } 
+// }
   m_source = "src_node=" + m_vname;
   m_dest = "dest_node=all";
   m_var_name = "var_name=SEGLIST";
   m_str_val = "string_val=vname=" + m_vname + ";" + m_new_seglist;
   m_node_message = m_source + "," + m_dest + "," + m_var_name + "," + m_str_val;
   Notify("NODE_MESSAGE_LOCAL", m_node_message); 
-
+  } 
+}
 #if 0 // Keep these around just for template
     string comm  = msg.GetCommunity();
     double dval  = msg.GetDouble();
