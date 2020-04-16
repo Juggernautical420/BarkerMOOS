@@ -38,15 +38,14 @@ int main(int argc, char *argv[])
     test.setContactName(name);
     test.setContactSpd(spd);
     test.extrapolateSegList(seglist);
-    test.print();
+    
 
     for(int i=1; i<argc; i++){ 
     double time  = stod(argv[i]);
-    
-    // test.predict_point(time);
     XYPoint point = test.extrapolate_point(time);
     }
-
+    
+    test.print();
   return (0);
 }
 

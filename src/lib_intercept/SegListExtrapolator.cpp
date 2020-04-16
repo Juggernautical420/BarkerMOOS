@@ -17,6 +17,7 @@ SegListExtrapolator::SegListExtrapolator()
 {
   m_got_name = false;
   m_got_spd = false;
+  m_got_predict = false;
   m_vname = "";
   m_time_limit = 0;
 }
@@ -101,6 +102,8 @@ void SegListExtrapolator::print()
   for(int i=0; i<m_leg_seglist.size(); i++){
     cout << m_leg_seglist[i].get_spec_pts() << " , heading = " << m_leg_heading[i] << ", leg length = " << m_leg_length[i] << " , time at leg end = " << m_time_leg[i] << endl;
   }
+  if(m_got_predict)
+    cout << "Predicted Point = " << m_locate.get_spec() << endl;
 
 }
 
@@ -113,16 +116,16 @@ void SegListExtrapolator::predict_point(double time)
   for(int i=0; i<m_leg_seglist.size(); i++){
     if(time <= m_time_leg[0]){
       m_time_remain = time;
-      cout << " current seglist = " <<m_leg_seglist[0].get_spec_pts() << " , TOL = " << m_time_remain << endl;
       m_locate.set_label("heading = " + doubleToString(m_leg_heading[0]));
       pointCalculate(m_leg_seglist[0], m_leg_heading[0]);
+      m_got_predict = true;
       return;
     }
     else if((time <= m_time_leg[i]) && (time > m_time_leg[i-1])){
       m_time_remain = time - m_time_leg[i-1];
-      cout << "curren seglist = " << m_leg_seglist[i].get_spec_pts() << " , TOL = " << m_time_remain << endl;
       m_locate.set_label("heading = " + doubleToString(m_leg_heading[i]));
       pointCalculate(m_leg_seglist[i], m_leg_heading[i]);
+      m_got_predict = true;
       return;
     }
 
@@ -144,7 +147,6 @@ void SegListExtrapolator::pointCalculate(XYSegList seglist, double heading)
     double y = y1 + ((sin(radhdg))* m_nav_spd * m_time_remain);
 
     m_locate.set_vertex(x,y);
-    cout << m_locate.get_spec() << endl;
 }
 
 //-----------------------------------------------------------------

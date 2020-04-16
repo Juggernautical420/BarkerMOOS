@@ -58,6 +58,7 @@ std::vector<double> m_time_leg;
 
 XYPoint m_locate;
 double m_time_remain;
+bool m_got_predict;
 
    
 };
