@@ -131,7 +131,7 @@ bool TrafficPopulate::OnStartUp()
 
   }
   handleTrafficFile(m_files);
-  m_tss.ForceConcatenate(m_sep_zones, m_lane_boundaries);
+  //m_tss.ForceConcatenate(m_sep_zones, m_lane_boundaries);
   m_gen_poly_specs = m_tss.getGeneratedPolyPts();
   m_gen_poly_hdgs = m_tss.getGeneratedPolyHdgs();
   m_polygons = m_tss.getAllViewableObjectSpecs();

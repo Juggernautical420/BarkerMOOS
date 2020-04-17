@@ -63,6 +63,7 @@ XYSegList biteSegList(XYSegList original_seglist, double cx, double cy)
       if(ac + cb != ab)
         new_seglist.add_vertex(ax,ay);
       else{
+        new_seglist.add_vertex(ax,ay);
         new_seglist.add_vertex(cx,cy);
         done = true;
       }

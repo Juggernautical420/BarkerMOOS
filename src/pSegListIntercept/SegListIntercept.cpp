@@ -62,7 +62,11 @@ bool SegListIntercept::OnNewMail(MOOSMSG_LIST &NewMail)
       
   }
 
-
+  if(key == "NAV_SPEED"){
+    double dval = msg.GetDouble();
+      if(dval != 0)
+        m_nav_spd =  dval;
+  }
 
 #if 0 // Keep these around just for template
     string comm  = msg.GetCommunity();
@@ -110,7 +114,10 @@ for(l=0; l<m_os_intercept.size(); l++){
  string point_spec = m_point.get_spec();
  Notify("VIEW_POINT", point_spec);
  XYSegList remaining = biteSegList(m_os_seglist, m_os_intercept.get_px(l), m_os_intercept.get_py(l));
- m_remaining_seglist.push_back(remaining);
+ double length = remaining.length();
+ m_length.push_back(length);
+ double time = length/m_nav_spd;
+ m_time.push_back(time);
 }
 
 
@@ -172,6 +179,7 @@ void SegListIntercept::registerVariables()
   // Register("FOOBAR", 0);
   Register("SEGLIST", 0); //each contact seglist as a node msg betweeen vessels
   Register(m_list_name, 0); //ownship seglist
+  Register("NAV_SPEED",0);
 
 }
 
@@ -185,11 +193,11 @@ bool SegListIntercept::buildReport()
   m_msgs << "Predicted Intercept Point(s)                " << endl;
   m_msgs << "============================================" << endl;
 
-  ACTable actab(4);
-  actab << "Name | X POS | Y POS | Remaining Seglist" ;
+  ACTable actab(5);
+  actab << "Name | X POS | Y POS | Int Length | Int Time" ;
   actab.addHeaderLines();
   for(unsigned int k=0; k<m_os_intercept.size(); k++){
-    actab << m_os_intercept.get_pname(k) << doubleToString(m_os_intercept.get_px(k)) << doubleToString(m_os_intercept.get_py(k)) << m_remaining_seglist[k].get_spec();
+    actab << m_os_intercept.get_pname(k) << doubleToString(m_os_intercept.get_px(k)) << doubleToString(m_os_intercept.get_py(k)) << doubleToString(m_length[k]) << doubleToString(m_time[k]);
   }
   m_msgs << actab.getFormattedString();
 

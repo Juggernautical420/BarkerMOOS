@@ -14,7 +14,7 @@
 #include <vector>
 #include <iostream>
 #include "MBUtils.h"
-#include "SegListExtrapolator.h"
+#include "SegListContact.h"
 #include "XYFormatUtilsSegl.h"
 #include "XYSegList.h"
 #include "XYPoint.h"
@@ -34,17 +34,17 @@ int main(int argc, char *argv[])
     string name  = "usv";
     double spd = 2;
     XYSegList seglist = string2SegList(segl);
-    SegListExtrapolator test;
+    SegListContact test;
     test.setContactName(name);
     test.setContactSpd(spd);
-    test.extrapolateSegList(seglist);
+    test.expandSegList(seglist);
     
 
     for(int i=1; i<argc; i++){ 
     double time  = stod(argv[i]);
     XYPoint point = test.extrapolate_point(time);
     }
-    
+
     test.print();
   return (0);
 }
