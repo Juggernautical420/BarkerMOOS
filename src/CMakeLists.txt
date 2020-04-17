@@ -39,7 +39,7 @@ ADD_SUBDIRECTORY(pSegListIntercept)
 ADD_SUBDIRECTORY(pTSSCompliance)
 #ADD_SUBDIRECTORY(pTrafficScheme)
 ADD_SUBDIRECTORY(pTrafficGrade)
-#ADD_SUBDIRECTORY(pTrafficPopulate)
+ADD_SUBDIRECTORY(pTrafficPopulate)
 
 
 ##############################################################################
