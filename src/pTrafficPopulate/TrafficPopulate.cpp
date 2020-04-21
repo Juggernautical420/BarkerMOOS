@@ -19,8 +19,7 @@ using namespace std;
 TrafficPopulate::TrafficPopulate()
 {
   m_sepz_output_var = "TSS_SEP_ZONES";
-  m_genpoly_output_var = "TSS_LANES";
-  m_genpolyhdg_output_var = "TSS_LANE_HDGS";
+  m_laneseg_output_var = "TSS_LANES";
 
 }
 
@@ -48,8 +47,7 @@ bool TrafficPopulate::OnNewMail(MOOSMSG_LIST &NewMail)
     for (int i=0; i<m_polygons.size(); i++)
     Notify ("VIEW_POLYGON", m_polygons[i]);
     publishTrafficInfo(m_sep_zones, m_sepz_output_var);
-    publishTrafficInfo(m_gen_poly_specs, m_genpoly_output_var);
-    publishTrafficInfo(m_gen_poly_hdgs, m_genpolyhdg_output_var); 
+    publishTrafficInfo(m_lane_boundaries, m_laneseg_output_var);
     } 
 
 #if 0 // Keep these around just for template
@@ -229,7 +227,7 @@ void TrafficPopulate::handleTrafficFile(vector<string> svector)
   }
 
   m_lane_boundaries = m_tss.getLaneBoundaries();
-  m_sep_zones = m_tss.getSepZonePolys();
+  m_sep_zones = m_tss.getSepZonePolyPts();
 
   return;
 }

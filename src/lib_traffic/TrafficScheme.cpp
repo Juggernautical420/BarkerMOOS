@@ -120,6 +120,47 @@ vector<string> TrafficScheme::getSepZonePolys() const
 	return(rvector);
 }
 
+//-----------------------------------------------------------
+// Procedure: getSepZonePolyPts()
+
+vector<string> TrafficScheme::getSepZonePolyPts() const
+{
+	vector<string> rvector;
+	for(int i=0; i<m_sep_zones.size(); i++){
+		string tss_sepz = m_sep_zones[i].get_spec_pts();
+		rvector.push_back(tss_sepz);
+	}
+
+	return(rvector);
+}
+
+//-----------------------------------------------------------
+// Procedure: getInboundPolys()
+
+vector<string> TrafficScheme::getInboundPolys() const
+{
+	vector<string> rvector;
+	for(int i=0; i<m_inbound_lanes.size(); i++){
+		string inbound = m_inbound_lanes[i];
+		rvector.push_back(inbound);
+	}
+
+	return(rvector);
+}
+
+//-----------------------------------------------------------
+// Procedure: getOutboundPolys()
+
+vector<string> TrafficScheme::getOutboundPolys() const
+{
+	vector<string> rvector;
+	for(int i=0; i<m_outbound_lanes.size(); i++){
+		string outbound = m_outbound_lanes[i];
+		rvector.push_back(outbound);
+	}
+
+	return(rvector);
+}
 
 
 
@@ -297,7 +338,9 @@ void TrafficScheme::Concatenate(XYSegList seglist)
       		new_poly.set_color("fill", "red");
       		new_poly.set_transparency(0.05);
       		new_poly.set_edge_size(1);
-      		new_poly.set_vertex_size(2);	
+      		new_poly.set_vertex_size(2);
+      		string inbound_specs = new_poly.get_spec();
+      		m_inbound_lanes.push_back(inbound_specs);	
 		}
 
 		if((tss_type == "outbound lane")||(tss_type == "outbound")){
@@ -307,6 +350,8 @@ void TrafficScheme::Concatenate(XYSegList seglist)
      	    new_poly.set_transparency(0.025);
      	    new_poly.set_edge_size(1);
     	    new_poly.set_vertex_size(2);
+    	    string outbound_specs = new_poly.get_spec();
+    	    m_outbound_lanes.push_back(outbound_specs);
 		}
 
 		string new_specs = new_poly.get_spec();
@@ -376,7 +421,9 @@ void TrafficScheme::ForceConcatenate(vector<string> polys, vector<string> seglis
       		new_poly.set_color("fill", "red");
       		new_poly.set_transparency(0.05);
       		new_poly.set_edge_size(1);
-      		new_poly.set_vertex_size(2);	
+      		new_poly.set_vertex_size(2);
+      		string inbound_specs = new_poly.get_spec();
+      		m_inbound_lanes.push_back(inbound_specs);	
 		}
 
 		if((tss_type == "outbound lane")||(tss_type == "outbound")){
@@ -386,6 +433,8 @@ void TrafficScheme::ForceConcatenate(vector<string> polys, vector<string> seglis
      	    new_poly.set_transparency(0.025);
      	    new_poly.set_edge_size(1);
     	    new_poly.set_vertex_size(2);
+    	    string outbound_specs = new_poly.get_spec();
+    	    m_outbound_lanes.push_back(outbound_specs);
 		}
 		string new_specs = new_poly.get_spec();
 		m_tss_polygons.push_back(new_specs);

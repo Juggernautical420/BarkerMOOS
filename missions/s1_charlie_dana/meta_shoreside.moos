@@ -19,7 +19,7 @@ Processconfig = ANTLER
   Run = MOOSDB          @ NewConsole = false
   Run = pMarineViewer   @ NewConsole = false
   Run = pLogger         @ NewConsole = false
- // Run = uXMS            @ NewConsole = true
+  Run = uXMS            @ NewConsole = false
   Run = uProcessWatch   @ NewConsole = false
   Run = pShare          @ NewConsole = false
   Run = pHostInfo       @ NewConsole = false
@@ -66,8 +66,9 @@ ProcessConfig = uFldShoreBroker
   QBRIDGE  = MOOS_MANUAL_OVERRIDE, APPCAST_REQ
 
  
-  BRIDGE = src=OUTBOUND_POLY
-  BRIDGE = src=INBOUND_POLY
+  BRIDGE = src=TSS_LANES
+  BRIDGE = src=TSS_SEP_ZONES
+
 
 
   BRIDGE   = src=UP_LOITER_$N, alias=UP_LOITER
@@ -92,8 +93,7 @@ ProcessConfig = uXMS
   AppTick       = 1
   CommsTick     = 1
 
-  var = POLY_TYPE
-  var = POLY_SPEC
+  var = RETURN
 }
 
 

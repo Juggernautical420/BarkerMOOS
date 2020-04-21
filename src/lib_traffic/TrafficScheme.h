@@ -42,6 +42,9 @@ std::vector<std::string> getGeneratedPolyPts() const;
 std::vector<std::string> getGeneratedPolyHdgs() const;
 std::vector<std::string> getLaneBoundaries() const;
 std::vector<std::string> getSepZonePolys() const;
+std::vector<std::string> getSepZonePolyPts() const;
+std::vector<std::string> getInboundPolys() const;
+std::vector<std::string> getOutboundPolys() const;
 
 void print() const;
 void printviewable();
@@ -82,6 +85,8 @@ double m_final_y3;
 std::vector<XYPolygon> m_sep_zones;
 std::vector<std::string> m_poly_headings;
 std::vector<std::string> m_lane_polys;
+std::vector<std::string> m_inbound_lanes;
+std::vector<std::string> m_outbound_lanes;
 
 
 };

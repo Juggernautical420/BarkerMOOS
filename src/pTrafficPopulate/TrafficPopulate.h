@@ -51,8 +51,7 @@ class TrafficPopulate : public AppCastingMOOSApp
 
 
    std::string m_sepz_output_var;
-   std::string m_genpoly_output_var;
-   std::string m_genpolyhdg_output_var;
+   std::string m_laneseg_output_var;
 
 
 
