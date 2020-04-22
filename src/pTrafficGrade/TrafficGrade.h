@@ -29,6 +29,7 @@ class TrafficGrade : public AppCastingMOOSApp
    void processParameters(std::string str);
    void processNearMiss(std::string str);
    bool processCollision(std::string str);
+   void outputScore(std::string filename);
 
  protected:
    void registerVariables();
@@ -48,6 +49,7 @@ class TrafficGrade : public AppCastingMOOSApp
    std::string traffic_score;
    std::string coll_cnt;
    std::string nm_cnt;
+   std::string m_filename;
 
  private: // Configuration variables
 

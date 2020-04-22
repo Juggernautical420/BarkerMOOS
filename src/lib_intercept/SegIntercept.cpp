@@ -99,41 +99,41 @@ for(int i=1; i<os_seglist.size(); i++){ //Grabs the endpoints for each os segmen
  } 
 
 
-//Method #2
-/* Matching Waypoints Check (sharing endpoints)
+// // //Method #2
+// /* Matching Waypoints Check (sharing endpoints)
 
-        x1,y1                      x2,y2
- x4, y4 *----------------------------*
-        |
-        |
-        |
-        |
-        |
-        |
-        |
-  x3,y3 *    
+//         x1,y1                      x2,y2
+//  x4, y4 *----------------------------*
+//         |
+//         |
+//         |
+//         |
+//         |
+//         |
+//         |
+//   x3,y3 *    
 
-*/
+// */
 
-for(int r=0; r<os_seglist.size(); r++){ 
-  double os_x1 = os_seglist.get_vx(r);
-  double os_y1 = os_seglist.get_vy(r);
+// for(int r=0; r<os_seglist.size(); r++){ 
+//   double os_x1 = os_seglist.get_vx(r);
+//   double os_y1 = os_seglist.get_vy(r);
   
-  for(int s=0; s<contact_seglist.size(); s++){
-    double con_x1 = contact_seglist.get_vx(s);
-    double con_y1 = contact_seglist.get_vy(s);
+//   for(int s=0; s<contact_seglist.size(); s++){
+//     double con_x1 = contact_seglist.get_vx(s);
+//     double con_y1 = contact_seglist.get_vy(s);
 
-    string con_pt_spec = contact_seglist.get_spec();
-    string con_pt_short = biteStringX(con_pt_spec, '}');
-    string con_pt_shorter = biteStringX(con_pt_spec, '=');
+//     string con_pt_spec = contact_seglist.get_spec();
+//     string con_pt_short = biteStringX(con_pt_spec, '}');
+//     string con_pt_shorter = biteStringX(con_pt_spec, '=');
 
-  if((os_x1 == con_x1) && (os_y1 == con_y1)){
-    m_px.push_back(os_x1);
-    m_py.push_back(os_y1);
-    m_con_name.push_back(con_pt_spec);
-    }  
-  }    
-}
+//   if((os_x1 == con_x1) && (os_y1 == con_y1)){
+//     m_px.push_back(os_x1);
+//     m_py.push_back(os_y1);
+//     m_con_name.push_back(con_pt_spec);
+//     }  
+//   }    
+// }
 
 //Method #3a
 // Endpoint lies between two points (ownship ----> contact)
@@ -164,36 +164,36 @@ for(int c=0; c<os_seglist.size(); c++){
   }
 }
 
-//Method #3b
-// Endpoint lies between two points (contact ----> ownship)
+// //Method #3b
+// // Endpoint lies between two points (contact ----> ownship)
 
-for(int c=0; c<contact_seglist.size(); c++){ 
-  double cx = contact_seglist.get_vx(c);
-  double cy = contact_seglist.get_vy(c);
+// for(int c=0; c<contact_seglist.size(); c++){ 
+//   double cx = contact_seglist.get_vx(c);
+//   double cy = contact_seglist.get_vy(c);
 
-  for(int j=1; j<os_seglist.size(); j++){//Grabs the endpoints for each contact segment
-    double ax = os_seglist.get_vx(j-1);
-    double ay = os_seglist.get_vy(j-1);
-    double bx = os_seglist.get_vx(j);
-    double by = os_seglist.get_vy(j);
+//   for(int j=1; j<os_seglist.size(); j++){//Grabs the endpoints for each contact segment
+//     double ax = os_seglist.get_vx(j-1);
+//     double ay = os_seglist.get_vy(j-1);
+//     double bx = os_seglist.get_vx(j);
+//     double by = os_seglist.get_vy(j);
 
-    string con_pt_spec = contact_seglist.get_spec();
-    string con_pt_short = biteStringX(con_pt_spec, '}');
-    string con_pt_shorter = biteStringX(con_pt_spec, '=');
+//     string con_pt_spec = contact_seglist.get_spec();
+//     string con_pt_short = biteStringX(con_pt_spec, '}');
+//     string con_pt_shorter = biteStringX(con_pt_spec, '=');
 
-   double ac = distPointToPoint(ax,ay,cx,cy);
-   double cb = distPointToPoint(cx,cy,bx,by);
-   double ab = distPointToPoint(ax,ay,bx,by);
+//    double ac = distPointToPoint(ax,ay,cx,cy);
+//    double cb = distPointToPoint(cx,cy,bx,by);
+//    double ab = distPointToPoint(ax,ay,bx,by);
 
-   if(ac + cb == ab){
-    m_px.push_back(cx);
-    m_py.push_back(cy);
-    m_con_name.push_back(con_pt_spec);
-   } 
-  }
-}
+//    if(ac + cb == ab){
+//     m_px.push_back(cx);
+//     m_py.push_back(cy);
+//     m_con_name.push_back(con_pt_spec);
+//    } 
+//   }
+// }
 
-removeDuplicates();
+// removeDuplicates();
 
 }
 //---------------------------------------------------------------

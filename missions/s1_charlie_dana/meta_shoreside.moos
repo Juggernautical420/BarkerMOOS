@@ -19,7 +19,7 @@ Processconfig = ANTLER
   Run = MOOSDB          @ NewConsole = false
   Run = pMarineViewer   @ NewConsole = false
   Run = pLogger         @ NewConsole = false
-  Run = uXMS            @ NewConsole = false
+ // Run = uXMS            @ NewConsole = false
   Run = uProcessWatch   @ NewConsole = false
   Run = pShare          @ NewConsole = false
   Run = pHostInfo       @ NewConsole = false
@@ -68,6 +68,7 @@ ProcessConfig = uFldShoreBroker
  
   BRIDGE = src=TSS_LANES
   BRIDGE = src=TSS_SEP_ZONES
+  BRIDGE = src=SCORE
 
 
 
@@ -145,6 +146,7 @@ ProcessConfig = pMarineViewer
   BUTTON_TWO   = RETURN  # RETURN_ALL=true
   BUTTON_TWO   = STATION_KEEP_ALL=false
   BUTTON_THREE = STATION # STATION_KEEP_ALL=true
+  BUTTON_FOUR  = SCORE  # SCORE = true
 }
 
 //--------------------------------------------------------
@@ -212,6 +214,8 @@ ProcessConfig = pTrafficGrade
 {
    AppTick   = 4
    CommsTick = 4
+
+   FILENAME = score22init.txt
 }
 
 //------------------------------------------------

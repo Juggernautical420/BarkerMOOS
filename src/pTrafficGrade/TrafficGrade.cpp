@@ -9,6 +9,8 @@
 #include "MBUtils.h"
 #include "ACTable.h"
 #include "TrafficGrade.h"
+#include <iostream>
+#include <fstream>
 
 using namespace std;
 
@@ -71,8 +73,11 @@ bool TrafficGrade::OnNewMail(MOOSMSG_LIST &NewMail)
 
   if((m_nm_count == 0) && (m_coll_count == 0))
     m_traffic_grade = 1.00;
-  else if((m_nm_count != 0) && (m_coll_count == 0))
+  else if((m_nm_count != 0) && (m_coll_count == 0)){
   m_traffic_grade = 1-(m_traffic_slope/m_nm_count);
+    if(m_traffic_grade < 0)
+      m_traffic_grade = 0;
+  }
   else if (m_coll_count != 0)
     m_traffic_grade = 0;
 
@@ -82,6 +87,13 @@ bool TrafficGrade::OnNewMail(MOOSMSG_LIST &NewMail)
 
   traffic_score = doubleToString(m_traffic_grade);
 
+
+
+  if(key == "SCORE"){
+    bool mstr  = msg.IsString();
+    if(mstr)
+      outputScore(m_filename);
+  }
 
 #if 0 // Keep these around just for template
     string comm  = msg.GetCommunity();
@@ -157,6 +169,11 @@ bool TrafficGrade::OnStartUp()
       handled = true;
     }
 
+    if(param == "filename"){
+      m_filename = tolower(value);
+      handled = true;
+    }
+
     if(!handled)
       reportUnhandledConfigWarning(orig);
 
@@ -176,6 +193,7 @@ void TrafficGrade::registerVariables()
   Register("COLLISION", 0);
   Register("NEAR_MISS", 0);
   Register("COLLISION_DETECT_PARAMS", 0);
+  Register("SCORE", 0);
 }
 
 
@@ -269,4 +287,14 @@ bool TrafficGrade::processCollision(string s)
   }   
   else
     return(false);
+}
+
+//------------------------------------------------------------
+// Procedure: outputScore
+void TrafficGrade::outputScore(string filename)
+{
+  ofstream myfile;
+  myfile.open (filename, ios::out | ios::app | ios::binary);
+  myfile << traffic_score << endl;
+  myfile.close();
 }
