@@ -45,7 +45,7 @@ Behavior = BHV_WaypointX
   efficiency_measure = all
  //     speed = $(SPEED)
 // #ifdef GROUP USV
-     points = 10, -180: 110, -100: 70,-60 :190,60
+     points = 10, -180: 110, -100: 70,-60 
         speed = $(SPEED)
 // #elseifdef  GROUP INBOUND
 //     points =  40,-60 : 160, -180 : 160,-300

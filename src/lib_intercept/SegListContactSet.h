@@ -22,7 +22,7 @@ class SegListContactSet
   SegListContactSet();
   virtual ~SegListContactSet() {}
 
-bool addSegListContact(SegListContact seglistcontact);
+void addSegListContact(SegListContact seglistcontact);
 std::vector<XYPoint> extrapolate_all(double time);
 
 

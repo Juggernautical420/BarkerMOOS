@@ -29,6 +29,7 @@ class SegListContact
    virtual ~SegListContact() {}
 
  public:
+   void set_contact(std::string name, XYSegList seglist, double spd);
    void expandSegList(XYSegList seglist);
    void setContactName(std::string str);
    void setContactSpd(double spd);              

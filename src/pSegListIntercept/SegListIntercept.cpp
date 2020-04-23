@@ -53,9 +53,11 @@ bool SegListIntercept::OnNewMail(MOOSMSG_LIST &NewMail)
     string str_contact_seglist  = msg.GetString();
     string contact_name = biteStringX(str_contact_seglist, ';');
     string contact_nameparse = biteStringX(contact_name, '=');
+    m_con_segnames.push_back(contact_name);
     if(contact_name!=m_vname){
       XYSegList contact_seglist;
       contact_seglist = string2SegList(str_contact_seglist);
+      m_con_seglists.push_back(contact_seglist);
       contact_seglist.set_label(contact_name);
       m_os_intercept.getIntercept(m_os_seglist, contact_seglist);
     }
@@ -64,8 +66,15 @@ bool SegListIntercept::OnNewMail(MOOSMSG_LIST &NewMail)
 
   if(key == "NAV_SPEED"){
     double dval = msg.GetDouble();
-      if(dval != 0)
-        m_nav_spd =  dval;
+      if(dval != 0){
+        double nav_spd =  dval;
+        calcTime(nav_spd);
+      }
+  }
+
+  if(key == "NODE_REPORT"){
+    string sval  = msg.GetString(); 
+    handleNodeMsg(sval); 
   }
 
 #if 0 // Keep these around just for template
@@ -106,21 +115,16 @@ bool SegListIntercept::Iterate()
   AppCastingMOOSApp::Iterate();
   // Do your thing here!
 
-int l;//The following plots a visual point for each intersection
-for(l=0; l<m_os_intercept.size(); l++){
+//The following plots a visual point for each intersection
+for(int l=0; l<m_os_intercept.size(); l++){
  m_point.set_vertex(m_os_intercept.get_px(l), m_os_intercept.get_py(l)); 
  m_point.set_color("vertex", "red");
  m_point.set_param("vertex_size", "8");  
  string point_spec = m_point.get_spec();
  Notify("VIEW_POINT", point_spec);
- XYSegList remaining = biteSegList(m_os_seglist, m_os_intercept.get_px(l), m_os_intercept.get_py(l));
- double length = remaining.length();
- m_length.push_back(length);
- double time = length/m_nav_spd;
- m_time.push_back(time);
 }
 
-
+populateContacts();
  
   AppCastingMOOSApp::PostReport();
   return(true);
@@ -180,6 +184,7 @@ void SegListIntercept::registerVariables()
   Register("SEGLIST", 0); //each contact seglist as a node msg betweeen vessels
   Register(m_list_name, 0); //ownship seglist
   Register("NAV_SPEED",0);
+  Register("NODE_REPORT", 0); //to get contact speeds
 
 }
 
@@ -201,9 +206,92 @@ bool SegListIntercept::buildReport()
   }
   m_msgs << actab.getFormattedString();
 
+  ACTable actabl(2);
+  actabl << "" << "";
+  actabl << "" << "";
+  actabl << "Time" << "Contact Location" ;
+  actab.addHeaderLines();
+  for(int i: i<m_time.size(); i++){
+    vector <XYPoint> extra_predicts = m_tss_contacts.extrapolate_all(m_time[i]);
+    for(int j=0; j<extra_predicts.size(); j++){
+      actabl << m_time[i] << extra_predicts[j].get_spec();
+    }
+  }
+  m_msgs << actabl.getFormattedString();
+
 
   return(true);
 }
 
+//------------------------------------------------------------
+// Procedure: calcTime
+
+void SegListIntercept::calcTime(double speed)
+{
+for(int l=0; l<m_os_intercept.size(); l++){
+ XYSegList remaining = biteSegList(m_os_seglist, m_os_intercept.get_px(l), m_os_intercept.get_py(l));
+ double length = remaining.length();
+ m_length.push_back(length);
+ double time = length/speed;
+ m_time.push_back(time);
+}
+}
+
+//------------------------------------------------------------
+// Procedure: handleNodeMsg
+
+void SegListIntercept::handleNodeMsg(string report)
+{
+  vector<string> str_vector = parseString(report, ',');
+    for(unsigned int i=0; i<str_vector.size(); i++) {
+      string param = biteStringX(str_vector[i], '=');
+      string value = str_vector[i];
+
+      if(param == "NAME")
+        m_current_name = value;
+
+      if(param == "SPD")
+        m_current_spd = stod(value);
+
+      if(isUnique(m_current_name)){
+        m_con_nodenames.push_back(m_current_name);
+        m_con_nodespds.push_back(m_current_spd);
+      }
+
+    }
+     
+}
+
+//------------------------------------------------------------
+// Procedure: isUnique
+
+bool SegListIntercept::isUnique(string name)
+{
+  if(name == m_vname)
+    return(false);
+
+  for(int i=0; i<m_con_nodenames.size(); i++){
+    if(name == m_con_nodenames[i])
+      return(false);
+  }
+
+  return(true);
+}
+
+//------------------------------------------------------------
+// Procedure: populateContacts()
+
+void SegListIntercept::populateContacts()
+{
+  for(int i=0; i<m_con_segnames.size(); i++){
+    for(int j=0; j<m_con_nodenames.size(); j++){
+      if(m_con_segnames[i] == m_con_nodenames[j]){
+        SegListContact current_contact;
+        current_contact.set_contact(m_con_segnames[i], m_con_seglists[i], m_con_nodespds[j]);
+        m_tss_contacts.addSegListContact(current_contact);
+      }
+    }
+  }
+}
 
 

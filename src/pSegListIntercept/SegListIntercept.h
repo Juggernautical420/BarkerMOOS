@@ -19,7 +19,8 @@
 #include "XYFormatUtilsSegl.h"
 #include "XYFormatUtilsPoint.h"
 #include "SegIntercept.h"
-#include "SegListExtrapolator.h"
+#include "SegListContact.h"
+#include "SegListContactSet.h"
 
 
 class SegListIntercept : public AppCastingMOOSApp
@@ -33,6 +34,11 @@ class SegListIntercept : public AppCastingMOOSApp
    bool Iterate();
    bool OnConnectToServer();
    bool OnStartUp();
+   void calcTime(double speed);
+   void handleNodeMsg(std::string report);
+   bool isUnique(std::string name);
+   void populateContacts();
+
 
  protected: // Standard AppCastingMOOSApp function to overload 
    bool buildReport();
@@ -48,13 +54,20 @@ class SegListIntercept : public AppCastingMOOSApp
    XYSegList m_os_seglist;
    std::vector<double> m_length;
    std::vector<double> m_time;
-   double m_nav_spd;
-   std::vector<std::string> m_con_name;
-
    
-   XYPoint m_point;
 
+   XYPoint m_point;
    SegIntercept m_os_intercept;
+   std::string m_current_name;
+   double m_current_spd;
+
+   std::vector<std::string> m_con_segnames;
+   std::vector<XYSegList>  m_con_seglists;
+
+   std::vector<std::string> m_con_nodenames;
+   std::vector<double> m_con_nodespds;
+
+   SegListContactSet m_tss_contacts;
 
 
  private: // Configuration variables

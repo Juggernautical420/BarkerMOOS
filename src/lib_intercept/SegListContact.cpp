@@ -23,8 +23,18 @@ SegListContact::SegListContact()
 }
 
 //-----------------------------------------------------------------
-//Procedure: extrapolateSegList
+//Procedure: set_contact
+void SegListContact::set_contact(string name, XYSegList seglist, double spd)
+{
+  setContactName(name);
+  setContactSpd(spd);
+  expandSegList(seglist);
+}
 
+
+
+//-----------------------------------------------------------------
+//Procedure: extrapolateSegList
 void SegListContact::expandSegList(XYSegList seglist)
 {
   if(m_got_spd){
@@ -76,6 +86,7 @@ void SegListContact::setContactSpd(double spd)
     m_got_spd = true;
   }
 }
+
 
 //-----------------------------------------------------------------
 //Procedure: createTimeLimit

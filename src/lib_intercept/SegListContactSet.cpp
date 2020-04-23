@@ -24,10 +24,9 @@ SegListContactSet::SegListContactSet()
 //-----------------------------------------------------------
 // Procedure: addSegListContact
 
-bool SegListContactSet::addSegListContact(SegListContact seglistcontact)
+void SegListContactSet::addSegListContact(SegListContact seglistcontact)
 {
 	m_seglist_contacts.push_back(seglistcontact);
-	return(true);
 }
 
 //-----------------------------------------------------------
