@@ -206,18 +206,18 @@ bool SegListIntercept::buildReport()
   }
   m_msgs << actab.getFormattedString();
 
-  ACTable actabl(2);
-  actabl << "" << "";
-  actabl << "" << "";
-  actabl << "Time" << "Contact Location" ;
-  actab.addHeaderLines();
-  for(int i: i<m_time.size(); i++){
-    vector <XYPoint> extra_predicts = m_tss_contacts.extrapolate_all(m_time[i]);
-    for(int j=0; j<extra_predicts.size(); j++){
-      actabl << m_time[i] << extra_predicts[j].get_spec();
-    }
-  }
-  m_msgs << actabl.getFormattedString();
+  // ACTable actabl(2);
+  // actabl << "" << "";
+  // actabl << "" << "";
+  // actabl << "Time" << "Contact Location" ;
+  // actab.addHeaderLines();
+  // for(int i=0; i<m_time.size(); i++){
+  //   vector <XYPoint> extra_predicts = m_tss_contacts.extrapolate_all(m_time[i]);
+  //   for(int j=0; j<extra_predicts.size(); j++){
+  //     actabl << m_time[i] << extra_predicts[j].get_spec();
+  //   }
+  // }
+  // m_msgs << actabl.getFormattedString();
 
 
   return(true);
