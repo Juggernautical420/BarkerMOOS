@@ -9,7 +9,7 @@ sleep 5
 
 
 
-if uQueryDB targ_usv.moos --condition="WPT_INDEX=2" --wait=3600; then
+if uQueryDB targ_usv.moos --condition="WPT_INDEX=2" --wait=7200; then
 	uPokeDB targ_shoreside.moos SCORE=true
 fi
 
