@@ -218,12 +218,12 @@ bool SegListIntercept::buildReport()
   actabl << "Time" << "Contact Location" ;
   actabl.addHeaderLines();
   for(int i=0; i<m_time.size(); i++){ 
-    for(int j=0; j<m_tss_contacts.size(); j++){
-      SegListContact curr_cont = m_tss_contacts.get_contact(j);
-      XYPoint predictpoint = curr_cont.extrapolate_point(m_time[i]);
-      actabl << m_time[i] << predictpoint.get_spec();
+    vector<string> predict = m_tss_contacts.extrapolate_all(m_time[i]);
+    for(int j=0; j<predict.size(); j++){
+      actabl << m_time[i] << predict[j];
+      }
     }
-  }  
+ 
   // actabl << "Size" << intToString(m_time.size());
   m_msgs << actabl.getFormattedString();
 
