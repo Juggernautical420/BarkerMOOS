@@ -23,6 +23,8 @@ SegListIntercept::SegListIntercept()
 {
   m_extra_ready = false;
   m_extra_done = false;
+  m_got_calc = false;
+  m_got_predict = false;
 }
 
 //---------------------------------------------------------
@@ -126,6 +128,7 @@ for(int l=0; l<m_os_intercept.size(); l++){
 
 calcTime(m_nav_spd);
 populateContacts();
+// predictContacts();
 
 
  
@@ -204,7 +207,7 @@ bool SegListIntercept::buildReport()
   ACTable actab(5);
   actab << "Name | X POS | Y POS | Int Length | Int Time" ;
   actab.addHeaderLines();
-  for(unsigned int k=0; k<m_os_intercept.size(); k++){
+  for(int k=0; k<m_os_intercept.size(); k++){
     actab << m_os_intercept.get_pname(k) << doubleToString(m_os_intercept.get_px(k)) << doubleToString(m_os_intercept.get_py(k)) << doubleToString(m_length[k]) << doubleToString(m_time[k]);
   }
   m_msgs << actab.getFormattedString();
@@ -213,14 +216,15 @@ bool SegListIntercept::buildReport()
   actabl << "" << "";
   actabl << "" << "";
   actabl << "Time" << "Contact Location" ;
-  actab.addHeaderLines();
-  for(int i=0; i<m_os_intercept.size(); i++){
-    vector <XYPoint> extra_predicts = m_tss_contacts.extrapolate_all(m_time[i]);
-      actabl << m_time[i] << "" ;
-    for(int j=0; j<extra_predicts.size(); j++){
-      actabl << "" << extra_predicts[j].get_spec();
+  actabl.addHeaderLines();
+  for(int i=0; i<m_time.size(); i++){ 
+    for(int j=0; j<m_tss_contacts.size(); j++){
+      SegListContact curr_cont = m_tss_contacts.get_contact(j);
+      XYPoint predictpoint = curr_cont.extrapolate_point(m_time[i]);
+      actabl << m_time[i] << predictpoint.get_spec();
     }
-  }
+  }  
+  // actabl << "Size" << intToString(m_time.size());
   m_msgs << actabl.getFormattedString();
 
 
@@ -232,13 +236,18 @@ bool SegListIntercept::buildReport()
 
 void SegListIntercept::calcTime(double speed)
 {
-for(int l=0; l<m_os_intercept.size(); l++){
- XYSegList remaining = biteSegList(m_os_seglist, m_os_intercept.get_px(l), m_os_intercept.get_py(l));
- double length = remaining.length();
- m_length.push_back(length);
- double time = length/speed;
- m_time.push_back(time);
-}
+  if(!m_got_calc){
+    for(int l=0; l<m_os_intercept.size(); l++){
+      XYSegList remaining = biteSegList(m_os_seglist, m_os_intercept.get_px(l), m_os_intercept.get_py(l));
+      double length = remaining.length();
+      m_length.push_back(length);
+      double time = length/speed;
+      m_time.push_back(time);
+    }
+  
+  if(m_time.size() != 0)
+    m_got_calc = true;
+  }
 }
 
 //------------------------------------------------------------
@@ -287,6 +296,7 @@ bool SegListIntercept::isUnique(string name)
 
 void SegListIntercept::populateContacts()
 {
+  if(!m_extra_ready){
   for(int i=0; i<m_con_segnames.size(); i++){
     for(int j=0; j<m_con_nodenames.size(); j++){
       if(m_con_segnames[i] == m_con_nodenames[j]){
@@ -296,7 +306,23 @@ void SegListIntercept::populateContacts()
       }
     }
   }
-  m_extra_ready = true;
+
+  if(m_tss_contacts.size() != 0)
+    m_extra_ready = true;
+  }
 }
 
 
+//------------------------------------------------------------
+// Procedure: predictContacts()
+
+// void SegListIntercept::predictContacts()
+// {
+//   if((!m_got_predict)&&(m_extra_ready)&&(m_got_calc)){
+//   for(int i=0; i<m_time.size(); i++){
+//     vector<string> predicts = m_tss_contacts.extrapolate_all(m_time[i]);
+//   }
+
+//     m_got_predict = true;
+//   } 
+// }  

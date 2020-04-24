@@ -38,6 +38,7 @@ class SegListIntercept : public AppCastingMOOSApp
    void handleNodeMsg(std::string report);
    bool isUnique(std::string name);
    void populateContacts();
+   void predictContacts();
 
 
 
@@ -72,7 +73,10 @@ class SegListIntercept : public AppCastingMOOSApp
    SegListContactSet m_tss_contacts;
    bool m_extra_ready;
    bool m_extra_done;
+   bool m_got_calc;
+   bool m_got_predict;
 
+   // std::vector<std::string> m_extra_predicts;
 
  private: // Configuration variables
 

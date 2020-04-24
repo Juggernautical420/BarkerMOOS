@@ -22,8 +22,15 @@ class SegListContactSet
   SegListContactSet();
   virtual ~SegListContactSet() {}
 
+
+// Setters
 void addSegListContact(SegListContact seglistcontact);
-std::vector<XYPoint> extrapolate_all(double time);
+
+
+//Getters
+unsigned int size() const  {return(m_seglist_contacts.size());}
+std::vector<std::string> extrapolate_all(double time);
+SegListContact get_contact(unsigned int) const;
 
 
 

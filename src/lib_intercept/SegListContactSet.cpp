@@ -32,13 +32,28 @@ void SegListContactSet::addSegListContact(SegListContact seglistcontact)
 //-----------------------------------------------------------
 // Procedure: extrapolate_all
 
-vector<XYPoint> SegListContactSet::extrapolate_all(double time)
+vector<string> SegListContactSet::extrapolate_all(double time)
 {
-	vector<XYPoint> pointvector;
+	vector<string> pointvector;
 	for(int i=0; i<m_seglist_contacts.size(); i++){
 		SegListContact current = m_seglist_contacts[i];
-		XYPoint prediction = current.extrapolate_point(time);
+		XYPoint predict = current.extrapolate_point(time);
+		string prediction = predict.get_spec();
 		pointvector.push_back(prediction);
 	}
 	return(pointvector);
+}
+
+//---------------------------------------------------------------
+// Procedure: get_contact
+
+SegListContact SegListContactSet::get_contact(unsigned int i) const
+{
+  if(i<m_seglist_contacts.size())
+     return(m_seglist_contacts[i]);
+   else{
+   	SegListContact null_contact;
+   	return(null_contact);
+   }
+    
 }
