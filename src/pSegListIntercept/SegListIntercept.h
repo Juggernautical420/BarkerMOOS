@@ -76,7 +76,7 @@ class SegListIntercept : public AppCastingMOOSApp
    bool m_got_calc;
    bool m_got_predict;
 
-   // std::vector<std::string> m_extra_predicts;
+   std::vector<std::vector<std::string>> m_extra_predicts;
 
  private: // Configuration variables
 

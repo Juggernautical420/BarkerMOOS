@@ -128,7 +128,7 @@ for(int l=0; l<m_os_intercept.size(); l++){
 
 calcTime(m_nav_spd);
 populateContacts();
-// predictContacts();
+predictContacts();
 
 
  
@@ -217,12 +217,11 @@ bool SegListIntercept::buildReport()
   actabl << "" << "";
   actabl << "Time" << "Contact Location" ;
   actabl.addHeaderLines();
-  for(int i=0; i<m_time.size(); i++){ 
-    vector<string> predict = m_tss_contacts.extrapolate_all(m_time[i]);
-    for(int j=0; j<predict.size(); j++){
-      actabl << m_time[i] << predict[j];
-      }
+  for(int i=0; i<m_extra_predicts.size(); i++){
+    for(int j=0; j<m_extra_predicts[i].size(); j++){
+      actabl << m_time[i] << m_extra_predicts[j][i] ;
     }
+  }
  
   // actabl << "Size" << intToString(m_time.size());
   m_msgs << actabl.getFormattedString();
@@ -316,13 +315,14 @@ void SegListIntercept::populateContacts()
 //------------------------------------------------------------
 // Procedure: predictContacts()
 
-// void SegListIntercept::predictContacts()
-// {
-//   if((!m_got_predict)&&(m_extra_ready)&&(m_got_calc)){
-//   for(int i=0; i<m_time.size(); i++){
-//     vector<string> predicts = m_tss_contacts.extrapolate_all(m_time[i]);
-//   }
+void SegListIntercept::predictContacts()
+{
+  if((!m_got_predict)&&(m_extra_ready)&&(m_got_calc)){
+    for(int i=0; i<m_time.size(); i++){
+      vector<string> predicts = m_tss_contacts.extrapolate_all(m_time[i]);
+      m_extra_predicts.push_back(predicts);
+    }
 
-//     m_got_predict = true;
-//   } 
-// }  
+    m_got_predict = true;
+  } 
+}  
