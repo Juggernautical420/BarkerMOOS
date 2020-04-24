@@ -40,6 +40,7 @@ class SegListIntercept : public AppCastingMOOSApp
    void populateContacts();
 
 
+
  protected: // Standard AppCastingMOOSApp function to overload 
    bool buildReport();
 
@@ -54,6 +55,7 @@ class SegListIntercept : public AppCastingMOOSApp
    XYSegList m_os_seglist;
    std::vector<double> m_length;
    std::vector<double> m_time;
+   double m_nav_spd;
    
 
    XYPoint m_point;
@@ -68,6 +70,8 @@ class SegListIntercept : public AppCastingMOOSApp
    std::vector<double> m_con_nodespds;
 
    SegListContactSet m_tss_contacts;
+   bool m_extra_ready;
+   bool m_extra_done;
 
 
  private: // Configuration variables

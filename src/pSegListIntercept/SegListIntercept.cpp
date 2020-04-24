@@ -21,7 +21,8 @@ using namespace std;
 
 SegListIntercept::SegListIntercept()
 {
-
+  m_extra_ready = false;
+  m_extra_done = false;
 }
 
 //---------------------------------------------------------
@@ -67,8 +68,7 @@ bool SegListIntercept::OnNewMail(MOOSMSG_LIST &NewMail)
   if(key == "NAV_SPEED"){
     double dval = msg.GetDouble();
       if(dval != 0){
-        double nav_spd =  dval;
-        calcTime(nav_spd);
+        m_nav_spd =  dval;
       }
   }
 
@@ -124,7 +124,10 @@ for(int l=0; l<m_os_intercept.size(); l++){
  Notify("VIEW_POINT", point_spec);
 }
 
+calcTime(m_nav_spd);
 populateContacts();
+
+
  
   AppCastingMOOSApp::PostReport();
   return(true);
@@ -206,18 +209,19 @@ bool SegListIntercept::buildReport()
   }
   m_msgs << actab.getFormattedString();
 
-  // ACTable actabl(2);
-  // actabl << "" << "";
-  // actabl << "" << "";
-  // actabl << "Time" << "Contact Location" ;
-  // actab.addHeaderLines();
-  // for(int i=0; i<m_time.size(); i++){
-  //   vector <XYPoint> extra_predicts = m_tss_contacts.extrapolate_all(m_time[i]);
-  //   for(int j=0; j<extra_predicts.size(); j++){
-  //     actabl << m_time[i] << extra_predicts[j].get_spec();
-  //   }
-  // }
-  // m_msgs << actabl.getFormattedString();
+  ACTable actabl(2);
+  actabl << "" << "";
+  actabl << "" << "";
+  actabl << "Time" << "Contact Location" ;
+  actab.addHeaderLines();
+  for(int i=0; i<m_os_intercept.size(); i++){
+    vector <XYPoint> extra_predicts = m_tss_contacts.extrapolate_all(m_time[i]);
+      actabl << m_time[i] << "" ;
+    for(int j=0; j<extra_predicts.size(); j++){
+      actabl << "" << extra_predicts[j].get_spec();
+    }
+  }
+  m_msgs << actabl.getFormattedString();
 
 
   return(true);
@@ -292,6 +296,7 @@ void SegListIntercept::populateContacts()
       }
     }
   }
+  m_extra_ready = true;
 }
 
 
