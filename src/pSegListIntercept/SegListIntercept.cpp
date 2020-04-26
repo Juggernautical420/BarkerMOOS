@@ -212,18 +212,16 @@ bool SegListIntercept::buildReport()
   }
   m_msgs << actab.getFormattedString();
 
-  ACTable actabl(2);
-  actabl << "" << "";
-  actabl << "" << "";
-  actabl << "Time" << "Contact Location" ;
+  ACTable actabl(3);
+  actabl << "" << "" << "";
+  actabl << "" << "" << "";
+  actabl << "Time" << "Limiting Distance" << "Limiting Contact" ;
   actabl.addHeaderLines();
-  for(int i=0; i<m_extra_predicts.size(); i++){
-    for(int j=0; j<m_extra_predicts[i].size(); j++){
-      actabl << m_time[i] << m_extra_predicts[j][i] ;
-    }
+  for(int i=0; i<m_extrapo_contacts.size(); i++){
+    actabl << m_extrapo_contacts[i] << m_extrapo_dists[i] << "";
   }
  
-  // actabl << "Size" << intToString(m_time.size());
+  // actabl << "Test" << intToString(m_limiting_contacts.size());
   m_msgs << actabl.getFormattedString();
 
 
@@ -317,12 +315,24 @@ void SegListIntercept::populateContacts()
 
 void SegListIntercept::predictContacts()
 {
+  int row = m_time.size();
+  int column = m_tss_contacts.size();
+  int matrix_size = row*column;
   if((!m_got_predict)&&(m_extra_ready)&&(m_got_calc)){
     for(int i=0; i<m_time.size(); i++){
-      vector<string> predicts = m_tss_contacts.extrapolate_all(m_time[i]);
-      m_extra_predicts.push_back(predicts);
+        XYPoint ownship;
+        ownship.set_vertex(m_os_intercept.get_px(i), m_os_intercept.get_py(i));
+      for(int j=0; j<m_tss_contacts.size(); j++){
+        SegListContact curr_contact = m_tss_contacts.get_contact(j);
+        XYPoint guess_point = curr_contact.extrapolate_point(m_time[i]);
+        string guess_info = guess_point.get_spec();
+        m_extrapo_contacts.push_back(guess_info);
+        double guess_dist = distPointToPoint(ownship, guess_point);
+        m_extrapo_dists.push_back(guess_dist);
+      }
     }
 
-    m_got_predict = true;
-  } 
+      if(m_extrapo_contacts.size() == matrix_size)
+      m_got_predict = true;
+  }
 }  

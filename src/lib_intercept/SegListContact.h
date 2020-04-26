@@ -37,6 +37,8 @@ class SegListContact
    void predict_point(double time);
    void pointCalculate(XYSegList seglist, double heading);
 
+   XYPoint m_locate;
+   bool m_got_predict;
 
 /// Getters ///
    void print();
@@ -59,10 +61,8 @@ std::vector<XYSegList> m_leg_seglist;
 std::vector<double> m_leg_heading;
 std::vector<double> m_leg_length;
 std::vector<double> m_time_leg;
-
-XYPoint m_locate;
 double m_time_remain;
-bool m_got_predict;
+
 
    
 };

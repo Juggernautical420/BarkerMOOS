@@ -21,6 +21,7 @@
 #include "SegIntercept.h"
 #include "SegListContact.h"
 #include "SegListContactSet.h"
+#include "GeomUtils.h"
 
 
 class SegListIntercept : public AppCastingMOOSApp
@@ -76,7 +77,10 @@ class SegListIntercept : public AppCastingMOOSApp
    bool m_got_calc;
    bool m_got_predict;
 
-   std::vector<std::vector<std::string>> m_extra_predicts;
+   double m_init_dist;
+   std::vector<std::string> m_extrapo_contacts;
+   std::vector<double> m_extrapo_dists;
+  
 
  private: // Configuration variables
 
