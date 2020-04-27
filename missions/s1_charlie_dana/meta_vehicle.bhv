@@ -31,7 +31,6 @@ Behavior = BHV_WaypointX
   condition = DEPLOY = true
   endflag   = RETURN = true
   endflag   = SCENARIO_FINISH = true
-
   updates    = WPT_UPDATE
   perpetual  = true
 
@@ -75,8 +74,6 @@ Behavior = BHV_WaypointX
   condition = RETURN = false
   condition = DEPLOY = true
   endflag   = RETURN = true
-
-  updates    = WPT_UPDATE
   perpetual  = true
 
                 lead = 8
@@ -120,8 +117,6 @@ Behavior = BHV_WaypointX
   condition = RETURN = false
   condition = DEPLOY = true
   endflag   = RETURN = true
-
-  updates    = WPT_UPDATE
   perpetual  = true
 
                 lead = 8

@@ -35,9 +35,10 @@ class SegListContact
    void setContactSpd(double spd);              
    void createTimeLimit();
    void predict_point(double time);
-   void pointCalculate(XYSegList seglist, double heading);
+   void pointCalculate(XYSegList seglist, double heading, double time_remaining);
 
    XYPoint m_locate;
+   // double m_time_remain;
    bool m_got_predict;
 
 /// Getters ///
@@ -46,6 +47,7 @@ class SegListContact
 
    std::string getContactName() const {return(m_vname);};
    double getContactSpd() {return(m_nav_spd);};
+   std::string getContactSegList() const {return(m_seglist.get_spec());};
 
 
  protected:
@@ -55,13 +57,14 @@ bool m_got_name;
 
 double m_nav_spd;
 bool m_got_spd;
+XYSegList m_seglist;
 
 double m_time_limit;
 std::vector<XYSegList> m_leg_seglist;
 std::vector<double> m_leg_heading;
 std::vector<double> m_leg_length;
 std::vector<double> m_time_leg;
-double m_time_remain;
+
 
 
    

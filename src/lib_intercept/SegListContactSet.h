@@ -32,7 +32,7 @@ void addSegListContact(SegListContact seglistcontact);
 unsigned int size() const  {return(m_seglist_contacts.size());}
 SegListContact get_contact(unsigned int) const;
 
-/// Calculations // meh!!!! not dynamic
+/// Calculations // 
 std::vector<std::string> extrapolate_all(double time);
 std::string minDistContact(double x, double y, double time); //with a vector of contacts, this will return the 
 															 // string spec of the closest contact

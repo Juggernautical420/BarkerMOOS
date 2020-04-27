@@ -69,6 +69,7 @@ ProcessConfig = uFldShoreBroker
   BRIDGE = src=TSS_LANES
   BRIDGE = src=TSS_SEP_ZONES
   BRIDGE = src=SCORE
+  BRIDGE = src=COLLISION_DETECT_PARAMS
 
 
 

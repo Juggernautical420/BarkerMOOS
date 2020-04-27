@@ -40,6 +40,8 @@ class SegListIntercept : public AppCastingMOOSApp
    bool isUnique(std::string name);
    void populateContacts();
    void predictContacts();
+   void processParameters(std::string str);
+   void findLimitContacts();
 
 
 
@@ -58,7 +60,8 @@ class SegListIntercept : public AppCastingMOOSApp
    std::vector<double> m_length;
    std::vector<double> m_time;
    double m_nav_spd;
-   
+   double m_coll_range;
+   double m_nm_range;
 
    XYPoint m_point;
    SegIntercept m_os_intercept;
@@ -76,10 +79,14 @@ class SegListIntercept : public AppCastingMOOSApp
    bool m_extra_done;
    bool m_got_calc;
    bool m_got_predict;
+   bool m_got_limiting;
 
    double m_init_dist;
    std::vector<std::string> m_extrapo_contacts;
    std::vector<double> m_extrapo_dists;
+
+   std::vector<std::string> m_limit_contacts;
+   std::vector<double> m_limit_dist;
   
 
  private: // Configuration variables

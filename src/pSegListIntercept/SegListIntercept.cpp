@@ -25,6 +25,7 @@ SegListIntercept::SegListIntercept()
   m_extra_done = false;
   m_got_calc = false;
   m_got_predict = false;
+  m_got_limiting = false;
 }
 
 //---------------------------------------------------------
@@ -78,6 +79,11 @@ bool SegListIntercept::OnNewMail(MOOSMSG_LIST &NewMail)
     string sval  = msg.GetString(); 
     handleNodeMsg(sval); 
   }
+
+  if(key == "COLLISION_DETECT_PARAMS"){
+    string sval  = msg.GetString();
+    processParameters(sval);
+  }  
 
 #if 0 // Keep these around just for template
     string comm  = msg.GetCommunity();
@@ -191,6 +197,7 @@ void SegListIntercept::registerVariables()
   Register(m_list_name, 0); //ownship seglist
   Register("NAV_SPEED",0);
   Register("NODE_REPORT", 0); //to get contact speeds
+  Register("COLLISION_DETECT_PARAMS", 0);
 
 }
 
@@ -212,16 +219,23 @@ bool SegListIntercept::buildReport()
   }
   m_msgs << actab.getFormattedString();
 
-  ACTable actabl(3);
-  actabl << "" << "" << "";
-  actabl << "" << "" << "";
-  actabl << "Time" << "Limiting Distance" << "Limiting Contact" ;
+  ACTable actabl(2);
+  actabl << "" << "" ;
+  actabl << "" << "" ;
+  actabl << "Extrapolated Points" << "Distance from Related Intercept Point" ;
   actabl.addHeaderLines();
   for(int i=0; i<m_extrapo_contacts.size(); i++){
-    actabl << m_extrapo_contacts[i] << m_extrapo_dists[i] << "";
+    actabl << m_extrapo_contacts[i] << doubleToString(m_extrapo_dists[i]);
   }
- 
-  // actabl << "Test" << intToString(m_limiting_contacts.size());
+  // actabl.addHeaderLines();
+  // actabl << "Collision Range" << doubleToString(m_coll_range);
+  // actabl << "Limiting Contacts" << intToString(m_limit_contacts.size());
+  // actabl << "" << "" ;
+  // actabl << "Points within Collision Range" << "Limiting Distance";
+  // actabl.addHeaderLines();
+  // for(int i=0; i<m_limit_contacts.size(); i++){
+  //   actabl << m_limit_contacts[i] << doubleToString(m_limit_dist[i]);
+  // }
   m_msgs << actabl.getFormattedString();
 
 
@@ -256,14 +270,20 @@ void SegListIntercept::handleNodeMsg(string report)
     for(unsigned int i=0; i<str_vector.size(); i++) {
       string param = biteStringX(str_vector[i], '=');
       string value = str_vector[i];
+      bool valid_speed = false;
 
       if(param == "NAME")
         m_current_name = value;
 
-      if(param == "SPD")
-        m_current_spd = stod(value);
+      if(param == "SPD"){
+        double current_speed = stod(value);
+        if(current_speed != 0){
+          m_current_spd = current_speed;
+          valid_speed = true;
+        }
+      }
 
-      if(isUnique(m_current_name)){
+      if(isUnique(m_current_name)&&(valid_speed)){
         m_con_nodenames.push_back(m_current_name);
         m_con_nodespds.push_back(m_current_spd);
       }
@@ -288,6 +308,21 @@ bool SegListIntercept::isUnique(string name)
   return(true);
 }
 
+
+//------------------------------------------------------------
+// Procedure: processParameters
+
+void SegListIntercept::processParameters(string s)
+{
+  string collrng = tokStringParse(s, "collision_range", ',', '=');
+  m_coll_range = stod(collrng);
+  string nmrng = tokStringParse(s, "near_miss_range", ',', '=');
+  m_nm_range = stod(nmrng);
+
+}
+
+
+
 //------------------------------------------------------------
 // Procedure: populateContacts()
 
@@ -298,7 +333,7 @@ void SegListIntercept::populateContacts()
     for(int j=0; j<m_con_nodenames.size(); j++){
       if(m_con_segnames[i] == m_con_nodenames[j]){
         SegListContact current_contact;
-        current_contact.set_contact(m_con_segnames[i], m_con_seglists[i], m_con_nodespds[j]);
+        current_contact.set_contact(m_con_nodenames[i], m_con_seglists[i], m_con_nodespds[j]);
         m_tss_contacts.addSegListContact(current_contact);
       }
     }
@@ -336,3 +371,22 @@ void SegListIntercept::predictContacts()
       m_got_predict = true;
   }
 }  
+
+//------------------------------------------------------------
+// Procedure: findLimitContacts
+
+void SegListIntercept::findLimitContacts()
+{
+  if((!m_got_limiting)&&(m_got_predict)){
+    for(int i=0; i<m_extrapo_dists.size(); i++){
+      if(m_extrapo_dists[i] <= m_coll_range){
+        m_limit_dist.push_back(m_extrapo_dists[i]);
+        m_limit_contacts.push_back(m_extrapo_contacts[i]);
+      }
+    }
+
+    m_got_limiting = true;
+  }
+}
+
+

@@ -37,6 +37,7 @@ void SegListContact::set_contact(string name, XYSegList seglist, double spd)
 //Procedure: extrapolateSegList
 void SegListContact::expandSegList(XYSegList seglist)
 {
+  m_seglist = seglist;
   if(m_got_spd){
   for(int i=1; i<seglist.size(); i++){
     double x1 = seglist.get_vx(i-1);
@@ -82,8 +83,10 @@ void SegListContact::setContactName(string str)
 void SegListContact::setContactSpd(double spd)
 {
   if(!m_got_spd){
+    if(spd !=0){
     m_nav_spd = spd;
     m_got_spd = true;
+    }
   }
 }
 
@@ -98,7 +101,6 @@ void SegListContact::createTimeLimit()
     m_time_leg.push_back(m_time_limit);
   }
 }
-
 
 
 
@@ -123,30 +125,36 @@ void SegListContact::print()
 //Procedure: predict_point
 void SegListContact::predict_point(double time)
 {
+  cout << "Doing Predict Point for time=" << time << endl;
   if(m_got_spd){
-  for(int i=0; i<m_leg_seglist.size(); i++){
+   for(int i=0; i<m_leg_seglist.size(); i++){
+    double time_remain = 0;
+    double heading = 0;
     if(time <= m_time_leg[0]){
-      m_time_remain = time;
+      time_remain = time;
       m_locate.set_label("vname = " +m_vname + "; heading = " + doubleToString(m_leg_heading[0]));
-      pointCalculate(m_leg_seglist[0], m_leg_heading[0]);
+      heading = m_leg_heading[0];
+      pointCalculate(m_leg_seglist[0], heading, time_remain);
       m_got_predict = true;
-      return;
+      cout << "Hdga=" << heading << ", time_zero=" << m_time_leg[0] << ", time remain=" << time_remain << ", segspec=" << m_locate.get_spec() << endl;
+      return;     
     }
     else if((time <= m_time_leg[i]) && (time > m_time_leg[i-1])){
-      m_time_remain = time - m_time_leg[i-1];
+      time_remain = time - m_time_leg[i-1];
       m_locate.set_label("vname = " +m_vname + "; heading = " + doubleToString(m_leg_heading[i]));
-      pointCalculate(m_leg_seglist[i], m_leg_heading[i]);
+      heading = m_leg_heading[i];
+      pointCalculate(m_leg_seglist[i], heading, time_remain);
       m_got_predict = true;
-      return;
+      cout << "Hdgb=" << heading << ", time remain=" << time_remain << ", segspec=" << m_locate.get_spec() << endl;
+      return;   
     }
-
   }
   }
 }
 
 //-----------------------------------------------------------------
 //Procedure: pointCalculate
-void SegListContact::pointCalculate(XYSegList seglist, double heading)
+void SegListContact::pointCalculate(XYSegList seglist, double heading, double time_remaining)
 {
     double x1 = seglist.get_vx(0);
     double y1 = seglist.get_vy(0);
@@ -154,8 +162,8 @@ void SegListContact::pointCalculate(XYSegList seglist, double heading)
     double hdgconvert = angle180(90 - heading);
     double radhdg = degToRadians(hdgconvert);
 
-    double x = x1 + ((cos(radhdg))* m_nav_spd * m_time_remain);
-    double y = y1 + ((sin(radhdg))* m_nav_spd * m_time_remain);
+    double x = x1 + ((cos(radhdg))* m_nav_spd * time_remaining);
+    double y = y1 + ((sin(radhdg))* m_nav_spd * time_remaining);
 
     m_locate.set_vertex(x,y);
 }
