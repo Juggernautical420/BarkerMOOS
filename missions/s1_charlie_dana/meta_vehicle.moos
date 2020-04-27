@@ -26,7 +26,7 @@ Processconfig = ANTLER
   Run = uFldNodeBroker   @ NewConsole = false
   Run = uFldMessageHandler  @ NewConsole = false
   //Run = pSegListIntercept @ NewConsole = false  // moved to the launch for veh1 only
-  Run = pBasicContactMgr @ NewConsole = false
+  //Run = pBasicContactMgr @ NewConsole = false
   Run = uXMS         @ NewConsole = false
  // Run = pTSSCompliance  @ NewConsole = false 
   Run = pSegPassing     @ NewConsole = false
@@ -64,7 +64,7 @@ ProcessConfig = pSegListIntercept
 
    input_speed = 2.5
 
-   buffer = 3;
+   buffer = 4;
 }  
 //------------------------------------------
 // uXMS configuration block
@@ -75,7 +75,7 @@ ProcessConfig = uXMS
    CommsTick = 4
   
 
-   VAR = WPT_UPDATE
+   VAR = WPT_INDEX
 
 }
 //------------------------------------------------

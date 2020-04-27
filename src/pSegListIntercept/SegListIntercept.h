@@ -35,11 +35,11 @@ class SegListIntercept : public AppCastingMOOSApp
    bool Iterate();
    bool OnConnectToServer();
    bool OnStartUp();
-   void calcTime(double speed);
+   void calcInitialTime(double speed);
    void handleNodeMsg(std::string report);
    bool isUnique(std::string name);
    void populateContacts();
-   void predictContacts();
+   void predictInitialContacts();
    void processParameters(std::string str);
    void manageContacts();
    
@@ -52,14 +52,20 @@ class SegListIntercept : public AppCastingMOOSApp
 
  protected:
    void registerVariables();
+   // Establish Ownship versus contacts //
    std::string m_veh_name;
    std::string m_vname;
    std::string m_veh_handle;
    std::string m_list_name;
 
+   // On New Mail for Seglists //
    XYSegList m_os_seglist;
-   // std::vector<double> m_length;
-   // std::vector<double> m_time;
+
+
+
+
+   std::vector<double> m_init_length;
+   std::vector<double> m_init_time;
    double m_nav_spd;
    double m_coll_range;
    double m_nm_range;
@@ -68,7 +74,6 @@ class SegListIntercept : public AppCastingMOOSApp
 
    double m_desired_speed;
 
-   XYPoint m_point;
    SegIntercept m_os_intercept;
    std::string m_current_name;
    double m_current_spd;
@@ -83,17 +88,25 @@ class SegListIntercept : public AppCastingMOOSApp
    bool m_got_speed;
    bool m_extra_ready;
    bool m_extra_done;
+   bool m_got_init_calc;
    bool m_got_calc;
+   bool m_got_init_predict;
    bool m_got_predict;
    bool m_got_limiting;
    bool m_spd_update;
 
-   double m_init_dist;
-   std::vector<std::string> m_extrapolated_contacts;
-   // std::vector<double> m_extrapo_dists;
+   bool seglistready;
+   bool nodelistready;
+   bool popready; 
 
-   std::vector<std::string> m_init_limit_contacts;
-   // std::vector<double> m_limit_dist;
+   double m_init_limit_count;
+
+   int m_resolved_count;
+   double m_init_dist;
+
+   std::vector<std::string> m_extrapolated_contacts;
+   std::vector<double> m_extrapolated_dists;
+
    std::string m_input_speed;
    std::string m_final_speed;
    std::string m_limiting_contacts;
