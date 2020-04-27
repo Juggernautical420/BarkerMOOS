@@ -25,10 +25,11 @@ Processconfig = ANTLER
   Run = pHostInfo        @ NewConsole = false
   Run = uFldNodeBroker   @ NewConsole = false
   Run = uFldMessageHandler  @ NewConsole = false
-  Run = pSegListIntercept @ NewConsole = false  
+  //Run = pSegListIntercept @ NewConsole = false  // moved to the launch for veh1 only
   Run = pBasicContactMgr @ NewConsole = false
- // Run = uXMS         @ NewConsole = false
+  Run = uXMS         @ NewConsole = false
  // Run = pTSSCompliance  @ NewConsole = false 
+  Run = pSegPassing     @ NewConsole = false
 }
 
 #include plug_uFldNodeBroker.moos
@@ -60,6 +61,10 @@ ProcessConfig = pSegListIntercept
    CommsTick = 4
 
    vname = $(VNAME)
+
+   input_speed = 2.5
+
+   buffer = 3;
 }  
 //------------------------------------------
 // uXMS configuration block
@@ -70,7 +75,7 @@ ProcessConfig = uXMS
    CommsTick = 4
   
 
-   VAR = NODE_REPORT
+   VAR = WPT_UPDATE
 
 }
 //------------------------------------------------

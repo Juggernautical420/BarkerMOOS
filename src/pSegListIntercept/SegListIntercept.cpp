@@ -21,11 +21,14 @@ using namespace std;
 
 SegListIntercept::SegListIntercept()
 {
+  m_got_speed = false;
   m_extra_ready = false;
   m_extra_done = false;
   m_got_calc = false;
   m_got_predict = false;
   m_got_limiting = false;
+
+  m_final_speed = m_input_speed;
 }
 
 //---------------------------------------------------------
@@ -71,7 +74,10 @@ bool SegListIntercept::OnNewMail(MOOSMSG_LIST &NewMail)
   if(key == "NAV_SPEED"){
     double dval = msg.GetDouble();
       if(dval != 0){
+        if(!m_got_speed){
         m_nav_spd =  dval;
+        m_got_speed = true; 
+        }
       }
   }
 
@@ -132,10 +138,12 @@ for(int l=0; l<m_os_intercept.size(); l++){
  Notify("VIEW_POINT", point_spec);
 }
 
-calcTime(m_nav_spd);
+//calcTime(m_nav_spd);
 populateContacts();
-predictContacts();
-
+// predictContacts();
+// findLimitContacts();
+// recommendSpeed();
+manageContacts();
 
  
   AppCastingMOOSApp::PostReport();
@@ -177,6 +185,18 @@ bool SegListIntercept::OnStartUp()
       handled = true;
     }
 
+    if(param == "buffer") {
+      m_buffer = stod(value);
+      handled = true;
+    }
+
+    if(param == "input_speed") {
+      m_desired_speed = stod(value);
+      m_input_speed = value;
+      handled = true;
+    }
+
+
     if(!handled)
       reportUnhandledConfigWarning(orig);
 
@@ -211,31 +231,37 @@ bool SegListIntercept::buildReport()
   m_msgs << "Predicted Intercept Point(s)                " << endl;
   m_msgs << "============================================" << endl;
 
-  ACTable actab(5);
-  actab << "Name | X POS | Y POS | Int Length | Int Time" ;
+  ACTable actab(3);
+  actab << "Name | X POS | Y POS " ;
   actab.addHeaderLines();
   for(int k=0; k<m_os_intercept.size(); k++){
-    actab << m_os_intercept.get_pname(k) << doubleToString(m_os_intercept.get_px(k)) << doubleToString(m_os_intercept.get_py(k)) << doubleToString(m_length[k]) << doubleToString(m_time[k]);
+    actab << m_os_intercept.get_pname(k) << doubleToString(m_os_intercept.get_px(k)) << doubleToString(m_os_intercept.get_py(k));
   }
+
   m_msgs << actab.getFormattedString();
 
-  ACTable actabl(2);
-  actabl << "" << "" ;
-  actabl << "" << "" ;
-  actabl << "Extrapolated Points" << "Distance from Related Intercept Point" ;
+  ACTable actabl(3);
+  actabl << "" << "" << "";
+  actabl << "" << "" << "" ;
+  actabl << "Node Report Size" << intToString(m_con_nodenames.size()) << "";
+  actabl << "SegList Size" << intToString(m_con_seglists.size()) << "";
+  actabl << "TSS Size" << intToString(m_tss_contacts.size()) << "";
+  actabl << "TSS Contacts" << "Speed" << "SegList" ;
   actabl.addHeaderLines();
-  for(int i=0; i<m_extrapo_contacts.size(); i++){
-    actabl << m_extrapo_contacts[i] << doubleToString(m_extrapo_dists[i]);
+  for(int i=0; i<m_tss_contacts.size(); i++){
+    SegListContact current = m_tss_contacts.get_contact(i);
+    actabl << current.getContactName() << doubleToString(current.getContactSpd()) << current.getContactSegList();
   }
-  // actabl.addHeaderLines();
-  // actabl << "Collision Range" << doubleToString(m_coll_range);
-  // actabl << "Limiting Contacts" << intToString(m_limit_contacts.size());
-  // actabl << "" << "" ;
-  // actabl << "Points within Collision Range" << "Limiting Distance";
-  // actabl.addHeaderLines();
-  // for(int i=0; i<m_limit_contacts.size(); i++){
-  //   actabl << m_limit_contacts[i] << doubleToString(m_limit_dist[i]);
-  // }
+  actabl.addHeaderLines();
+  actabl << "" << "" << "";
+  actabl << "" << "" << "" ; 
+  actabl << "Collision Range" << doubleToString(m_range_concern) << "";
+  actabl << "Intercept Points" << intToString(m_os_intercept.size()) << "" ;
+  actabl << "Extrapolated Points" << intToString(m_extrapolated_contacts.size()) << "";
+  actabl << "Initial Limiting Contacts" << intToString(m_init_limit_contacts.size()) << "";
+  actabl << "Final Limiting Contacts" << m_limiting_contacts << "";
+  actabl << "Input Speed" << m_input_speed << "";
+  actabl << "Final Speed" << m_final_speed << "";
   m_msgs << actabl.getFormattedString();
 
 
@@ -245,21 +271,21 @@ bool SegListIntercept::buildReport()
 //------------------------------------------------------------
 // Procedure: calcTime
 
-void SegListIntercept::calcTime(double speed)
-{
-  if(!m_got_calc){
-    for(int l=0; l<m_os_intercept.size(); l++){
-      XYSegList remaining = biteSegList(m_os_seglist, m_os_intercept.get_px(l), m_os_intercept.get_py(l));
-      double length = remaining.length();
-      m_length.push_back(length);
-      double time = length/speed;
-      m_time.push_back(time);
-    }
+// void SegListIntercept::calcTime(double speed)
+// {
+//   if((!m_got_calc)&&(m_got_speed)){
+//     for(int l=0; l<m_os_intercept.size(); l++){
+//       XYSegList remaining = biteSegList(m_os_seglist, m_os_intercept.get_px(l), m_os_intercept.get_py(l));
+//       double length = remaining.length();
+//       m_length.push_back(length);
+//       double time = length/speed;
+//       m_time.push_back(time);
+//     }
   
-  if(m_time.size() != 0)
-    m_got_calc = true;
-  }
-}
+//   if(m_time.size() != 0)
+//     m_got_calc = true;
+//   }
+// }
 
 //------------------------------------------------------------
 // Procedure: handleNodeMsg
@@ -318,6 +344,8 @@ void SegListIntercept::processParameters(string s)
   m_coll_range = stod(collrng);
   string nmrng = tokStringParse(s, "near_miss_range", ',', '=');
   m_nm_range = stod(nmrng);
+  m_range_concern = m_nm_range * m_buffer;  //Built in buffer that accounts for the fact
+  // that speed is set early and prior to full speed for the class instance
 
 }
 
@@ -339,7 +367,7 @@ void SegListIntercept::populateContacts()
     }
   }
 
-  if(m_tss_contacts.size() != 0)
+  if((m_tss_contacts.size() == m_con_segnames.size())&&(m_tss_contacts.size() != 0))
     m_extra_ready = true;
   }
 }
@@ -348,11 +376,53 @@ void SegListIntercept::populateContacts()
 //------------------------------------------------------------
 // Procedure: predictContacts()
 
-void SegListIntercept::predictContacts()
+// void SegListIntercept::predictContacts()
+// {
+
+//   if((!m_got_predict)&&(m_extra_ready)&&(m_got_calc)){
+//     for(int i=0; i<m_time.size(); i++){
+//         XYPoint ownship;
+//         ownship.set_vertex(m_os_intercept.get_px(i), m_os_intercept.get_py(i));
+//       for(int j=0; j<m_tss_contacts.size(); j++){
+//         SegListContact curr_contact = m_tss_contacts.get_contact(j);
+//         XYPoint guess_point = curr_contact.extrapolate_point(m_time[i]);
+//         string guess_info = guess_point.get_spec();
+//         m_extrapo_contacts.push_back(guess_info);
+//         double guess_dist = distPointToPoint(ownship, guess_point);
+//         m_extrapo_dists.push_back(guess_dist);
+//       }
+//     }
+
+//       if(m_extrapo_contacts.size() !=0)
+//       m_got_predict = true;
+//   }
+// }  
+
+//------------------------------------------------------------
+// Procedure: manageContacts
+
+void SegListIntercept::manageContacts()
 {
-  int row = m_time.size();
-  int column = m_tss_contacts.size();
-  int matrix_size = row*column;
+  vector<double> m_length;
+  vector<double> m_time; 
+
+  if((!m_got_calc)&&(m_got_speed)){
+    for(int l=0; l<m_os_intercept.size(); l++){
+      XYSegList remaining = biteSegList(m_os_seglist, m_os_intercept.get_px(l), m_os_intercept.get_py(l));
+      double length = remaining.length();
+      m_length.push_back(length);
+      double time = length/m_nav_spd;
+      m_time.push_back(time);
+    }
+  
+  if(m_time.size() != 0)
+    m_got_calc = true;
+  }
+
+
+  vector<string> m_extrapo_contacts;
+  vector<double> m_extrapo_dists;
+  
   if((!m_got_predict)&&(m_extra_ready)&&(m_got_calc)){
     for(int i=0; i<m_time.size(); i++){
         XYPoint ownship;
@@ -364,29 +434,63 @@ void SegListIntercept::predictContacts()
         m_extrapo_contacts.push_back(guess_info);
         double guess_dist = distPointToPoint(ownship, guess_point);
         m_extrapo_dists.push_back(guess_dist);
+        m_extrapolated_contacts.push_back(guess_info);
       }
     }
 
-      if(m_extrapo_contacts.size() == matrix_size)
+      if(m_extrapo_contacts.size() !=0){
       m_got_predict = true;
-  }
-}  
-
-//------------------------------------------------------------
-// Procedure: findLimitContacts
-
-void SegListIntercept::findLimitContacts()
-{
-  if((!m_got_limiting)&&(m_got_predict)){
-    for(int i=0; i<m_extrapo_dists.size(); i++){
-      if(m_extrapo_dists[i] <= m_coll_range){
-        m_limit_dist.push_back(m_extrapo_dists[i]);
-        m_limit_contacts.push_back(m_extrapo_contacts[i]);
-      }
     }
-
-    m_got_limiting = true;
   }
+ 
+  
+  if(m_got_predict){
+  vector<string> m_limit_contacts;
+  vector<double> m_limit_dist;
+
+  for(int i=0; i<m_extrapo_dists.size(); i++){
+    if(m_extrapo_dists[i] <= m_range_concern){
+      m_limit_dist.push_back(m_extrapo_dists[i]);
+      m_limit_contacts.push_back(m_extrapo_contacts[i]);
+      m_init_limit_contacts.push_back(m_extrapo_contacts[i]);
+      }
+  }
+
+  m_limiting_contacts = intToString(m_limit_contacts.size());
+  if(m_limit_contacts.size() != 0){
+      double new_speed = m_desired_speed - 0.1;
+      if(new_speed > 0.1){
+      m_speed_update = "speed =" + doubleToString(new_speed);
+      Notify("WPT_UPDATE", m_speed_update);
+      m_final_speed = doubleToString(new_speed); 
+      m_got_speed = false;
+      m_got_calc = false;
+      m_got_predict = false;
+    }
+   } 
+  }
+
+
+
 }
 
+// //------------------------------------------------------------
+// // Procedure: recommendSpeed
 
+// void SegListIntercept::recommendSpeed()
+// {
+//   if(m_got_limiting){
+//     if(m_limit_contacts.size() !=0){
+//       double new_speed = m_nav_spd - 0.05;
+//       if(new_speed > 0.5){
+//       string speed_update = "speed =" + doubleToString(new_speed);
+//       m_final_speed = doubleToString(new_speed);
+//       Notify("WPT_UPDATE", speed_update);
+//       m_got_speed = false;
+//       m_got_calc = false;
+//       m_got_predict = false;
+//       m_got_limiting = false;
+//       }
+//     }
+//   }
+// }

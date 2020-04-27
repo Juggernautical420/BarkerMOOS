@@ -87,17 +87,18 @@ VNAMESOUT=(`cat voutnames.txt`)
 VNAME1="usv"           # The first vehicle Community
 START_POS1="0,-190" 
 SHORE_LISTEN="9300"
+INPUT_SPEED1="2.5"
 
 
 nsplug meta_vehicle.moos targ_$VNAME1.moos -f WARP=$TIME_WARP \
     VNAME=$VNAME1          SHARE_LISTEN="9301"              \
     VPORT="9001"           SHORE=$SHORE       \
-    START_POS=$START_POS1 
+    START_POS=$START_POS1  
 
 
 nsplug meta_vehicle.bhv targ_$VNAME1.bhv -f VNAME=$VNAME1     \
     START_POS=$START_POS1 VNAME1=$VNAME1 GROUP=USV  \
-    SPEED=2.5
+    SPEED=$INPUT_SPEED1
 #-------------------------------------------------------------
 # Part 4a: Generate the Inbound Vehicle mission files
 #-------------------------------------------------------------
@@ -176,7 +177,7 @@ sleep 0.1
 #-------------------------------------------------------------
 printf "Launching $VNAME1 MOOS Community (WARP=%s) \n" $TIME_WARP
 pAntler targ_$VNAME1.moos >& /dev/null &
-
+pSegListIntercept targ_$VNAME1.moos >& /dev/null &
 for INDEXIN in `seq 1 $INAMT`;
 do 
     ARRAY_INDEXIN=`expr $INDEXIN - 1`

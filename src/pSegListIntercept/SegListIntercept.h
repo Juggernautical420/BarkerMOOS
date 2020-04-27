@@ -41,7 +41,8 @@ class SegListIntercept : public AppCastingMOOSApp
    void populateContacts();
    void predictContacts();
    void processParameters(std::string str);
-   void findLimitContacts();
+   void manageContacts();
+   
 
 
 
@@ -57,11 +58,15 @@ class SegListIntercept : public AppCastingMOOSApp
    std::string m_list_name;
 
    XYSegList m_os_seglist;
-   std::vector<double> m_length;
-   std::vector<double> m_time;
+   // std::vector<double> m_length;
+   // std::vector<double> m_time;
    double m_nav_spd;
    double m_coll_range;
    double m_nm_range;
+   double m_range_concern;
+   double m_buffer;
+
+   double m_desired_speed;
 
    XYPoint m_point;
    SegIntercept m_os_intercept;
@@ -75,18 +80,25 @@ class SegListIntercept : public AppCastingMOOSApp
    std::vector<double> m_con_nodespds;
 
    SegListContactSet m_tss_contacts;
+   bool m_got_speed;
    bool m_extra_ready;
    bool m_extra_done;
    bool m_got_calc;
    bool m_got_predict;
    bool m_got_limiting;
+   bool m_spd_update;
 
    double m_init_dist;
-   std::vector<std::string> m_extrapo_contacts;
-   std::vector<double> m_extrapo_dists;
+   std::vector<std::string> m_extrapolated_contacts;
+   // std::vector<double> m_extrapo_dists;
 
-   std::vector<std::string> m_limit_contacts;
-   std::vector<double> m_limit_dist;
+   std::vector<std::string> m_init_limit_contacts;
+   // std::vector<double> m_limit_dist;
+   std::string m_input_speed;
+   std::string m_final_speed;
+   std::string m_limiting_contacts;
+   std::string m_extra_points;
+   std::string m_speed_update;
   
 
  private: // Configuration variables
