@@ -378,6 +378,7 @@ void SegListIntercept::populateContacts()
     }
   }
 
+    Notify("TSS_POPULATE", "true");
     m_extra_ready = true;
   }
 }
