@@ -136,7 +136,7 @@ for(int i=1; i<os_seglist.size(); i++){ //Grabs the endpoints for each os segmen
 // }
 
 //Method #2b 
-// Endpoint lies between two points which covers matching waypoints
+// Endpoint lies between two points  - which also covers matching waypoints
 
 for(int c=0; c<os_seglist.size(); c++){ 
   double cx = os_seglist.get_vx(c);
@@ -202,6 +202,7 @@ string SegIntercept::get_pname(unsigned int i) const
 
 //---------------------------------------------------------------
 // Procedure: removeDuplicates
+// Written but unused
 
 void SegIntercept::removeDuplicates()
 {
