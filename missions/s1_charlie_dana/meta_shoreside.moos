@@ -17,9 +17,9 @@ Processconfig = ANTLER
   MSBetweenLaunches = 100
 
   Run = MOOSDB          @ NewConsole = false
-  Run = pMarineViewer   @ NewConsole = false
+ // Run = pMarineViewer   @ NewConsole = false
   Run = pLogger         @ NewConsole = false
-  //Run = uXMS            @ NewConsole = false
+  Run = uXMS            @ NewConsole = false
   Run = uProcessWatch   @ NewConsole = false
   Run = pShare          @ NewConsole = false
   Run = pHostInfo       @ NewConsole = false
@@ -72,7 +72,6 @@ ProcessConfig = uFldShoreBroker
   BRIDGE = src=COLLISION_DETECT_PARAMS
 
 
-
   BRIDGE   = src=UP_LOITER_$N, alias=UP_LOITER
   BRIDGE   = src=HELM_MAP_CLEAR, alias=HELM_MAP_CLEAR
  
@@ -95,7 +94,8 @@ ProcessConfig = uXMS
   AppTick       = 1
   CommsTick     = 1
 
-  var = WPT_INDEX
+  var = FINISHED_RUN
+  var = SPEED_GUESS
 }
 
 
@@ -216,7 +216,7 @@ ProcessConfig = pTrafficGrade
    AppTick   = 4
    CommsTick = 4
 
-   filename = score14final.txt
+   filename = finalscore55a.txt
 }
 
 //------------------------------------------------

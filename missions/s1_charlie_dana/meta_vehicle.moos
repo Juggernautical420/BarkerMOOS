@@ -76,6 +76,8 @@ ProcessConfig = uXMS
   
 
    VAR = WPT_INDEX
+   VAR = SPEED_GUESS
+   VAR = FINISHED_RUN
 
 }
 //------------------------------------------------

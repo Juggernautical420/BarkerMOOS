@@ -95,6 +95,10 @@ bool TrafficGrade::OnNewMail(MOOSMSG_LIST &NewMail)
       outputScore(m_filename);
   }
 
+  if(key == "SPEED_GUESS"){
+    m_final_speed = msg.GetString();
+  }
+
 #if 0 // Keep these around just for template
     string comm  = msg.GetCommunity();
     double dval  = msg.GetDouble();
@@ -132,8 +136,8 @@ bool TrafficGrade::Iterate()
 {
   AppCastingMOOSApp::Iterate();
   // Do your thing here!
-  nm_cnt = intToString(m_nm_count); 
-  coll_cnt = intToString(m_coll_count);  
+  m_string_nm_cnt = intToString(m_nm_count); 
+  m_string_coll_cnt = intToString(m_coll_count);  
 
 
 
@@ -194,6 +198,7 @@ void TrafficGrade::registerVariables()
   Register("NEAR_MISS", 0);
   Register("COLLISION_DETECT_PARAMS", 0);
   Register("SCORE", 0);
+  Register("SPEED_GUESS", 0);
 }
 
 
@@ -212,7 +217,7 @@ bool TrafficGrade::buildReport()
   actab << "" << "Overall Traffic Score" << traffic_score << "";
   actab.addHeaderLines();
   actab.addHeaderLines();
-  actab << "Number of Collisions" << coll_cnt << "" << "";
+  actab << "Number of Collisions" << m_string_coll_cnt << "" << "";
   actab << "Collision Range" << doubleToString(m_coll_range) << "" << "";
 
   if(m_coll_count != 0){
@@ -220,7 +225,7 @@ bool TrafficGrade::buildReport()
   }
   actab.addHeaderLines();
   actab.addHeaderLines();
-  actab << "Number of Near Misses" << nm_cnt << "" << "";
+  actab << "Number of Near Misses" << m_string_nm_cnt << "" << "";
   actab << "Near Miss Range" << doubleToString(m_nm_range) << "" << "" ;
   actab.addHeaderLines();
   actab.addHeaderLines();
@@ -295,6 +300,6 @@ void TrafficGrade::outputScore(string filename)
 {
   ofstream myfile;
   myfile.open (filename, ios::out | ios::app | ios::binary);
-  myfile << traffic_score << endl;
+  myfile << traffic_score << " , " << m_final_speed << endl;
   myfile.close();
 }

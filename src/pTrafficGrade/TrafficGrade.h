@@ -47,9 +47,11 @@ class TrafficGrade : public AppCastingMOOSApp
    std::vector<std::string> m_interaction;
 
    std::string traffic_score;
-   std::string coll_cnt;
-   std::string nm_cnt;
+   std::string m_string_coll_cnt;
+   std::string m_string_nm_cnt;
    std::string m_filename;
+
+   std::string m_final_speed;
 
  private: // Configuration variables
 

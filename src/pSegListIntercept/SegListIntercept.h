@@ -42,6 +42,7 @@ class SegListIntercept : public AppCastingMOOSApp
    void predictInitialContacts();
    void processParameters(std::string str);
    void manageContacts();
+   void predictSpeed();
    
 
 
@@ -100,7 +101,6 @@ class SegListIntercept : public AppCastingMOOSApp
    bool popready; 
 
    double m_init_limit_count;
-
    int m_resolved_count;
    double m_init_dist;
 
@@ -112,6 +112,9 @@ class SegListIntercept : public AppCastingMOOSApp
    std::string m_limiting_contacts;
    std::string m_extra_points;
    std::string m_speed_update;
+
+   double m_current_spd_recommend;
+   int m_spd_rec_resolved_count;
   
 
  private: // Configuration variables

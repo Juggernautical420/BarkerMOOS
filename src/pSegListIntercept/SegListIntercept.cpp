@@ -32,6 +32,7 @@ SegListIntercept::SegListIntercept()
 
   m_init_limit_count = 0;
   m_resolved_count = 1000;
+  m_spd_rec_resolved_count = 1000;
 }
 
 //---------------------------------------------------------
@@ -92,7 +93,14 @@ bool SegListIntercept::OnNewMail(MOOSMSG_LIST &NewMail)
   if(key == "COLLISION_DETECT_PARAMS"){
     string sval  = msg.GetString();
     processParameters(sval);
-  }  
+  } 
+
+  if(key == "WPT_INDEX"){
+    double dval  = msg.GetDouble();
+    if(dval == 2){
+      Notify("FINISHED_RUN", "true");
+    }
+  } 
 
 #if 0 // Keep these around just for template
     string comm  = msg.GetCommunity();
@@ -145,7 +153,9 @@ for(int l=0; l<m_os_intercept.size(); l++){
 calcInitialTime(m_nav_spd);
 populateContacts();
 predictInitialContacts();
-manageContacts();
+//manageContacts();
+
+predictSpeed();
 
 
  
@@ -221,6 +231,7 @@ void SegListIntercept::registerVariables()
   Register("NAV_SPEED",0);
   Register("NODE_REPORT", 0); //to get contact speeds
   Register("COLLISION_DETECT_PARAMS", 0);
+  Register("WPT_INDEX", 0);
 
 }
 
@@ -418,7 +429,7 @@ void SegListIntercept::predictInitialContacts()
 }  
 
 //------------------------------------------------------------
-// Procedure: manageContacts
+// Procedure: manageContacts  ///First Pass....No longer needed.  Captured in predictSpeed()
 
 
 void SegListIntercept::manageContacts()
@@ -496,3 +507,97 @@ void SegListIntercept::manageContacts()
 
 }
 
+
+//------------------------------------------------------------
+// Procedure: predictSpeed()
+
+void SegListIntercept::predictSpeed()
+{
+  double speed_guess = m_desired_speed;
+  if(m_extra_ready){
+  for(double s=1; s<=3.5; s=s+0.05){
+  //This for loop sets the speed guess between the range [1:3.5].  This range
+  //was chosen to prevent a high speed or slow speed solution that creates
+  //a trivial scenario   
+    speed_guess = s;
+    vector<double> m_length;
+    vector<double> m_time; 
+
+  //Step 1:  For each of the contact seglists, determine all the intercept points (get_px and get_py).
+  //         Once you have the intercept points, determine the time of interest for the joining vehicle 
+  //         until the intercept point.  The function biteSegList returns the remaining seglist from the 
+  //         the beginning until the intercept point for the first argument seglist.  In this case, the 
+  //         joining vehicle (ownship)  
+
+    for(int l=0; l<m_os_intercept.size(); l++){
+      XYSegList remaining = biteSegList(m_os_seglist, m_os_intercept.get_px(l), m_os_intercept.get_py(l));
+      double length = remaining.length();
+      m_length.push_back(length);
+      double time = length/speed_guess;
+      m_time.push_back(time);
+    }
+  
+  //Step 2:  For the number of interest times (vector<double>m_time), extrapolate points for all the 
+  //         contacts populated in ContactSeglistSet (m_tss_contacts) to find points of interest.  For each contact,
+  //         the SegListContact function .extrapolate_point(time) searches through each leg (and each leg has a max time on leg
+  //         because each ContactSegList has speed as a member variable), finds the leg of interest, 
+  //         calculates a remaining time on leg, and then calculates a x,y position.  Additionally, this loop
+  //         calculates the distance from the extrapolated point to the associated intercept point.  
+
+    vector<string> m_extrapo_contacts;
+    vector<double> m_extrapo_dists;
+    
+    for(int i=0; i<m_time.size(); i++){
+      XYPoint ownship;
+      ownship.set_vertex(m_os_intercept.get_px(i), m_os_intercept.get_py(i));
+      for(int j=0; j<m_tss_contacts.size(); j++){
+        SegListContact curr_contact = m_tss_contacts.get_contact(j);
+        XYPoint guess_point = curr_contact.extrapolate_point(m_time[i]);
+        string guess_info = guess_point.get_spec();
+        m_extrapo_contacts.push_back(guess_info);
+        double guess_dist = distPointToPoint(ownship, guess_point);
+        m_extrapo_dists.push_back(guess_dist);
+      }
+    }
+
+    //Step 3:  Based on the near miss range (nm_range), a guard ring is calculated and all contact distances
+    //         inside this guard ring are collected as m_limit_contacts
+
+    vector<string> m_limit_contacts;
+    vector<double> m_limit_dist;
+
+    for(int i=0; i<m_extrapo_dists.size(); i++){
+      if(m_extrapo_dists[i] <= m_range_concern){
+        m_limit_dist.push_back(m_extrapo_dists[i]);
+        m_limit_contacts.push_back(m_extrapo_contacts[i]);
+        }
+    }
+
+    //Step 4a:  Two cases remain.  If there are no limiting contacts, the recommended speed is the initial speed 
+    //         set by (m_desired_speed). 
+    if(m_limit_contacts.size() == 0)
+      m_current_spd_recommend = speed_guess;
+
+    //Step4b:  The other case. If there are limiting contacts at this speed, set the resolved limiting contacts
+    //         count to the current vector size.  This has the effect of returning the speed that results in the 
+    //         case with the least amount of limiting contacts for the speed range in the for loop. 
+    else if(m_limit_contacts.size() != 0){
+        if(m_limit_contacts.size() <= m_spd_rec_resolved_count){
+        m_current_spd_recommend = speed_guess ;
+        m_spd_rec_resolved_count = m_limit_contacts.size();
+      }
+     } 
+
+    //  This final part looks at both cases and gives a 
+    //  recommended speed update as either the input speed
+    //  or the new calculated speed (speed_guess)   
+
+  }
+  m_final_speed = doubleToString(m_current_spd_recommend);
+  string speed_recommendation = "speed =" + doubleToString(m_current_spd_recommend);
+  Notify("WPT_UPDATE", speed_recommendation);
+  Notify("SPEED_GUESS", m_final_speed);
+
+  }
+
+}
