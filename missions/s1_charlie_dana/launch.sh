@@ -200,9 +200,9 @@ done
 # Part 8: Launch uMac until the mission is quit
 #-------------------------------------------------------------
 
-#uMAC targ_shoreside.moos
+uMAC targ_shoreside.moos
 
-#printf "Killing all processes ... \n"
-#mykill
-#printf "Done killing processes.   \n"
+printf "Killing all processes ... \n"
+mykill
+printf "Done killing processes.   \n"
 
