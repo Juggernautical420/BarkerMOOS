@@ -210,6 +210,21 @@ bool SegListIntercept::OnStartUp()
     }
 
 
+    if(param == "min_speed") {
+      m_min_speed = stod(value);
+      handled = true;
+    }
+
+    if(param == "max_speed") {
+      m_max_speed = stod(value);
+      handled = true;
+    }
+
+    if(param == "rate_of_change") {
+      m_rate_of_change = stod(value);
+      handled = true;
+    }
+
     if(!handled)
       reportUnhandledConfigWarning(orig);
 
@@ -515,8 +530,8 @@ void SegListIntercept::predictSpeed()
 {
   double speed_guess = m_desired_speed;
   if(m_extra_ready){
-  for(double s=1; s<=3.5; s=s+0.05){
-  //This for loop sets the speed guess between the range [1:3.5].  This range
+  for(double s=m_min_speed; s<=m_max_speed; s=s+m_rate_of_change){
+  //This for loop sets the speed guess between the min and max range.  This range
   //was chosen to prevent a high speed or slow speed solution that creates
   //a trivial scenario   
     speed_guess = s;

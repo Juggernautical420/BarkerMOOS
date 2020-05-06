@@ -1,5 +1,5 @@
 #!/bin/bash 
-for i in {1..60}
+for i in {1..75}
 do
 sh ./launch.sh --in=5 --out=5 5 
 

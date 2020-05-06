@@ -216,7 +216,7 @@ ProcessConfig = pTrafficGrade
    AppTick   = 4
    CommsTick = 4
 
-   filename = finalscore55a.txt
+   filename = altscore55.txt
 }
 
 //------------------------------------------------

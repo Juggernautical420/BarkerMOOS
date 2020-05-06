@@ -13,6 +13,8 @@
 #include "XYPolygon.h"
 #include "XYSegList.h"
 #include "TrafficScheme.h"
+#include "AngleUtils.h"
+#include "GeomUtils.h"
 #include <string>
 #include <vector>
 
@@ -44,10 +46,10 @@ class TSSCompliance : public AppCastingMOOSApp
  bool m_got_lines;
  bool m_got_scheme;
 
- bool tss_status;
- 
+///////////////
+std::string m_tss_action;
 
-
+///////////////
  std::vector<std::string> m_sep_zones;
  std::vector<std::string> m_lane_seglists;
 

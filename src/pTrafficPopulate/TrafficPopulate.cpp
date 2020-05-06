@@ -174,7 +174,9 @@ bool TrafficPopulate::buildReport()
     actabl << m_lane_boundaries[i] << "";
   }
   actabl.addHeaderLines();
-  actabl << "Generated Polys: " << intToString(m_gen_poly_specs.size());
+  actabl << "Number of Generated Polys: " << intToString(m_gen_poly_specs.size());
+  actabl.addHeaderLines();
+    actabl << "Generated Polys " << "Generated Headings" ;
   actabl.addHeaderLines();
     for(int i=0; i<m_gen_poly_specs.size(); i++){
       actabl << m_gen_poly_specs[i] << m_gen_poly_hdgs[i];

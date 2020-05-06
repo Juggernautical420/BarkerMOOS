@@ -28,7 +28,7 @@ Processconfig = ANTLER
   //Run = pSegListIntercept @ NewConsole = false  // moved to the launch for veh1 only
   //Run = pBasicContactMgr @ NewConsole = false
   Run = uXMS         @ NewConsole = false
- // Run = pTSSCompliance  @ NewConsole = false 
+  Run = pTSSCompliance  @ NewConsole = false 
   Run = pSegPassing     @ NewConsole = false
 }
 
@@ -62,9 +62,12 @@ ProcessConfig = pSegListIntercept
 
    vname = $(VNAME)
 
-   input_speed = 2.5
+   input_speed = 4
+   buffer = 4
 
-   buffer = 4;
+   min_speed = 1
+   max_speed = 3.5
+   rate_of_change = 0.5
 }  
 //------------------------------------------
 // uXMS configuration block
@@ -75,9 +78,8 @@ ProcessConfig = uXMS
    CommsTick = 4
   
 
-   VAR = WPT_INDEX
-   VAR = SPEED_GUESS
-   VAR = FINISHED_RUN
+   VAR = TSS_STATUS
+
 
 }
 //------------------------------------------------
@@ -123,5 +125,6 @@ ProcessConfig = pTSSCompliance
    AppTick   = 4
    CommsTick = 4
 
+   vname = $(VNAME) 
 
 }

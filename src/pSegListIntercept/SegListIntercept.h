@@ -62,6 +62,15 @@ class SegListIntercept : public AppCastingMOOSApp
    // On New Mail for Seglists //
    XYSegList m_os_seglist;
 
+   //// Configuration Variables ///
+   double m_desired_speed;
+   double m_min_speed;
+   double m_max_speed;
+   double m_rate_of_change;
+
+
+
+
 
 
 
@@ -73,7 +82,7 @@ class SegListIntercept : public AppCastingMOOSApp
    double m_range_concern;
    double m_buffer;
 
-   double m_desired_speed;
+  
 
    SegIntercept m_os_intercept;
    std::string m_current_name;
