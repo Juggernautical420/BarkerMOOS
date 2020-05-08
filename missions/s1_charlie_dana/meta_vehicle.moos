@@ -62,7 +62,7 @@ ProcessConfig = pSegListIntercept
 
    vname = $(VNAME)
 
-   input_speed = 4
+   input_speed = 2.5
    buffer = 4
 
    min_speed = 1

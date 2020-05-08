@@ -17,6 +17,6 @@ ProcessConfig = uFldNodeBroker
   bridge = src=NODE_MESSAGE_LOCAL,  alias=NODE_MESSAGE
 
   BRIDGE = src=FINISHED_RUN
-  BRIDGE = src=SPEED_GUESS
+  BRIDGE = src=TSS_STATUS
   
 }

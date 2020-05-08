@@ -284,11 +284,11 @@ bool SegListIntercept::buildReport()
   actabl.addHeaderLines();
   actabl << "" << "" << "";
   actabl << "" << "" << "" ; 
-  actabl << "Collision Range" << doubleToString(m_range_concern) << "";
+  actabl << "Guard Ring Range" << doubleToString(m_range_concern) << "";
   actabl << "Intercept Points" << intToString(m_os_intercept.size()) << "" ;
   actabl << "Extrapolated Points" << intToString(m_extrapolated_contacts.size()) << "";
   actabl << "Initial Limiting Points of Interest" << doubleToString(m_init_limit_count) << "";
-  actabl << "Final Limiting Points of Interest" << m_limiting_contacts << "";
+  actabl << "Final Limiting Points of Interest" << intToString(m_spd_rec_resolved_count) << "";
   actabl << "Input Speed" << m_input_speed << "";
   actabl << "Final Speed" << m_final_speed << "";
   m_msgs << actabl.getFormattedString();

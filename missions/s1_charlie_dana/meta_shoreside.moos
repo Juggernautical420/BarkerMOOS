@@ -128,9 +128,11 @@ ProcessConfig = pMarineViewer
   set_pan_y            = -280
   zoom                 = 0.65
   vehicles_shape_scale = 1.5
-  vehicles_name_viewable = names
+  vehicles_name_mode = names
 
   circle_viewable_all = false
+  point_viewable_labels = false
+  seglist_viewable_labels = false
   
   appcast_viewable = true
   appcast_color_scheme = indigo

@@ -44,7 +44,7 @@ Behavior = BHV_WaypointX
   efficiency_measure = all
  //     speed = $(SPEED)
 // #ifdef GROUP USV
-     points = -50, -140: 10, -180: 110, -100: 70,-60 : 190,60
+     points = 10, -180: 110, -100: 70,-60 : 190,60
         speed = $(SPEED)
 // #elseifdef  GROUP INBOUND
 //     points =  40,-60 : 160, -180 : 160,-300
@@ -59,11 +59,11 @@ Behavior = BHV_WaypointX
                order = normal
              //repeat  = 1
 
-    visual_hints = nextpt_color=yellow
-    visual_hints = nextpt_vertex_size=8
-    visual_hints = nextpt_lcolor=gray70
-    visual_hints = vertex_color=dodger_blue, edge_color=white
-    visual_hints = vertex_size=5, edge_size=1
+    // visual_hints = nextpt_color=yellow
+    // visual_hints = nextpt_vertex_size=8
+    // visual_hints = nextpt_lcolor=gray70
+    // visual_hints = vertex_color=dodger_blue, edge_color=white
+    // visual_hints = vertex_size=5, edge_size=1
 }
 #elseifdef  GROUP INBOUND
 //----------------------------------------------
@@ -101,11 +101,11 @@ Behavior = BHV_WaypointX
                order = normal
              //repeat  = 1
 
-    visual_hints = nextpt_color=yellow
-    visual_hints = nextpt_vertex_size=8
-    visual_hints = nextpt_lcolor=gray70
-    visual_hints = vertex_color=dodger_blue, edge_color=white
-    visual_hints = vertex_size=5, edge_size=1
+    // visual_hints = nextpt_color=yellow
+    // visual_hints = nextpt_vertex_size=8
+    // visual_hints = nextpt_lcolor=gray70
+    // visual_hints = vertex_color=dodger_blue, edge_color=white
+    // visual_hints = vertex_size=5, edge_size=1
 }
 
 #elseifdef  GROUP OUTBOUND
@@ -144,11 +144,11 @@ Behavior = BHV_WaypointX
                order = normal
              //repeat  = 1
 
-    visual_hints = nextpt_color=yellow
-    visual_hints = nextpt_vertex_size=8
-    visual_hints = nextpt_lcolor=gray70
-    visual_hints = vertex_color=dodger_blue, edge_color=white
-    visual_hints = vertex_size=5, edge_size=1
+    // visual_hints = nextpt_color=yellow
+    // visual_hints = nextpt_vertex_size=8
+    // visual_hints = nextpt_lcolor=gray70
+    // visual_hints = vertex_color=dodger_blue, edge_color=white
+    // visual_hints = vertex_size=5, edge_size=1
 }
 #endif
 
