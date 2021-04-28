@@ -1,0 +1,43 @@
+CMake Warning at /opt/local/share/cmake-3.17/Modules/Platform/Darwin-Initialize.cmake:221 (message):
+  Ignoring CMAKE_OSX_SYSROOT value:
+
+   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk
+
+  because the directory does not exist.
+Call Stack (most recent call first):
+  /opt/local/share/cmake-3.17/Modules/CMakeSystemSpecificInitialize.cmake:21 (include)
+  CMakeLists.txt:10 (PROJECT)
+
+
+-- Configuring done
+CMake Warning (dev):
+  Policy CMP0042 is not set: MACOSX_RPATH is enabled by default.  Run "cmake
+  --help-policy CMP0042" for policy details.  Use the cmake_policy command to
+  set the policy and suppress this warning.
+
+  MACOSX_RPATH is not specified for the following targets:
+
+   BHV_DetailSurvey
+   BHV_FrontSurvey
+   BHV_InitialSweep
+   BHV_Pulse
+   BHV_SimpleWaypoint
+   BHV_Tripwire
+   BHV_WaypointX
+   BHV_ZigLeg
+
+This warning is for project developers.  Use -Wno-dev to suppress it.
+
+-- Generating done
+-- Build files have been written to: /Users/jasonbarker/moos-ivp-jbbarker/build
+[  1%] Building CXX object src/lib_behaviors-test/CMakeFiles/BHV_WaypointX.dir/BHV_WaypointX.cpp.o
+In file included from /Users/jasonbarker/moos-ivp-jbbarker/src/lib_behaviors-test/BHV_WaypointX.cpp:24:
+In file included from /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1/cmath:304:
+In file included from /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1/math.h:301:
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1/stdlib.h:20:15: fatal error: 'stdlib.h' file not found
+#include_next <stdlib.h>
+              ^~~~~~~~~~
+1 error generated.
+make[2]: *** [src/lib_behaviors-test/CMakeFiles/BHV_WaypointX.dir/BHV_WaypointX.cpp.o] Error 1
+make[1]: *** [src/lib_behaviors-test/CMakeFiles/BHV_WaypointX.dir/all] Error 2
+make: *** [all] Error 2
